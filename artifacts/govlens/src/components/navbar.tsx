@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'wouter';
 import { cn } from '@/lib/utils';
-import { Search, BarChart3, Menu, X, FileText, BookOpen, Flag, IndianRupee, Globe } from 'lucide-react';
+import { Search, BarChart3, Menu, X, FileText, BookOpen, Flag, IndianRupee, Globe, Github } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -96,6 +96,17 @@ export function Navbar() {
 
           {/* Spacer */}
           <div className="flex-1" />
+
+          {/* GitHub */}
+          <a
+            href="https://github.com/JCRYDER3/andhbhakt"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View source on GitHub"
+            className="flex items-center justify-center w-9 h-9 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <Github className="w-4 h-4" />
+          </a>
 
           {/* Language dropdown */}
           <div className="relative">
