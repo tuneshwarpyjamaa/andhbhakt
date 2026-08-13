@@ -1,0 +1,26 @@
+{
+  "name": "workspace",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "preinstall": "sh -c 'case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Error: use pnpm to install dependencies — see https://pnpm.io\" >&2; exit 1 ;; esac'",
+    "build": "pnpm run typecheck && pnpm -r --if-present run build",
+    "typecheck:libs": "tsc --build",
+    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
+  },
+  "private": true,
+  "dependencies": {
+    "@replit/connectors-sdk": "^0.4.1"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.62.1",
+    "prettier": "^3.9.6",
+    "typescript": "~5.9.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "js-yaml": ">=4.3.1",
+      "nanoid": ">=3.3.17"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "GovLens India"
+version = "1.0.0"
+id = "artifacts/govlens"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24146
+
+[services.development]
+run = "pnpm --filter @workspace/govlens run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/govlens", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/govlens/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24146"
+BASE_PATH = "/"

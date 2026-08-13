@@ -1,0 +1,701 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: GovLens India - PIB vs CAG audit tracker API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: schemes
+    description: Government scheme operations
+  - name: categories
+    description: Scheme category operations
+  - name: pib
+    description: PIB press release operations
+  - name: cag
+    description: CAG audit operations
+  - name: stats
+    description: Dashboard statistics
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /categories:
+    get:
+      operationId: listCategories
+      tags: [categories]
+      summary: List all scheme categories
+      responses:
+        "200":
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+    post:
+      operationId: createCategory
+      tags: [categories]
+      summary: Create a category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryInput"
+      responses:
+        "201":
+          description: Created category
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+
+  /ministries:
+    get:
+      operationId: listMinistries
+      tags: [schemes]
+      summary: List all unique ministries
+      responses:
+        "200":
+          description: List of ministry names
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+  /schemes:
+    get:
+      operationId: listSchemes
+      tags: [schemes]
+      summary: List all government schemes
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search by scheme name or description
+        - name: categoryId
+          in: query
+          schema:
+            type: ["integer", "null"]
+          description: Filter by category ID
+        - name: ministry
+          in: query
+          schema:
+            type: string
+          description: Filter by ministry name
+        - name: severity
+          in: query
+          schema:
+            type: string
+          description: Filter by worst CAG severity (critical, major, minor)
+      responses:
+        "200":
+          description: List of schemes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SchemeSummary"
+    post:
+      operationId: createScheme
+      tags: [schemes]
+      summary: Create a new scheme
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SchemeInput"
+      responses:
+        "201":
+          description: Created scheme
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Scheme"
+
+  /schemes/worst-performers:
+    get:
+      operationId: getWorstPerformers
+      tags: [schemes]
+      summary: Get schemes with the biggest gap between PIB claims and CAG findings
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          description: Number of results to return (default 5)
+      responses:
+        "200":
+          description: List of worst performing schemes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SchemeSummary"
+
+  /schemes/{slug}:
+    get:
+      operationId: getScheme
+      tags: [schemes]
+      summary: Get full scheme detail
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Scheme detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Scheme"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateScheme
+      tags: [schemes]
+      summary: Update a scheme
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SchemeUpdate"
+      responses:
+        "200":
+          description: Updated scheme
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Scheme"
+    delete:
+      operationId: deleteScheme
+      tags: [schemes]
+      summary: Delete a scheme
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  /schemes/{slug}/pib:
+    get:
+      operationId: listPibEntries
+      tags: [pib]
+      summary: List PIB entries for a scheme
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of PIB entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PIBEntry"
+    post:
+      operationId: createPibEntry
+      tags: [pib]
+      summary: Add a PIB entry to a scheme
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PIBEntryInput"
+      responses:
+        "201":
+          description: Created PIB entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PIBEntry"
+
+  /schemes/{slug}/cag:
+    get:
+      operationId: listCagAudits
+      tags: [cag]
+      summary: List CAG audit findings for a scheme
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of CAG audit findings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CAGAudit"
+    post:
+      operationId: createCagAudit
+      tags: [cag]
+      summary: Add a CAG audit finding to a scheme
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CAGAuditInput"
+      responses:
+        "201":
+          description: Created CAG audit
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CAGAudit"
+
+  /schemes/{slug}/verdict:
+    get:
+      operationId: getSchemeVerdict
+      tags: [schemes]
+      summary: Get computed accountability verdict for a scheme
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Scheme verdict
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SchemeVerdict"
+
+  /stats/overview:
+    get:
+      operationId: getStatsOverview
+      tags: [stats]
+      summary: Get high-level dashboard statistics
+      responses:
+        "200":
+          description: Overview statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsOverview"
+
+  /pib/{id}:
+    delete:
+      operationId: deletePibEntry
+      tags: [pib]
+      summary: Delete a PIB entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /cag/{id}:
+    delete:
+      operationId: deleteCagAudit
+      tags: [cag]
+      summary: Delete a CAG audit entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    Category:
+      type: object
+      required: [id, name, slug, icon, schemeCount]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        icon:
+          type: string
+        schemeCount:
+          type: integer
+
+    CategoryInput:
+      type: object
+      required: [name, slug, icon]
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        icon:
+          type: string
+
+    SchemeSummary:
+      type: object
+      required: [id, name, slug, ministry, launchedYear, categoryId, categoryName, pibCount, cagCount, worstSeverity]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        ministry:
+          type: string
+        launchedYear:
+          type: integer
+        renamedFrom:
+          type: ["string", "null"]
+        categoryId:
+          type: integer
+        categoryName:
+          type: string
+        categoryIcon:
+          type: string
+        description:
+          type: string
+        pibCount:
+          type: integer
+        cagCount:
+          type: integer
+        worstSeverity:
+          type: ["string", "null"]
+          description: "critical | major | minor | null if no audits"
+
+    Scheme:
+      type: object
+      required: [id, name, slug, ministry, launchedYear, categoryId, categoryName, description, goals, targetBeneficiaries, targetYear, budgetCrore]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        ministry:
+          type: string
+        launchedYear:
+          type: integer
+        renamedFrom:
+          type: ["string", "null"]
+        categoryId:
+          type: integer
+        categoryName:
+          type: string
+        categoryIcon:
+          type: string
+        description:
+          type: string
+        goals:
+          type: string
+        targetBeneficiaries:
+          type: ["string", "null"]
+        targetYear:
+          type: ["integer", "null"]
+        budgetCrore:
+          type: ["number", "null"]
+        pibEntries:
+          type: array
+          items:
+            $ref: "#/components/schemas/PIBEntry"
+        cagAudits:
+          type: array
+          items:
+            $ref: "#/components/schemas/CAGAudit"
+
+    SchemeInput:
+      type: object
+      required: [name, slug, ministry, launchedYear, categoryId, description, goals]
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        ministry:
+          type: string
+        launchedYear:
+          type: integer
+        renamedFrom:
+          type: string
+        categoryId:
+          type: integer
+        description:
+          type: string
+        goals:
+          type: string
+        targetBeneficiaries:
+          type: string
+        targetYear:
+          type: integer
+        budgetCrore:
+          type: number
+
+    SchemeUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        ministry:
+          type: string
+        launchedYear:
+          type: integer
+        renamedFrom:
+          type: string
+        categoryId:
+          type: integer
+        description:
+          type: string
+        goals:
+          type: string
+        targetBeneficiaries:
+          type: string
+        targetYear:
+          type: integer
+        budgetCrore:
+          type: number
+
+    PIBEntry:
+      type: object
+      required: [id, schemeId, date, headline, summary, claimType]
+      properties:
+        id:
+          type: integer
+        schemeId:
+          type: integer
+        date:
+          type: string
+          description: ISO date string
+        headline:
+          type: string
+        summary:
+          type: string
+        claimType:
+          type: string
+          description: "achievement | target | launch | update"
+        figure:
+          type: ["string", "null"]
+        figureUnit:
+          type: ["string", "null"]
+        sourceUrl:
+          type: ["string", "null"]
+
+    PIBEntryInput:
+      type: object
+      required: [date, headline, summary, claimType]
+      properties:
+        date:
+          type: string
+        headline:
+          type: string
+        summary:
+          type: string
+        claimType:
+          type: string
+        figure:
+          type: string
+        figureUnit:
+          type: string
+        sourceUrl:
+          type: string
+
+    CAGAudit:
+      type: object
+      required: [id, schemeId, reportYear, reportNumber, finding, severity, parameter]
+      properties:
+        id:
+          type: integer
+        schemeId:
+          type: integer
+        reportYear:
+          type: integer
+        reportNumber:
+          type: string
+        finding:
+          type: string
+        severity:
+          type: string
+          description: "critical | major | minor"
+        parameter:
+          type: string
+          description: "The metric or parameter being audited"
+        claimed:
+          type: ["string", "null"]
+          description: "What the government claimed"
+        actual:
+          type: ["string", "null"]
+          description: "What CAG found in reality"
+        unit:
+          type: ["string", "null"]
+        gapPercent:
+          type: ["number", "null"]
+          description: "Percentage gap between claimed and actual"
+        sourceUrl:
+          type: ["string", "null"]
+          description: "Direct URL to the CAG report on cag.gov.in"
+        reportExcerpt:
+          type: ["string", "null"]
+          description: "Verbatim excerpt from the CAG report that supports the finding"
+
+    CAGAuditInput:
+      type: object
+      required: [reportYear, reportNumber, finding, severity, parameter]
+      properties:
+        reportYear:
+          type: integer
+        reportNumber:
+          type: string
+        finding:
+          type: string
+        severity:
+          type: string
+        parameter:
+          type: string
+        claimed:
+          type: string
+        actual:
+          type: string
+        unit:
+          type: string
+        gapPercent:
+          type: number
+        sourceUrl:
+          type: string
+          description: "Direct URL to the CAG report on cag.gov.in"
+        reportExcerpt:
+          type: string
+          description: "Verbatim excerpt from the CAG report that supports the finding"
+
+    SchemeVerdict:
+      type: object
+      required: [schemeId, slug, name, verdict, score, totalAudits, criticalCount, majorCount, minorCount, summary]
+      properties:
+        schemeId:
+          type: integer
+        slug:
+          type: string
+        name:
+          type: string
+        verdict:
+          type: string
+          description: "on_track | off_track | critical | unaudited"
+        score:
+          type: integer
+          description: "0-100 accountability score"
+        totalAudits:
+          type: integer
+        criticalCount:
+          type: integer
+        majorCount:
+          type: integer
+        minorCount:
+          type: integer
+        summary:
+          type: string
+
+    StatsOverview:
+      type: object
+      required: [totalSchemes, totalPibEntries, totalCagAudits, schemesWithCritical, schemesWithMajor, avgAccountabilityScore, topMinistries]
+      properties:
+        totalSchemes:
+          type: integer
+        totalPibEntries:
+          type: integer
+        totalCagAudits:
+          type: integer
+        schemesWithCritical:
+          type: integer
+        schemesWithMajor:
+          type: integer
+        avgAccountabilityScore:
+          type: number
+        topMinistries:
+          type: array
+          items:
+            type: object
+            required: [ministry, schemeCount]
+            properties:
+              ministry:
+                type: string
+              schemeCount:
+                type: integer
