@@ -6,17 +6,16 @@ import { PageShell, PageHeader } from '@/components/page-shell';
 import { SchemeCard } from '@/components/scheme-card';
 import { PaginationBar, usePagination } from '@/components/pagination-bar';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { NativeSelect } from '@/components/native-select';
 import { Search, Filter } from 'lucide-react';
 import { catalogOrLive, STATIC_SCHEMES, STATIC_CATEGORIES, STATIC_MINISTRIES } from '@/lib/static-catalog';
-import namesHiRaw from '@/data/ministries-hi.json';
-
-const namesHi = namesHiRaw as Record<string, string>;
+import { useHiJson } from '@/lib/use-hi-json';
 const PAGE_SIZE = 12;
 
 export default function Schemes() {
   const { t, i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
+  const namesHi = useHiJson<Record<string, string>>('ministries-hi', () => import('@/data/ministries-hi.json'), isHi) ?? {};
   const [search, setSearch] = useState('');
   const [categoryId, setCategoryId] = useState<number | undefined>();
   const [ministry, setMinistry] = useState<string | undefined>();
@@ -82,45 +81,42 @@ export default function Schemes() {
               />
             </div>
 
-            <Select value={categoryId?.toString() || 'all'} onValueChange={(val) => setCategoryId(val === 'all' ? undefined : Number(val))}>
-              <SelectTrigger data-testid="select-category">
-                <SelectValue placeholder={t('allCategories')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('allCategories')}</SelectItem>
-                {categories?.map((cat) => (
-                  <SelectItem key={cat.id} value={cat.id.toString()}>
-                    {isHi ? (namesHi[cat.name] ?? cat.name) : cat.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <NativeSelect
+              data-testid="select-category"
+              value={categoryId?.toString() || 'all'}
+              onValueChange={(val) => setCategoryId(val === 'all' ? undefined : Number(val))}
+            >
+              <option value="all">{t('allCategories')}</option>
+              {categories?.map((cat) => (
+                <option key={cat.id} value={cat.id.toString()}>
+                  {isHi ? (namesHi[cat.name] ?? cat.name) : cat.name}
+                </option>
+              ))}
+            </NativeSelect>
 
-            <Select value={ministry || 'all'} onValueChange={(val) => setMinistry(val === 'all' ? undefined : val)}>
-              <SelectTrigger data-testid="select-ministry">
-                <SelectValue placeholder={t('allMinistries')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('allMinistries')}</SelectItem>
-                {ministries?.map((min) => (
-                  <SelectItem key={min} value={min}>
-                    {isHi ? (namesHi[min] ?? min) : min}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <NativeSelect
+              data-testid="select-ministry"
+              value={ministry || 'all'}
+              onValueChange={(val) => setMinistry(val === 'all' ? undefined : val)}
+            >
+              <option value="all">{t('allMinistries')}</option>
+              {ministries?.map((min) => (
+                <option key={min} value={min}>
+                  {isHi ? (namesHi[min] ?? min) : min}
+                </option>
+              ))}
+            </NativeSelect>
 
-            <Select value={severity || 'all'} onValueChange={(val) => setSeverity(val === 'all' ? undefined : val)}>
-              <SelectTrigger data-testid="select-severity">
-                <SelectValue placeholder={t('allSeverities')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('allSeverities')}</SelectItem>
-                <SelectItem value="critical">{t('criticalSeverity')}</SelectItem>
-                <SelectItem value="major">{t('majorSeverity')}</SelectItem>
-                <SelectItem value="minor">{t('minorSeverity')}</SelectItem>
-              </SelectContent>
-            </Select>
+            <NativeSelect
+              data-testid="select-severity"
+              value={severity || 'all'}
+              onValueChange={(val) => setSeverity(val === 'all' ? undefined : val)}
+            >
+              <option value="all">{t('allSeverities')}</option>
+              <option value="critical">{t('criticalSeverity')}</option>
+              <option value="major">{t('majorSeverity')}</option>
+              <option value="minor">{t('minorSeverity')}</option>
+            </NativeSelect>
           </div>
         </div>
 

@@ -4,11 +4,7 @@ import { asSeverity } from '@/lib/scheme-ui';
 import type { SchemeSummary } from '@workspace/api-client-react';
 import { FileText, AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import schemeHiRaw from '@/data/scheme-translations-hi.json';
-import namesHiRaw from '@/data/ministries-hi.json';
-
-const schemeHiMap = schemeHiRaw as Record<string, { nameHi?: string; descriptionHi?: string }>;
-const namesHi = namesHiRaw as Record<string, string>;
+import { useHiJson } from '@/lib/use-hi-json';
 
 interface SchemeCardProps {
   scheme: SchemeSummary;
@@ -17,6 +13,8 @@ interface SchemeCardProps {
 export function SchemeCard({ scheme }: SchemeCardProps) {
   const { t, i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
+  const schemeHiMap = useHiJson<Record<string, { nameHi?: string; descriptionHi?: string }>>('scheme-hi', () => import('@/data/scheme-translations-hi.json'), isHi) ?? {};
+  const namesHi = useHiJson<Record<string, string>>('ministries-hi', () => import('@/data/ministries-hi.json'), isHi) ?? {};
 
   return (
     <Link

@@ -6,24 +6,20 @@ import {
   ALL_STATES, ALL_YEARS, ALL_CATEGORIES, ALL_LEVELS,
   type CagReport, type ReportFinding, type ReportCategory, type ReportLevel, type ReportStat, type StatStatus,
 } from '@/data/cag-reports';
+import {
+  loadCagHiEntry,
+  loadCagHiIndex,
+  loadCagReport,
+  loadCagReportIndex,
+  type CagHiEntry,
+  type CagReportListItem,
+} from '@/lib/cag-catalog';
+import { useHiJson } from '@/lib/use-hi-json';
 
 // Total report count — hardcoded so the header shows immediately before data loads
 const TOTAL_REPORTS = 1808;
 import { Search, ExternalLink, Download, Filter, X, ChevronDown, ChevronUp, FileText } from 'lucide-react';
 import { PaginationBar } from '@/components/pagination-bar';
-import stateNamesHiRaw from '@/data/state-names-hi.json';
-const stateNamesHi = stateNamesHiRaw as Record<string, string>;
-import ministryNamesHiRaw from '@/data/ministry-names-hi.json';
-const ministryNamesHi = ministryNamesHiRaw as Record<string, string>;
-
-interface CagHiEntry {
-  titleHi?: string;
-  overviewHi?: string;
-  findingsHi?: string[];
-  statsLabelsHi?: string[];
-  statsValuesHi?: string[];
-  statsNotesHi?: (string | null)[];
-}
 
 // ── Helpers ───────────────────────────────────────────────────────
 
@@ -214,12 +210,35 @@ function FindingItem({ finding, pdfUrl, index, textHi }: { finding: ReportFindin
 
 // ── Report Card ───────────────────────────────────────────────────
 
-function ReportCard({ report, cagHiMap }: { report: CagReport; cagHiMap: Record<string, CagHiEntry> }) {
+function ReportCard({ report, cagHiMap }: { report: CagReportListItem; cagHiMap: Record<string, CagHiEntry> }) {
   const { t, i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
   const [expanded, setExpanded] = useState(false);
+  const [full, setFull] = useState<CagReport | null>(null);
+  const [hiDetail, setHiDetail] = useState<CagHiEntry>({});
   const sev = SEVERITY_STYLE[report.severity];
-  const hi = isHi ? (cagHiMap[report.id] ?? {}) : {};
+  const hi = { ...(cagHiMap[report.id] ?? {}), ...hiDetail };
+  const view = full ?? report;
+  const stateNamesHi = useHiJson<Record<string, string>>('state-names-hi', () => import('@/data/state-names-hi.json'), isHi) ?? {};
+  const ministryNamesHi = useHiJson<Record<string, string>>('ministry-names-hi', () => import('@/data/ministry-names-hi.json'), isHi) ?? {};
+
+  useEffect(() => {
+    if (!expanded || full) return;
+    let cancelled = false;
+    loadCagReport(report.id).then((data) => {
+      if (!cancelled) setFull(data);
+    }).catch(() => {});
+    return () => { cancelled = true; };
+  }, [expanded, full, report.id]);
+
+  useEffect(() => {
+    if (!expanded || !isHi) return;
+    let cancelled = false;
+    loadCagHiEntry(report.id).then((data) => {
+      if (!cancelled) setHiDetail(data);
+    }).catch(() => {});
+    return () => { cancelled = true; };
+  }, [expanded, isHi, report.id]);
 
   return (
     <div className="rounded-xl border border-border bg-card flex flex-col">
@@ -227,8 +246,8 @@ function ReportCard({ report, cagHiMap }: { report: CagReport; cagHiMap: Record<
       <div className="px-5 pt-4 pb-3">
         {/* Badges row */}
         <div className="flex flex-wrap gap-1.5 mb-3">
-          <Badge className={LEVEL_STYLE[report.level]}>{isHi ? (LEVEL_HI[report.level] ?? report.level) : report.level}</Badge>
-          <Badge className={CATEGORY_COLOR[report.category]}>{isHi ? (CATEGORY_HI[report.category] ?? report.category) : report.category}</Badge>
+          <Badge className={LEVEL_STYLE[view.level]}>{isHi ? (LEVEL_HI[view.level] ?? view.level) : view.level}</Badge>
+          <Badge className={CATEGORY_COLOR[view.category]}>{isHi ? (CATEGORY_HI[view.category] ?? view.category) : view.category}</Badge>
           <span className={`flex items-center gap-1 text-xs font-medium ${sev.badge}`}>
             <span className={`w-1.5 h-1.5 rounded-full ${sev.dot}`} />
             {isHi ? (SEVERITY_HI[report.severity] ?? sev.label) : sev.label} {t('severitySuffix')}
@@ -261,7 +280,7 @@ function ReportCard({ report, cagHiMap }: { report: CagReport; cagHiMap: Record<
         {/* Stats + Findings — visible when expanded */}
         {expanded && (
           <>
-            {report.stats && report.stats.length > 0 && (
+            {view.stats && view.stats.length > 0 && (
               <div className="mt-4">
                 <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
                   {t('keyMetrics')}
@@ -270,11 +289,11 @@ function ReportCard({ report, cagHiMap }: { report: CagReport; cagHiMap: Record<
                   </span>
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  {report.stats.map((s, i) => (
+                  {view.stats.map((s, i) => (
                     <StatCard
                       key={i}
                       stat={s}
-                      pdfUrl={report.url}
+                      pdfUrl={view.url}
                       labelHi={hi.statsLabelsHi?.[i]}
                       valueHi={hi.statsValuesHi?.[i]}
                       noteHi={hi.statsNotesHi?.[i]}
@@ -284,7 +303,7 @@ function ReportCard({ report, cagHiMap }: { report: CagReport; cagHiMap: Record<
               </div>
             )}
 
-            {report.keyFindings && report.keyFindings.length > 0 && (
+            {view.keyFindings && view.keyFindings.length > 0 && (
               <div className="mt-5">
                 <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
                   {t('keyFindings')}
@@ -293,11 +312,11 @@ function ReportCard({ report, cagHiMap }: { report: CagReport; cagHiMap: Record<
                   </span>
                 </p>
                 <ol className="flex flex-col gap-3">
-                  {report.keyFindings.map((f, i) => (
+                  {view.keyFindings.map((f, i) => (
                     <FindingItem
                       key={i}
                       finding={f}
-                      pdfUrl={report.url}
+                      pdfUrl={view.url}
                       index={i}
                       textHi={hi.findingsHi?.[i]}
                     />
@@ -423,25 +442,17 @@ export default function Reports() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [page, setPage]           = useState(1);
 
-  // Lazy-load the 9.2 MB report data — keeps it out of the initial JS bundle
-  const [reports, setReports] = useState<CagReport[] | null>(null);
+  const [reports, setReports] = useState<CagReportListItem[] | null>(null);
   useEffect(() => {
-    import('@/data/cag-reports-data.json').then(m => {
-      setReports(m.default as unknown as CagReport[]);
-    });
+    loadCagReportIndex().then(setReports).catch(() => setReports([]));
   }, []);
 
-  // Lazy-load the 8.5 MB Hindi translations only when language is Hindi
-  const [cagHiMap, setCagHiMap]   = useState<Record<string, CagHiEntry>>({});
+  const [cagHiMap, setCagHiMap] = useState<Record<string, CagHiEntry>>({});
   useEffect(() => {
-    if (isHi) {
-      import('@/data/cag-reports-hi.json').then(m => {
-        setCagHiMap(m.default as unknown as Record<string, CagHiEntry>);
-      }).catch(() => {
-        // Non-fatal: Hindi translations unavailable, fall back to English
-      });
-    }
+    if (!isHi) return;
+    loadCagHiIndex().then(setCagHiMap).catch(() => {});
   }, [isHi]);
+  const stateNamesHi = useHiJson<Record<string, string>>('state-names-hi', () => import('@/data/state-names-hi.json'), isHi) ?? {};
 
   const filtered = useMemo(() => {
     setPage(1);

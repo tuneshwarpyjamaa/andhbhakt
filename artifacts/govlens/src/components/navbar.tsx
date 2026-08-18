@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import { Search, BarChart3, Menu, X, FileText, BookOpen, Flag, IndianRupee, Globe, Github } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { setAppLanguage } from '@/i18n';
 
 function isNavActive(href: string, location: string) {
   if (href === '/') {
@@ -118,7 +119,7 @@ export function Navbar() {
             <select
               id="lang-select"
               value={i18n.language.startsWith('hi') ? 'hi' : 'en'}
-              onChange={(e) => i18n.changeLanguage(e.target.value)}
+              onChange={(e) => { void setAppLanguage(e.target.value); }}
               className="bg-transparent border-none outline-none text-sm font-medium cursor-pointer text-muted-foreground hover:text-foreground appearance-none pr-0.5 focus-visible:ring-2 focus-visible:ring-ring rounded"
               aria-label={t('langSelectLabel')}
             >

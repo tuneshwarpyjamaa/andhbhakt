@@ -2,15 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { computeIntegrityScore } from '@/lib/scoring';
 import { SEO } from '@/components/seo';
-import officialTitlesHiRaw from '../data/official-titles-hi.json';
-const officialTitlesHi = officialTitlesHiRaw as Record<string, string>;
-import statLabelsHiRaw from '../data/stat-labels-hi.json';
-import stateNamesHiRaw from '../data/state-names-hi.json';
-const stateNamesHi = stateNamesHiRaw as Record<string, string>;
-const statLabelsHi = statLabelsHiRaw as Record<string, string>;
-import personNamesHiRaw from '../data/person-names-hi.json';
-const namesHi = personNamesHiRaw as Record<string, string>;
-import { STATE_FACTS } from '../data/state-facts-data';
+import { loadStateFact, loadStateFactIndex, type StateFactIndexItem } from '@/lib/state-facts-catalog';
 import type {
   Official,
   OfficialGroup,
@@ -41,6 +33,10 @@ const sfHiParam:     Record<string, string> = {};
 const sfHiActual:    Record<string, string> = {};
 const sfHiRef:       Record<string, string> = {};
 const sfHiSchemeName: Record<string, string> = {};
+const officialTitlesHi: Record<string, string> = {};
+const statLabelsHi: Record<string, string> = {};
+const stateNamesHi: Record<string, string> = {};
+const namesHi: Record<string, string> = {};
 
 let _hiLoaded  = false;
 let _hiLoading = false;
@@ -52,7 +48,11 @@ function _loadHiMaps() {
   Promise.all([
     import('../data/state-facts-hi.json'),
     import('../data/state-facts-hi-extra.json'),
-  ]).then(([rawMod, extraMod]) => {
+    import('../data/official-titles-hi.json'),
+    import('../data/stat-labels-hi.json'),
+    import('../data/person-names-hi.json'),
+    import('../data/state-names-hi.json'),
+  ]).then(([rawMod, extraMod, titlesMod, labelsMod, namesMod, statesMod]) => {
     const r = rawMod.default as any;
     const x = extraMod.default as any;
     Object.assign(sfHiHeadlines,   r.headlineMap    ?? {});
@@ -67,6 +67,10 @@ function _loadHiMaps() {
     Object.assign(sfHiActual,      x.actualMap      ?? {});
     Object.assign(sfHiRef,         x.refMap         ?? {});
     Object.assign(sfHiSchemeName,  x.schemeNameMap  ?? {});
+    Object.assign(officialTitlesHi, titlesMod.default as Record<string, string>);
+    Object.assign(statLabelsHi, labelsMod.default as Record<string, string>);
+    Object.assign(namesHi, namesMod.default as Record<string, string>);
+    Object.assign(stateNamesHi, statesMod.default as Record<string, string>);
     _hiLoaded  = true;
     _hiLoading = false;
     _hiListeners.forEach(cb => cb());
@@ -140,7 +144,10 @@ import {
   HeartPulse,
   ShieldCheck,
   Leaf,
+  Eye,
+  Scale,
   FileSearch,
+  type LucideIcon,
   ExternalLink,
   RefreshCw,
   X,
@@ -148,6 +155,15 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
+
+const FACT_ICONS: Record<string, LucideIcon> = {
+  Eye, ShieldCheck, Scale, TrendingUp, GraduationCap, Briefcase, HeartPulse, Leaf,
+};
+
+function factIcon(name: string | LucideIcon): LucideIcon {
+  if (typeof name === 'function') return name;
+  return FACT_ICONS[String(name)] ?? Eye;
+}
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -403,7 +419,7 @@ function AccountabilitySection({
           const R = 28;
           const C = 2 * Math.PI * R;
           const filled = (r.score / 100) * C;
-          const Icon = r.icon;
+          const Icon = factIcon(r.icon);
           const selected = activeRating === r.key;
 
           return (
@@ -547,7 +563,7 @@ function IndicatorDetail({ indicator }: { indicator: Indicator }) {
   const { t, i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
   const { ring, text, bg } = scoreColor(indicator.score);
-  const Icon = indicator.icon;
+  const Icon = factIcon(indicator.icon);
 
   return (
     <div className={`rounded-xl border border-border ${bg} p-5 mt-2`}>
@@ -1286,7 +1302,7 @@ function StateFactCard({ fact }: { fact: StateFact }) {
             <ScoreRing
               key={ind.key}
               score={ind.score}
-              icon={ind.icon}
+              icon={factIcon(ind.icon)}
               label={ind.label}
               selected={activeIndicator === ind.key}
               onClick={() => handleRingClick(ind.key)}
@@ -1316,12 +1332,35 @@ export default function StateFacts() {
   const { t, i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
   const hiReady = useHiReady(isHi);
+  const [index, setIndex] = useState<StateFactIndexItem[]>([]);
   const [selectedCode, setSelectedCode] = useState(() => {
     const params = new URLSearchParams(window.location.search);
-    const code = params.get('state')?.toUpperCase();
-    return STATE_FACTS.find(f => f.stateCode === code)?.stateCode ?? STATE_FACTS[0].stateCode;
+    return params.get('state')?.toUpperCase() ?? '';
   });
-  const selectedFact = STATE_FACTS.find((f) => f.stateCode === selectedCode) ?? STATE_FACTS[0];
+  const [selectedFact, setSelectedFact] = useState<StateFact | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadStateFactIndex().then((rows) => {
+      if (cancelled) return;
+      setIndex(rows);
+      setSelectedCode((prev) => {
+        if (prev && rows.some((r) => r.stateCode === prev)) return prev;
+        return rows[0]?.stateCode ?? '';
+      });
+    }).catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    if (!selectedCode) return;
+    let cancelled = false;
+    setSelectedFact(null);
+    loadStateFact(selectedCode).then((fact) => {
+      if (!cancelled) setSelectedFact(fact);
+    }).catch(() => {});
+    return () => { cancelled = true; };
+  }, [selectedCode]);
 
   return (
     <PageShell>
@@ -1361,7 +1400,7 @@ export default function StateFacts() {
                   onChange={(e) => setSelectedCode(e.target.value)}
                   className="appearance-none w-full pl-3 pr-9 py-2 border border-border bg-background text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer"
                 >
-                  {STATE_FACTS.map((fact) => (
+                  {index.map((fact) => (
                     <option key={fact.stateCode} value={fact.stateCode}>
                       {fact.stateCode} — {isHi ? (stateNamesHi[fact.name] ?? fact.name) : fact.name}
                     </option>
@@ -1371,7 +1410,7 @@ export default function StateFacts() {
               </div>
             </div>
             <nav className="hidden lg:flex flex-col pb-2">
-              {STATE_FACTS.map((fact) => {
+              {index.map((fact) => {
                 const active = fact.stateCode === selectedCode;
                 return (
                   <button
@@ -1391,7 +1430,14 @@ export default function StateFacts() {
               })}
             </nav>
           </aside>
-          <StateFactCard key={selectedFact.stateCode} fact={selectedFact} />
+          {selectedFact ? (
+            <StateFactCard key={selectedFact.stateCode} fact={selectedFact} />
+          ) : (
+            <div className="panel min-h-[40vh] flex items-center justify-center" role="status" aria-live="polite">
+              <div className="w-6 h-6 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+              <span className="sr-only">{t('loading')}</span>
+            </div>
+          )}
         </div>
 
       </div>

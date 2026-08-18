@@ -2,13 +2,8 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'wouter';
 import { SEO, schemeJsonLd } from '@/components/seo';
-import schemeHiRaw from '../data/scheme-translations-hi.json';
-import schemeDetailHiRaw from '../data/scheme-detail-hi.json';
-import pibUnitsHiRaw from '../data/pib-units-hi.json';
-import ministriesHiRaw from '../data/ministries-hi.json';
-const pibUnitsHi = pibUnitsHiRaw as Record<string, string>;
-const ministriesHi = ministriesHiRaw as Record<string, string>;
-import { useGetScheme, useGetSchemeVerdict, useListPibEntries, useListCagAudits, getGetSchemeQueryKey, getGetSchemeVerdictQueryKey, getListPibEntriesQueryKey, getListCagAuditsQueryKey } from '@workspace/api-client-react';
+import { useHiJson } from '@/lib/use-hi-json';
+import { useGetScheme, useGetSchemeVerdict, useListPibEntries, useListCagAudits, getGetSchemeQueryKey, getGetSchemeVerdictQueryKey, getListPibEntriesQueryKey, getListCagAuditsQueryKey, type CAGAudit, type PIBEntry } from '@workspace/api-client-react';
 import { PageShell } from '@/components/page-shell';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { ScoreGauge } from '@/components/score-gauge';
@@ -18,16 +13,16 @@ import { ClaimsVsEvidence, type SchemeClaim, type SchemeFinding } from '@/compon
 import { ClaimsTimeline } from '@/components/claims-timeline';
 import { EmptyState, LoadingState } from '@/components/list-states';
 import { asArray } from '@/lib/utils';
-import { getStaticSchemeDetail } from '@/lib/static-catalog';
+import { getStaticSchemeDetail } from '@/lib/static-scheme-details';
 import { asClaimType, asSeverity } from '@/lib/scheme-ui';
 import { Calendar, Flag, IndianRupee, Landmark, Target, Users } from 'lucide-react';
 import { Link } from 'wouter';
 
-const schemeHi: Record<string, { nameHi?: string; descriptionHi?: string; goalsHi?: string }> = schemeHiRaw as any;
-const _sdHi = schemeDetailHiRaw as any;
-const cagHiMap: Record<string, { parameterHi?: string; findingHi?: string; reportExcerptHi?: string; claimedHi?: string; actualHi?: string; unitHi?: string }> = _sdHi.cagMap;
-const verdictHiMap: Record<string, string> = _sdHi.verdictMap;
-const pibHiMap: Record<string, { headlineHi?: string; summaryHi?: string }> = _sdHi.pibMap;
+type SchemeDetailHi = {
+  cagMap?: Record<string, { parameterHi?: string; findingHi?: string; reportExcerptHi?: string; claimedHi?: string; actualHi?: string; unitHi?: string }>;
+  verdictMap?: Record<string, string>;
+  pibMap?: Record<string, { headlineHi?: string; summaryHi?: string }>;
+};
 
 /** Stable lookup key: first 120 chars lowercased — matches the key format in scheme-detail-hi.json */
 function contentKey(text: string | null | undefined): string {
@@ -58,10 +53,17 @@ export default function SchemeDetail() {
 
   const scheme = liveScheme ?? staticDetail?.scheme;
   const verdict = liveVerdict ?? staticDetail?.verdict;
-  const pibEntries = asArray(pibEntriesData).length > 0 ? asArray(pibEntriesData) : (staticDetail?.pib ?? []);
-  const cagAudits = asArray(cagAuditsData).length > 0 ? asArray(cagAuditsData) : (staticDetail?.cag ?? []);
+  const pibEntries = asArray<PIBEntry>(pibEntriesData).length > 0 ? asArray<PIBEntry>(pibEntriesData) : (staticDetail?.pib ?? []);
+  const cagAudits = asArray<CAGAudit>(cagAuditsData).length > 0 ? asArray<CAGAudit>(cagAuditsData) : (staticDetail?.cag ?? []);
 
   const isHi = i18n.language === 'hi';
+  const schemeHi = useHiJson<Record<string, { nameHi?: string; descriptionHi?: string; goalsHi?: string }>>('scheme-hi', () => import('@/data/scheme-translations-hi.json'), isHi) ?? {};
+  const sdHi = useHiJson<SchemeDetailHi>('scheme-detail-hi', () => import('@/data/scheme-detail-hi.json'), isHi);
+  const pibUnitsHi = useHiJson<Record<string, string>>('pib-units-hi', () => import('@/data/pib-units-hi.json'), isHi) ?? {};
+  const ministriesHi = useHiJson<Record<string, string>>('ministries-hi', () => import('@/data/ministries-hi.json'), isHi) ?? {};
+  const cagHiMap = sdHi?.cagMap ?? {};
+  const verdictHiMap = sdHi?.verdictMap ?? {};
+  const pibHiMap = sdHi?.pibMap ?? {};
   const schemeName = scheme ? (isHi ? (schemeHi[slug]?.nameHi ?? scheme.name) : scheme.name) : '';
 
   const claims: SchemeClaim[] = useMemo(() => pibEntries.map((entry) => ({
@@ -73,7 +75,7 @@ export default function SchemeDetail() {
     figure: entry.figure,
     figureUnit: isHi ? (pibUnitsHi[entry.figureUnit ?? ''] ?? entry.figureUnit) : entry.figureUnit,
     sourceUrl: entry.sourceUrl,
-  })), [pibEntries, isHi]);
+  })), [pibEntries, isHi, pibHiMap, pibUnitsHi]);
 
   const findings: SchemeFinding[] = useMemo(() => cagAudits.map((audit) => {
     const hi = cagHiMap[contentKey(audit.parameter)] ?? {};
@@ -91,7 +93,7 @@ export default function SchemeDetail() {
       gapPercent: audit.gapPercent,
       sourceUrl: audit.sourceUrl,
     };
-  }), [cagAudits, isHi]);
+  }), [cagAudits, isHi, cagHiMap]);
 
   const stats = useMemo(() => {
     if (!scheme) return [];

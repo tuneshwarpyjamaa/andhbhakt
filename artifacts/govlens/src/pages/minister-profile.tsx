@@ -23,15 +23,8 @@ function hiDate(date: string): string {
     m => MONTHS_HI[m] ?? m);
 }
 import type { CagReport } from '@/data/cag-reports';
-import ministryNamesHiRaw from '@/data/ministry-names-hi.json';
-import officialTitlesHiRaw from '@/data/official-titles-hi.json';
-import ministerBioHiRaw from '@/data/minister-bio-hi.json';
-import personNamesHiRaw from '@/data/person-names-hi.json';
-const namesHi = personNamesHiRaw as Record<string, string>;
-
-const ministryNamesHi = ministryNamesHiRaw as Record<string, string>;
-const ministerBioHi = ministerBioHiRaw as Record<string, string>;
-const officialTitlesHi = officialTitlesHiRaw as Record<string, string>;
+import { loadCagHiEntry, loadCagReportsByIds } from '@/lib/cag-catalog';
+import { useHiJson } from '@/lib/use-hi-json';
 
 const MINISTER_ROLE_HI: Record<string, string> = {
   'Prime Minister': 'प्रधानमंत्री',
@@ -160,26 +153,42 @@ export default function MinisterProfilePage() {
   const { t, i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
 
-  // Lazy-load the 9.2 MB report data
-  const [allReports, setAllReports] = useState<CagReport[] | null>(null);
-  useEffect(() => {
-    import('@/data/cag-reports-data.json').then(m => {
-      setAllReports(m.default as unknown as CagReport[]);
-    });
-  }, []);
-
-  // Lazy-load the 8.5 MB Hindi translations only when language is Hindi
-  const [cagHi, setCagHi] = useState<Record<string, { titleHi?: string; overviewHi?: string; findingsHi?: string[] }>>({});
-  useEffect(() => {
-    if (isHi) {
-      import('@/data/cag-reports-hi.json').then(m => {
-        setCagHi(m.default as unknown as Record<string, { titleHi?: string; overviewHi?: string; findingsHi?: string[] }>);
-      });
-    }
-  }, [isHi]);
-
   const params = useParams<{ slug: string }>();
   const minister = findMinisterBySlug(params.slug ?? '');
+  const namesHi = useHiJson<Record<string, string>>('person-names-hi', () => import('@/data/person-names-hi.json'), isHi) ?? {};
+  const ministryNamesHi = useHiJson<Record<string, string>>('ministry-names-hi', () => import('@/data/ministry-names-hi.json'), isHi) ?? {};
+  const officialTitlesHi = useHiJson<Record<string, string>>('official-titles-hi', () => import('@/data/official-titles-hi.json'), isHi) ?? {};
+  const ministerBioHi = useHiJson<Record<string, string>>('minister-bio-hi', () => import('@/data/minister-bio-hi.json'), isHi) ?? {};
+
+  const reportIds = minister?.cagReportIds ?? [];
+  const [cagReports, setCagReports] = useState<CagReport[]>([]);
+  const [cagHi, setCagHi] = useState<Record<string, { titleHi?: string; overviewHi?: string; findingsHi?: string[] }>>({});
+
+  useEffect(() => {
+    if (!reportIds.length) {
+      setCagReports([]);
+      return;
+    }
+    let cancelled = false;
+    loadCagReportsByIds(reportIds).then((rows) => {
+      if (!cancelled) setCagReports(rows);
+    }).catch(() => {
+      if (!cancelled) setCagReports([]);
+    });
+    return () => { cancelled = true; };
+  }, [reportIds.join('|')]);
+
+  useEffect(() => {
+    if (!isHi || !reportIds.length) return;
+    let cancelled = false;
+    Promise.all(reportIds.map(async (id) => [id, await loadCagHiEntry(id)] as const)).then((entries) => {
+      if (cancelled) return;
+      const next: Record<string, { titleHi?: string; overviewHi?: string; findingsHi?: string[] }> = {};
+      for (const [id, entry] of entries) next[id] = entry;
+      setCagHi(next);
+    }).catch(() => {});
+    return () => { cancelled = true; };
+  }, [isHi, reportIds.join('|')]);
   const { data: wiki, loading: wikiLoading } = useWikiSummary(minister?.wikiTitle, isHi ? 'hi' : 'en');
 
   if (!minister) return <NotFound />;
@@ -195,11 +204,6 @@ export default function MinisterProfilePage() {
   const educationColor = scoreColor(minister.educationScore);
   const wikiUrl = wiki?.content_urls?.desktop?.page
     ?? (minister.wikiTitle ? `https://en.wikipedia.org/wiki/${encodeURIComponent(minister.wikiTitle)}` : undefined);
-
-  // CAG reports linked to this minister's department(s) — populated once data lazy-loads
-  const cagReports: CagReport[] = minister.cagReportIds && allReports
-    ? allReports.filter(r => minister.cagReportIds!.includes(r.id))
-    : [];
 
   // Photo: prefer Wikipedia thumbnail, else placeholder initials
   const photoUrl = wiki?.thumbnail?.source;

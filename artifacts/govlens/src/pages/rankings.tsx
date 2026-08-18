@@ -5,8 +5,7 @@ import { STATE_FACT_SCORES, type StateFactScoreRow } from '@/data/state-facts-sc
 import { Link } from 'wouter';
 import { TrendingUp, GraduationCap, Briefcase, HeartPulse, ShieldCheck, Leaf, Eye, Scale, Users, ChevronUp, ChevronDown as ChevronDownIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import stateNamesHiRaw from '@/data/state-names-hi.json';
-const stateNamesHi = stateNamesHiRaw as Record<string, string>;
+import { useHiJson } from '@/lib/use-hi-json';
 
 // ─── Category config ──────────────────────────────────────────────────────────
 
@@ -62,6 +61,7 @@ const REGION_KEY: Record<string, string> = {
 export default function Rankings() {
   const { t, i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
+  const stateNamesHi = useHiJson<Record<string, string>>('state-names-hi', () => import('@/data/state-names-hi.json'), isHi) ?? {};
   const [activeKey, setActiveKey] = useState<CategoryKey>('governance');
 
   const [sortAsc, setSortAsc] = useState(false);

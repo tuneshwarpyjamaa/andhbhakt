@@ -1,15 +1,3 @@
-import React from 'react';
-import {
-  Briefcase,
-  Eye,
-  GraduationCap,
-  HeartPulse,
-  Leaf,
-  Scale,
-  ShieldCheck,
-  TrendingUp,
-} from 'lucide-react';
-
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface Official {
@@ -45,7 +33,7 @@ export interface Indicator {
   key: string;
   label: string;
   score: number; // 0–100
-  icon: React.ElementType;
+  icon: string;
   headline: string;
   headlineHi?: string;      // Hindi translation of headline
   stats: IndicatorStat[];
@@ -70,7 +58,7 @@ export interface AccountabilityRating {
   key: string;
   label: string;
   score: number;            // 0–100
-  icon: React.ElementType;
+  icon: string;
   methodology: string;      // brief plain-language note
 }
 
@@ -437,21 +425,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: 'Transparency',
         score: 42,
-        icon: Eye,
+        icon: 'Eye',
         methodology: 'Based on 7 AR-specific CAG findings across 2022–2025 (2 critical, 4 major, 1 minor). Critical findings: ₹127.68 crore BOCW cess withheld by State Government; health budget consistently below NHP 2017 minimum across all 7 audit years (4.1–6.62%). Major findings: COVID health funds 58.7% unspent with ₹34.93 crore equipment/consumables lying idle; 4 of 6 SPSEs in loss with 39 accounts 1–9 years overdue; SBM Urban DPR gaps; DDUGJY/Saubhagya multi-dimension implementation failures.',
       },
       {
         key: 'officialsIntegrity',
         label: 'Officials\' Integrity',
         score: 79,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: '12 of 13 elected officials declared 0 criminal cases in 2024 ECI affidavits (weighted integrity score 97/100). Adjusted down 18 points for 2 critical CAG findings (BOCW cess diversion, chronic health underinvestment) and 3 major findings indicating systematic fund management weaknesses — suggesting institutional rather than individual failure, but still reflecting on governance oversight.',
       },
       {
         key: 'governance',
         label: 'Governance',
         score: 61,
-        icon: Scale,
+        icon: 'Scale',
         methodology: 'Composite of state development indicators avg (62.8/100) × 50% + Transparency (42/100) × 25% + Officials\' Integrity (79/100) × 25% = 61.65 → 61. Downgraded from earlier estimate as expanded 2025 audit coverage revealed 2 critical findings previously untracked. Clean leadership but deep implementation gaps — particularly in health, welfare funds, and enterprise accountability.',
       },
     ],
@@ -461,7 +449,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: 'Economy',
         score: 65,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: 'Per capita above national average; small but fast-growing economy',
         stats: [
           { label: 'Per Capita GSDP (2026-27 Adv. Est.)', value: '₹2,98,766', note: 'Above national avg (~₹2,00,000); ranks 16th at PPP', source: 'MoSPI National Accounts Statistics 2026-27 Advance Estimates (via Wikipedia infobox citing CSO)' },
@@ -478,7 +466,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: 'Education',
         score: 58,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: '84% literacy — strong progress, but access and quality gaps remain',
         stats: [
           { label: 'Literacy Rate (2023-24)', value: '84.2% (rank 21st)', note: 'Up sharply from 66.95% in 2011 Census; male 88.8%, female 79.8%; gender gap narrowing', source: 'PLFS Annual Report July 2023 – June 2024, MoSPI (Table 7, Appendix-A)' },
@@ -495,7 +483,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: 'Employment',
         score: 56,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: 'Govt-dependent formal jobs; private sector very thin',
         stats: [
           { label: 'Unemployment Rate (est.)', value: '~6%', note: 'Above national avg of 4.9%; estimate based on PLFS NE state trends — AR-specific PLFS sub-state data not separately published', source: 'PLFS 2023-24 Annual Report, MoSPI (NE state group estimate)' },
@@ -512,7 +500,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: 'Health',
         score: 58,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: 'IMR better than national avg; MMR and remote access remain critical gaps',
         stats: [
           { label: 'IMR (SRS 2020-22, est.)', value: '~22 per 1,000', note: 'Better than national avg of 28; consistent with NFHS-5 under-5 mortality trend in AR', source: 'SRS Bulletin 2020-22 (est.); NFHS-5 Arunachal Pradesh factsheet 2019-21' },
@@ -529,7 +517,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: 'Safety',
         score: 66,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: 'Low crime density; rising drug trafficking on Myanmar border',
         stats: [
           { label: 'Total Cognizable Crimes per lakh (est.)', value: '~180–200', note: 'Low absolute numbers due to sparse population (17/sq km); exact 2022 NCRB state table unavailable in public HTML', source: 'NCRB Crime in India 2022 (state table; exact figure pending official PDF access)' },
@@ -546,7 +534,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: 'Environment',
         score: 74,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: 'India\'s richest forest state; deforestation trend and dam impacts are key risks',
         stats: [
           {
@@ -1316,21 +1304,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: 'Transparency',
         score: 32,
-        icon: Eye,
+        icon: 'Eye',
         methodology: 'Based on 8 UP-specific CAG findings (6 critical, 2 major) across 2024–2025. Critical: 11.35 lakh PMAY-G eligible households excluded; ₹2,002.61 crore DDUGJY grants permanently lost; AYUSH ₹1,728 crore surrendered annually for 5 years; SPSE accumulated losses ₹37,979 crore exceed capital; Saryu Nahar 33× cost overrun with 80% CCA undelivered; SBM Urban zero source-segregation and fund-release delays up to 1,098 days.',
       },
       {
         key: 'officialsIntegrity',
         label: 'Officials\' Integrity',
         score: 48,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: 'CM declared 9 criminal cases in 2022 ECI affidavit. Across 12 tracked elected officials: weighted affidavit integrity avg 68/100 (Yogi 9 cases/5 serious → 10, Swatantra Dev 7 cases/3 serious → 10, Nand Gopal 7 cases/7 serious → 10, Yogendra Upadhyaya 4 cases/3 serious → 36, Keshav Maurya 3 cases/3 serious → 46; 7 officials 0 cases → 100). Adjusted down 20 points for 6 critical CAG findings spanning housing, electrification, AYUSH, SPSE, irrigation and waste management.',
       },
       {
         key: 'governance',
         label: 'Governance',
         score: 39,
-        icon: Scale,
+        icon: 'Scale',
         methodology: 'Composite: state development indicators avg (37.5/100) × 50% + Transparency (32/100) × 25% + Officials\' Integrity (48/100) × 25% = 38.75 → 39. UP has India\'s highest absolute crime volume, lowest-tier per-capita income, and the highest count of critical CAG findings among tracked states — compounding what should otherwise be a large-state delivery advantage.',
       },
     ],
@@ -1340,7 +1328,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: 'Economy',
         score: 42,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: '2nd largest GSDP but lowest-tier per-capita income — a tale of two UPs',
         stats: [
           { label: 'GSDP (2024-25)', value: '₹26.41 lakh crore', note: '2nd largest state economy nationally; but driven by sheer population size of 241 million', source: 'MoSPI National Accounts Statistics 2024-25' },
@@ -1357,7 +1345,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: 'Education',
         score: 42,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: '67.7% literacy — persistent gap despite Samagra Shiksha spending',
         stats: [
           { label: 'Literacy Rate (PLFS 2023-24 est.)', value: '~73%', note: 'Census 2011 was 67.7% (rank 35th); PLFS estimates suggest ~73% by 2023-24 but gender gap persists — male 79%, female 59% (2011)', source: 'Census 2011; PLFS Annual Report 2023-24 (state estimates)' },
@@ -1374,7 +1362,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: 'Employment',
         score: 45,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: 'Large labour force but dominated by informal, low-wage agriculture',
         stats: [
           { label: 'Unemployment Rate (PLFS 2023-24)', value: '4.6%', note: 'Moderate rate; however disguised unemployment in agriculture is very high — many are "employed" but underutilised', source: 'PLFS Annual Report July 2023 – June 2024, MoSPI' },
@@ -1390,7 +1378,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: 'Health',
         score: 36,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: 'IMR 38, MMR 167 — persistent gap vs national averages',
         stats: [
           { label: 'Infant Mortality Rate (SRS 2022)', value: '38 per 1,000 live births', note: 'vs national avg 28; UP accounts for ~17% of India\'s infant deaths; improvement from 47 in 2017 but still poor', source: 'Sample Registration System 2022, Registrar General of India' },
@@ -1407,7 +1395,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: 'Safety',
         score: 28,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: 'Highest absolute crime volume in India — 193.8 IPC cases per lakh',
         stats: [
           { label: 'IPC Crime Rate (NCRB 2022)', value: '193.8 per lakh population', note: 'UP accounts for ~10% of all IPC crimes in India — highest absolute count. Rate improved from 220 in 2020 but still high', source: 'NCRB Crime in India 2022, Table 1.1' },
@@ -1424,7 +1412,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: 'Environment',
         score: 32,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: 'Kanpur, Lucknow among world\'s most polluted cities — Ganga in crisis',
         stats: [
           { label: 'Air Quality (PM2.5, 2023)', value: 'Lucknow 98.7 μg/m³; Kanpur ~110 μg/m³', note: 'Both among top 10 most polluted cities globally (IQAir 2023); WHO safe limit is 5 μg/m³; 20× exceedance common in winter', source: 'IQAir World Air Quality Report 2023' },
@@ -2298,21 +2286,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 25,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `Based on 8 CAG findings reviewed for 2025-26: 7 critical and 1 major. Critical failures span disaster-response collapse (67–96% SDRF vacancies), ₹2,177 Cr idle mining welfare funds, 2.8× Yettinahole cost overrun, Smart City fund diversion, BOCW unauthorised expenditure, JJM FHTC validation failures, MGNREGS 2–4% entitlement delivery, and Sports Authority accountability gaps.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 79,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `11 unique elected officials with ECI affidavit data counted once each. CM Siddaramaiah: 13 cases/6 serious → 10; DCM D.K. Shivakumar: 19 cases/6 serious → 10; Speaker U.T. Khader: 3 cases/1 serious → 62; M.B. Patil: 1 case/0 serious → 90; remaining 7 officials (Priyank Kharge, G. Parameshwara, H.K. Patil, Dinesh Gundu Rao, Lakshmi Hebbalkar, N. Cheluvarayaswamy, H. Anjaneya) declared 0 cases → 100 each. Simple average: (10+10+62+90+100+100+100+100+100+100+100) ÷ 11 = 872 ÷ 11 = 79.3, rounded to 79.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 56,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (64/100) × 50% + Transparency (25/100) × 25% + Integrity (79/100) × 25% = 32 + 6.25 + 19.75 = 58; adjusted down to 56 to reflect the high concentration of critical-severity CAG failures (7 of 8 findings rated critical) spanning flagship welfare, water, rural employment and disaster-management schemes — a pattern of systemic implementation failure beyond what the indicator scores alone capture.`,
       },
     ],
@@ -2322,7 +2310,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 70,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ₹28.09 lakh crore — India's 3rd largest state economy; IT capital of the world`,
         stats: [
         {
@@ -2367,7 +2355,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 64,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 75.36% — above national avg; but learning outcomes and gender gap remain gaps`,
         stats: [
         {
@@ -2412,7 +2400,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 68,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Unemployment 2.7% (PLFS 2023-24) — low headline, but female LFPR and informal-sector quality remain concerns`,
         stats: [
         {
@@ -2451,7 +2439,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 66,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 15, MMR 69 — among India's better-performing states; but hidden malnutrition and JJM failures pose risks`,
         stats: [
         {
@@ -2496,7 +2484,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 54,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `~278 cognizable crimes per lakh (NCRB 2022); road accident fatalities a key concern`,
         stats: [
         {
@@ -2529,7 +2517,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 62,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Western Ghats biodiversity hotspot; mining belt degradation and recurring drought are key risks`,
         stats: [
         {
@@ -3100,21 +3088,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 38,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `Based on 5 CAG findings reviewed for 2025: 4 critical and 1 major. Critical failures span the Palghar tribal malnutrition crisis (52% child malnutrition despite ₹28,420 Cr spending), 72% of MSRDC bridges uninspected, Nagpur PPP ₹820 Cr penalty waiver, and MGNREGS 8.2% entitlement delivery. Higher score than KA (25) reflects 5 findings vs 8 and the absence of water-scheme FHTC-level systematic falsification, but lower than national expectation for India's wealthiest state.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 87,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials with ECI affidavit data counted once each. CM Fadnavis: 2 cases/2 serious → 64; DCM Shinde: 4 cases/2 serious → 44; DCM Sunetra Pawar: 0 cases → 100 (replaced Ajit Pawar who died in a plane crash on 28 Jan 2026; sworn in 31 Jan 2026); Radhakrishna Vikhe Patil: 1 case/1 serious → 82; Girish Mahajan: 1 case/1 serious → 82; Speaker Narvekar, Uday Samant, Chandrakant Patil, Aditi Tatkare, Sudhir Mungantiwar: 0 cases → 100 each. Average: (64+44+100+82+82+100+100+100+100+100) ÷ 10 = 872 ÷ 10 = 87.2, rounded to 87. Governor C.P. Radhakrishnan excluded (appointed position; no ECI affidavit).`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 60,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (63/100) × 50% + Transparency (38/100) × 25% + Integrity (87/100) × 25% = 31.5 + 9.5 + 21.75 = 62.75; adjusted down to 60 to reflect the Palghar tribal malnutrition crisis (52% child malnutrition within 100 km of India's financial capital represents a profound governance-equity failure) and the MSRDC bridge inspection collapse (72% of 2,840 bridges without current inspection — a life-safety risk on Maharashtra's highways).`,
       },
     ],
@@ -3124,7 +3112,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 74,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ₹42+ lakh crore — India's #1 state economy; Mumbai is the nation's financial capital`,
         stats: [
         {
@@ -3169,7 +3157,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 68,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 82.91% — well above national avg; but learning outcomes and Vidarbha-Mumbai divide are unresolved`,
         stats: [
         {
@@ -3214,7 +3202,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 62,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Unemployment 3.4% (PLFS 2023-24) — low headline but informal sector dominates; MGNREGS guaranteeing only 8.2% of entitled 100 days`,
         stats: [
         {
@@ -3253,7 +3241,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 65,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `MMR 33 — 2nd best in India; but tribal IMR 52 vs state avg 17 reveals a two-tier healthcare reality`,
         stats: [
         {
@@ -3298,7 +3286,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 57,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `~184 crimes per lakh (NCRB 2022) — below KA but high crimes against women; MSRDC bridge inspections a structural safety crisis`,
         stats: [
         {
@@ -3337,7 +3325,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 52,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Western Ghats UNESCO hotspot vs Marathwada drought crisis; Mumbai's coastal pollution is a national embarrassment`,
         stats: [
         {
@@ -3920,21 +3908,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 44,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings reviewed: 2 critical (DJB water and Samagra Shiksha infrastructure) and 2 major (NHM and PMAY-U). DJB's ₹73,800 Cr debt and 38% NRW losses — accumulated over successive administrations with inadequate public disclosure — drive the score down. The new BJP government (Feb 2025) inherits an infrastructure transparency deficit. Slightly above the prior AAP-era score reflects BJP's stated commitment to DJB reform. Delhi's RTI infrastructure is formally robust but DJB financial disclosures remain opaque.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 97,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `9 unique officials counted (LG excluded — appointed position). CM Rekha Gupta: 0 cases → 100; Speaker Vijender Gupta: 0 → 100; Parvesh Verma: 1 case/0 serious → 90; Ashish Sood: 0 → 100; Manjinder Singh Sirsa: 0 → 100; Kapil Mishra: 1 case/1 serious → 82; Ravindra Kumar Gupta: 0 → 100; Sanjay Goyal: 0 → 100; Kailash Gahlot: 0 → 100. Average: (100+100+90+100+100+82+100+100+100) ÷ 9 = 872 ÷ 9 = 96.9, rounded to 97. Delhi BJP cabinet formed Feb 2025 after BJP won 48/70 seats — clean criminal record profile overall.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 59,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (56/100) × 50% + Transparency (44/100) × 25% + Integrity (97/100) × 25% = 28 + 11 + 24.25 = 63.25; adjusted down to 59 to reflect: (1) Yamuna dead stretch — the 22 km Delhi stretch of the Yamuna carries 80% of the city's sewage despite ₹13,000+ crore spent on cleaning over 30 years — arguably India's most persistent civic failure; (2) air quality governance collapse — Delhi's AQI exceeds 200 on 100+ days per year with no enforcement mechanism capable of structural change; (3) 1,797 unauthorised colonies housing 40 lakh people without complete civic infrastructure.`,
       },
     ],
@@ -3944,7 +3932,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 74,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `Per-capita GSDP ~₹4.5 lakh — 2nd only to Goa; India's services, trade and administrative capital`,
         stats: [
         {
@@ -3983,7 +3971,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 76,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 88.7% — highest among large states; but 28% teacher vacancy and 34% of new classrooms structurally deficient undermine the infrastructure legacy`,
         stats: [
         {
@@ -4022,7 +4010,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 48,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Unemployment 8.2% (PLFS 2023-24) — one of India's highest urban rates; female LFPR only 13.6%`,
         stats: [
         {
@@ -4055,7 +4043,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 74,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 12 per 1,000 — among India's 3 lowest; but air pollution causes 30,000+ premature deaths annually`,
         stats: [
         {
@@ -4094,7 +4082,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 40,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `372 crimes per lakh (NCRB 2022) — highest among major state capitals; women's safety a persistent concern`,
         stats: [
         {
@@ -4127,7 +4115,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 24,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `India's most air-polluted capital; Yamuna biologically dead through Delhi; forest cover only 20.2 sq km of natural forest`,
         stats: [
         {
@@ -4614,21 +4602,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 41,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 2 critical (JJM 44% non-functional FHTCs and MGNREGS 89-day wage delays) and 2 major (PMAYG and NHM). Rajasthan's biennial change of government (Congress–BJP alternation since 1993) creates structural transparency discontinuity — each incoming government audits the previous one extensively while obscuring its own gaps. JJM FHTC certification without field verification is a data-integrity failure of the same severity as GJ's JJM crisis. Score marginally above BR/WB range given Rajasthan's relatively functional RTI regime.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 90,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). CM Bhajanlal Sharma: 0 → 100; Speaker Vasudev Devnani: 0 → 100; Diya Kumari: 0 → 100; Prem Chand Bairwa: 0 → 100; Kirodi Lal Meena: 4 cases/3 serious → 36; Suresh Singh Rawat: 0 → 100; Gajendra Singh Khimsar: 0 → 100; Madan Dilawar: 2 cases/2 serious → 64; Col. Rajyavardhan Rathore: 0 → 100; Otaram Dewasi: 0 → 100. Average: (100+100+100+100+36+100+100+64+100+100) ÷ 10 = 900 ÷ 10 = 90. Kirodi Lal Meena's 4+ cases pull the score significantly; the rest of the cabinet is clean.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 49,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (44/100) × 50% + Transparency (41/100) × 25% + Integrity (90/100) × 25% = 22 + 10.25 + 22.5 = 54.75; adjusted down to 49 to reflect: (1) India's worst per-capita water availability at 209 lpcd — well below the national norm of 55 lpcd and the Indian standard of 270 lpcd (IS 1172); (2) Aravalli forest encroachment continuing despite multiple Supreme Court orders; (3) chronic MGNREGS wage delays averaging 89 days in the world's most wage-delay-sensitive programme.`,
       },
     ],
@@ -4638,7 +4626,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 48,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹13 lakh crore; mining, tourism and agriculture — but per-capita below national avg and water scarcity threatens growth`,
         stats: [
         {
@@ -4677,7 +4665,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 46,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 69.7% — below national avg; female literacy 52.7% in rural districts; severe learning outcome deficits`,
         stats: [
         {
@@ -4716,7 +4704,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 44,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Agriculture-dependent economy with high rural unemployment; MGNREGS the primary safety net but 87.6% of 100-day entitlement undelivered`,
         stats: [
         {
@@ -4749,7 +4737,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 50,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 33 per 1,000 — above national avg; tribal belt IMR 46; women anaemia 58.3% among India's highest`,
         stats: [
         {
@@ -4788,7 +4776,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 36,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Rape rate 29.8 per lakh — 2nd highest; high child marriage; women's safety worst in western India`,
         stats: [
         {
@@ -4821,7 +4809,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 38,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Thar Desert covers 61% of area; Aravalli deforestation accelerating; India's worst per-capita water availability`,
         stats: [
         {
@@ -5431,21 +5419,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 28,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: all 4 critical — MGNREGS 3.2% guarantee delivery (worst in India), JJM 62% FHTC failure with arsenic risk, PMAYG systematic commission-skimming, NHM 57% ANM vacancy. Bihar's RTI compliance is among India's worst — district RTI forums report 60-70% requests going unanswered. The systematic Mukhiya commission-skimming in PMAYG ("near-universal at block level" per CAG) indicates that formal transparency mechanisms are captured at the implementation layer. Score is the 2nd lowest after WB (32), reflecting the depth of structural opacity in programme delivery.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 91,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). CM Nitish Kumar: 0 → 100; Speaker Nand Kishore Yadav: 0 → 100; Vijay Kumar Sinha: 1 case/0 serious → 90; Samrat Choudhary: 3 cases/1 serious → 62; Vijay Chaudhary: 2 cases/0 serious → 80; Bijendra Prasad Yadav: 1 case/0 serious → 90; Mangal Pandey: 0 → 100; Ashok Choudhary: 1 case/0 serious → 90; Shreyasi Singh: 0 → 100; Jivesh Kumar Mishra: 0 → 100. Average: (100+100+90+62+80+90+100+90+100+100) ÷ 10 = 912 ÷ 10 = 91.2, rounded to 91. The NDA coalition's mix of JD(U) and BJP ministers creates moderate case-count distribution; Samrat Choudhary's 3 cases and Vijay Chaudhary's 2 cases are the main drag.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 40,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (32/100) × 50% + Transparency (28/100) × 25% + Integrity (91/100) × 25% = 16 + 7 + 22.75 = 45.75; adjusted down to 40 to reflect: (1) Bihar's IMR of 42 per 1,000 — 2nd worst in India — in a state that has been governed continuously by NDA for 20 years, representing a governance failure of accumulation; (2) MGNREGS 3.2% guarantee — the worst in India — in the state most dependent on the scheme during lean agricultural months; (3) systemic flood-mismanagement: embankment maintenance failures on Kosi, Gandak and Bagmati rivers cause annual displacement of 10-20 lakh people, yet embankment maintenance budget is chronically under-spent.`,
       },
     ],
@@ -5455,7 +5443,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 24,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹8 lakh crore; per-capita ~₹60,000 — 2nd lowest in India; migration economy with 90 lakh seasonal workers abroad`,
         headlineHi: `GSDP लगभग ₹8 लाख करोड़; प्रति व्यक्ति आय ~₹60,000 — भारत में दूसरी सबसे कम; 90 लाख मौसमी प्रवासी श्रमिकों के साथ प्रेषण-आधारित अर्थव्यवस्था`,
         stats: [
@@ -5500,7 +5488,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 36,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 70.9%; ASER reading outcomes among India's worst; 72,000+ single-teacher schools; massive teacher vacancy`,
         headlineHi: `साक्षरता दर 70.9%; ASER पठन परिणाम भारत में सबसे खराब में से; 34,000+ एकल-शिक्षक विद्यालय; भारी शिक्षक रिक्तियाँ`,
         stats: [
@@ -5545,7 +5533,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 28,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `~90 lakh seasonal migrants; MGNREGS 100-day guarantee met for only 3.2% of households; rural unemployment ~12% in lean months`,
         headlineHi: `~90 लाख मौसमी प्रवासी; MGNREGS 100-दिन की गारंटी केवल 3.2% परिवारों को मिली; कम कृषि महीनों में ग्रामीण बेरोजगारी ~12%`,
         stats: [
@@ -5583,7 +5571,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 26,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 42 per 1,000 — 2nd worst in India; stunting 42.9% — highest large state; AES kills children annually in Muzaffarpur`,
         headlineHi: `IMR 42 प्रति 1,000 — भारत में दूसरा सबसे खराब; बच्चों में ठिगनापन 42.9% — बड़े राज्यों में सबसे अधिक; AES Muzaffarpur में प्रतिवर्ष बच्चों की मौत`,
         stats: [
@@ -5628,7 +5616,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 35,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `High kidnapping, rising crime; flood-related annual displacement of 10-20 lakh people; AES/Chamki Bukhar a recurring child safety failure`,
         headlineHi: `उच्च अपहरण दर, बढ़ता अपराध; बाढ़ से हर साल 10-20 लाख लोगों का विस्थापन; AES/चमकी बुखार बच्चों की आवर्ती सुरक्षा विफलता`,
         stats: [
@@ -5666,7 +5654,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 44,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Perennial flooding shapes the ecology; Ganga bears Bihar's untreated sewage; arsenic in 18 districts — India's largest arsenic crisis`,
         headlineHi: `बारहमासी बाढ़ पारिस्थितिकी को आकार देती है; Ganga बिहार का अनुपचारित मलजल वहन करती है; 18 जिलों में आर्सेनिक — भारत का सबसे बड़ा आर्सेनिक संकट`,
         stats: [
@@ -6247,21 +6235,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 38,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 2 critical (NHM 52% tribal PHC vacancy; MGNREGS ₹2,840 Cr irregular expenditure — the largest irregular MGNREGS amount in any single-state audit) and 2 major (Samagra Shiksha and PMAYG). The Vyapam scam legacy — 55 witnesses and accused died under mysterious circumstances during the investigation — represents a unique transparency failure: not just administrative opacity but active obstruction of judicial accountability. RTI compliance in MP is above Bihar's level but well below the national norm.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 93,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). CM Mohan Yadav: 1 case/0 serious → 90; Speaker Narendra Singh Tomar: 0 → 100; Jagdish Devda: 0 → 100; Rajendra Shukla: 0 → 100; Tulsi Silawat: 1 case/0 serious → 90; Uday Pratap Singh: 0 → 100; Vishwas Sarang: 0 → 100; Nirmala Bhuria: 0 → 100; Kailash Vijayvargiya: 2 cases/2 serious → 64; Prahlad Patel: 1 case/0 serious → 90. Average: (90+100+100+100+90+100+100+100+64+90) ÷ 10 = 934 ÷ 10 = 93.4, rounded to 93. The cabinet's integrity profile is better than its governance record would suggest — the structural failures in MP (rape rate, Vyapam, IMR) reflect systemic dysfunction rather than personal criminal backgrounds of current ministers.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 49,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (45/100) × 50% + Transparency (38/100) × 25% + Integrity (93/100) × 25% = 22.5 + 9.5 + 23.25 = 55.25; adjusted down to 49 to reflect: (1) India's highest recorded rape rate — 52.3 per lakh population (NCRB 2022) — in a state under continuous BJP governance since 2003 (except 15 months in 2018-20), representing a 20-year failure to improve the most basic safety indicator for women; (2) Vyapam scam legacy — 55 deaths, 2,500+ accused, a decade of contested teacher recruitment — whose structural damage to MP's education quality is still playing out; (3) IMR of 35 per 1,000 — 2nd worst among large states.`,
       },
     ],
@@ -6271,7 +6259,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 52,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹14.5 lakh crore; 9.4% growth; agriculture + minerals + tourism but structural inequality persists`,
         headlineHi: `GSDP ~₹14.5 लाख करोड़; 9.4% वृद्धि; कृषि + खनिज + पर्यटन लेकिन संरचनात्मक असमानता बनी हुई`,
         stats: [
@@ -6316,7 +6304,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 43,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 70.6%; Vyapam scam paralysed teacher recruitment for a decade; ASER outcomes below national average`,
         headlineHi: `साक्षरता 70.6%; Vyapam घोटाले ने एक दशक के लिए शिक्षक भर्ती को लकवा मारा; ASER परिणाम राष्ट्रीय औसत से कम`,
         stats: [
@@ -6361,7 +6349,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 46,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Agriculture-dependent; growing industrial belt in Indore-Bhopal corridor; MGNREGS 6.8% guarantee delivery — 3rd worst nationally`,
         headlineHi: `कृषि-निर्भर; Indore-Bhopal गलियारे में बढ़ता औद्योगिक पट्टी; MGNREGS 6.8% गारंटी वितरण — राष्ट्रीय स्तर पर तीसरा सबसे खराब`,
         stats: [
@@ -6399,7 +6387,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 46,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 35 per 1,000 — 2nd worst large state; tribal district hospitals without blood transfusion; sickle cell anaemia crisis`,
         headlineHi: `IMR 35 प्रति 1,000 — दूसरा सबसे खराब बड़ा राज्य; आदिवासी जिला अस्पतालों में रक्त आधान नहीं; सिकल सेल एनीमिया संकट`,
         stats: [
@@ -6444,7 +6432,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 28,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `52.3 rape cases per lakh — India's highest; crimes against women worst in India; Vyapam deaths unresolved`,
         headlineHi: `52.3 बलात्कार मामले प्रति लाख — भारत में सर्वाधिक; महिलाओं के विरुद्ध अपराध भारत में सबसे खराब; Vyapam मौतें अनसुलझी`,
         stats: [
@@ -6482,7 +6470,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 56,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `25.1% forest cover — 3rd among large states; rich biodiversity (tiger + gharial); but Chambal & Narmada face industrial pressure`,
         headlineHi: `25.1% वन आवरण — बड़े राज्यों में तीसरा; समृद्ध जैव विविधता (बाघ + घड़ियाल); लेकिन Chambal और Narmada औद्योगिक दबाव में`,
         stats: [
@@ -7048,21 +7036,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 46,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 2 critical (Polavaram 7× cost overrun and MGNREGS ₹1,420 Cr ghost-card payments) and 2 major (NHM and PMAYG). The Polavaram finding is among the most significant infrastructure transparency failures in India — a national project where Central funds have been released without commensurate physical progress for 14 years. The incoming TDP government (June 2024) commissioned these audits against its YSRCP predecessor, reflecting accountability-through-change-of-power rather than institutional transparency. Score is marginally above Rajasthan and WB range, reflecting AP's historically stronger audit compliance and the new government's proactive audit approach.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 96,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). CM Chandrababu Naidu: 0 → 100; Speaker Chintakayala: 0 → 100; Payyavula Keshav: 0 → 100; Vangalapudi Anitha: 0 → 100; Kinjarapu Atchannaidu: 1 case/1 serious → 82; Nara Lokesh: 0 → 100; Satya Kumar Yadav: 0 → 100; Pawan Kalyan: 0 → 100; Anagani Satya Prasad: 1 case/1 serious → 82; (10th official) TG Bharath: 0 → 100. Average: (100+100+100+100+82+100+100+100+82+100) ÷ 10 = 964 ÷ 10 = 96.4, rounded to 96. TDP-NDA cabinet has a clean criminal record profile; both cases involve serious electoral/corruption charges.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 62,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (59/100) × 50% + Transparency (46/100) × 25% + Integrity (96/100) × 25% = 29.5 + 11.5 + 24 = 65; adjusted down to 62 to reflect: (1) AP's inherited state debt of ₹7.88 lakh crore — the highest debt-to-GSDP ratio among India's large states, accumulated primarily during the YSRCP 2019-24 term — which constrains the current government's development expenditure capacity; (2) Polavaram dam's 14-year delay directly denying water access to 7 lakh hectares of agricultural land and displacing 1.06 lakh families without full resettlement.`,
       },
     ],
@@ -7072,7 +7060,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 62,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹17 lakh crore; high debt burden ₹7.88 lakh crore; Chandrababu's tech + infrastructure agenda`,
         stats: [
         {
@@ -7111,7 +7099,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 52,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 67.4% — below national avg; tribal district female literacy below 50%; Nara Lokesh driving digital education push`,
         stats: [
         {
@@ -7144,7 +7132,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 56,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Agriculture 38% of workforce; IT sector in Vizag growing; MGNREGS 18.4% guarantee delivery with 8.4 lakh ghost job-cards`,
         stats: [
         {
@@ -7177,7 +7165,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 68,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 26 — below national avg; YSR Aarogyasri covers 92% of families; but tribal belt IMR 44 and PHC vacancies high`,
         stats: [
         {
@@ -7216,7 +7204,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 62,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Relatively lower crime rates; cyclone safety crisis on 974 km coast; Polavaram displacement without full resettlement`,
         stats: [
         {
@@ -7249,7 +7237,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 54,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `974 km coastline; Krishna-Godavari delta ecology under threat; deforestation in Eastern Ghats tribal belt`,
         stats: [
         {
@@ -7776,21 +7764,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 44,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 1 critical (Kaleswaram — the most significant infrastructure audit finding in any Indian state in 2024: ₹1.32 lakh crore project shut down on structural safety grounds after 13.5% benefit delivery) and 3 major (MGNREGS, NHM, PMAYG). The Kaleswaram finding is unique in Indian audit history — a functioning large infrastructure project found structurally unsafe and shut down by CAG inspection. The incoming Congress government (Dec 2023) actively facilitated the audit against its BRS predecessor; the transparency score reflects this willingness but tempers it for the BRS administration's documented opacity on debt and expenditure.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 98,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). CM Revanth Reddy: 1 case/1 serious → 82; all 9 others (Speaker Gaddam Prasad Kumar, Bhatti Vikramarka, Uttam Kumar Reddy, Tummala Nageswara Rao, Ponguleti Srinivas Reddy, D. Sridhar Babu, P. Sabitha Indra Reddy, Damodar Rajanarasimha, Komatireddy Venkat Reddy): 0 cases → 100. Average: (82+100×9) ÷ 10 = 982 ÷ 10 = 98.2, rounded to 98. TS Congress cabinet is remarkably clean — the one case against Revanth Reddy is legally contested (acquittal with revision petition). The BRS-era leadership (K. Chandrashekar Rao, K.T. Rama Rao) was not indicted despite multiple political controversies; the new Congress cabinet enters office with a strong integrity profile.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 64,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (62/100) × 50% + Transparency (44/100) × 25% + Integrity (98/100) × 25% = 31 + 11 + 24.5 = 66.5; adjusted down to 64 to reflect: (1) Kaleswaram's structural failure — a ₹1.32 lakh crore project shut on structural safety grounds represents a massive allocation of public capital with minimal benefit delivery, and the off-balance-sheet debt burden constrains Telangana's future public spending; (2) Telangana power sector debt of ~₹1.6 lakh crore in DISCOM liabilities — second only to AP among south Indian states.`,
       },
     ],
@@ -7800,7 +7788,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 70,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹15.5 lakh crore; Hyderabad = India's 3rd IT hub; pharmaceuticals capital of India`,
         stats: [
         {
@@ -7833,7 +7821,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 62,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 72.8%; Hyderabad as India's higher-education hub; rural TS educational access gaps`,
         stats: [
         {
@@ -7866,7 +7854,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 60,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `IT + pharma create formal employment; rural telangana drought-dependent; power sector DISCOM debt ₹1.6 lakh crore`,
         stats: [
         {
@@ -7899,7 +7887,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 70,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 25 — below national avg; Aarogyasri covers 1 crore families; fluorosis belt in Nalgonda a chronic crisis`,
         stats: [
         {
@@ -7932,7 +7920,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 58,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Encounter killings controversy; Hyderabad relatively safe; Kaleswaram barrage failure a structural safety risk`,
         stats: [
         {
@@ -7965,7 +7953,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 52,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Hyderabad's Hussainsagar polluted; Godavari ecology threatened by Kaleswaram; forest cover 24.6%`,
         stats: [
         {
@@ -8565,21 +8553,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 42,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 2 critical (NHM 48% tribal PHC vacancy with 40% of India's malaria burden; PMAYG coastal cyclone-resistant construction failure) and 2 major (MGNREGS coastal asset loss and JJM fluoride quality risk). Odisha's new BJP government (June 2024) ended 24 years of BJD rule — the audit findings on NHM and JJM reflect structural under-investment in tribal health and water quality that accumulated under Naveen Patnaik's tenure. The incoming BJP government's openness to CAG scrutiny is a transparency positive, but the state's RTI compliance was below average during the BJD era. The unique "cyclone-destroyed assets" finding (82% coastal MGNREGS assets) is a natural governance challenge rather than corruption.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 98,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). CM Mohan Majhi: 0 → 100; Speaker Surama Padhy: 0 → 100; K.V. Singh Deo: 0 → 100; Pravati Parida: 0 → 100; Krushna Chandra Patra: 0 → 100; Suresh Pujari: 1 case/1 serious → 82; Mukesh Mahaling: 0 → 100; Suryabanshi Suraj: 0 → 100; Sampad Chandra Swain: 0 → 100; Niranjan Pujari: 0 → 100. Average: (100+100+100+100+100+82+100+100+100+100) ÷ 10 = 982 ÷ 10 = 98.2, rounded to 98. Odisha's BJP cabinet — assembled in June 2024 after defeating a 24-year Naveen Patnaik administration — has a near-perfect criminal record profile. Mohan Majhi is Odisha's first Scheduled Tribe CM.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 56,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (51/100) × 50% + Transparency (42/100) × 25% + Integrity (98/100) × 25% = 25.5 + 10.5 + 24.5 = 60.5; adjusted down to 56 to reflect: (1) Odisha's tribal displacement from iron ore and bauxite mining in Sundergarh, Keonjhar and Koraput — India's highest per-capita tribal displacement from mining, with the Niyamgiri and Lanjigarh bauxite/alumina cases representing some of India's most contested development vs. rights conflicts; (2) cyclone governance gap — 82% of coastal MGNREGS assets cyclone-destroyed demonstrates that no state government has solved the problem of designing public works for India's most cyclone-exposed coastline.`,
       },
     ],
@@ -8589,7 +8577,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 48,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹9 lakh crore; India's steel & iron ore capital; per-capita below national avg despite mineral wealth`,
         headlineHi: `GSDP ~₹9 लाख करोड़; भारत की इस्पात और लोहे की राजधानी; खनिज संपदा के बावजूद प्रति व्यक्ति आय राष्ट्रीय औसत से कम`,
         stats: [
@@ -8627,7 +8615,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 50,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 72.9%; ASER outcomes below national avg; tribal residential schools (Ashram Vidyalayas) serving remote areas`,
         headlineHi: `साक्षरता 72.9%; ASER परिणाम राष्ट्रीय औसत से कम; आदिवासी आवासीय विद्यालय (Ashram Vidyalayas) दूरदराज के क्षेत्रों की सेवा करते हैं`,
         stats: [
@@ -8665,7 +8653,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 46,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Mining + steel: capital-intensive, few local jobs; 80% tribal workforce in forest/agriculture; MGNREGS 24.2%`,
         headlineHi: `खनन + इस्पात: पूँजी-प्रधान, कम स्थानीय नौकरियाँ; 80% आदिवासी कार्यबल वन/कृषि में; MGNREGS 24.2%`,
         stats: [
@@ -8703,7 +8691,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 48,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 35 — above national avg; 40% of India's malaria burden; sickle cell crisis in tribal communities`,
         headlineHi: `IMR 35 — राष्ट्रीय औसत से ऊपर; भारत का 40% मलेरिया बोझ; आदिवासी समुदायों में सिकल सेल संकट`,
         stats: [
@@ -8741,7 +8729,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 52,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Low crime rate; cyclone preparedness globally recognised; Maoist presence in tribal interior; sand mining mafia violence`,
         headlineHi: `कम अपराध दर; चक्रवात तैयारी वैश्विक स्तर पर मान्यता प्राप्त; आदिवासी आंतरिक भाग में माओवादी उपस्थिति; बालू खनन माफिया हिंसा`,
         stats: [
@@ -8779,7 +8767,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 60,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `33% forest cover — 3rd in India; Simlipal and Bhitarkanika; but mining deforestation accelerating`,
         headlineHi: `33% वन आवरण — भारत में तीसरा; Simlipal और Bhitarkanika; लेकिन खनन वनोन्मूलन में तेजी`,
         stats: [
@@ -9380,21 +9368,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 48,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 1 critical (JJM uranium/nitrate contamination — Punjab has the highest JJM FHTC rate in India but 38% of connections supplying uranium-contaminated water, making it the worst quality-vs-coverage gap in any Indian state) and 3 major (MGNREGS, NHM, Samagra Shiksha). AAP's stated anti-corruption platform and its emphasis on mohalla clinics and schools creates better-than-average transparency in service delivery, evidenced by the NHM audit's positive finding on ASHA payment timeliness (28-day average — India's lowest). Score is above average for the region, below the south Indian average.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 100,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded): CM Bhagwant Mann, Speaker Kultar Singh Sandhwan, Harpal Singh Cheema, Gurmeet Singh Khudian, Laljit Singh Bhullar, Dr. Balbir Singh, Harjot Singh Bains, Tarunpreet Singh Sond, Bram Shankar Jimpa — all with 0 declared criminal cases → 100. Average: (100×10) ÷ 10 = 100. AAP's Punjab cabinet entered office in March 2022 as a clean-sweep government with no alliance partners. All 10 ministers declare 0 criminal cases in their ECI affidavits — the only state among the 11 reviewed with a perfect integrity score. AAP's founding platform of anti-corruption is reflected in the affidavit profile, though real-time accountability depends on conduct in office, not just declared case history.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 56,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (49/100) × 50% + Transparency (48/100) × 25% + Integrity (100/100) × 25% = 24.5 + 12 + 25 = 61.5; adjusted down to 56 to reflect: (1) Punjab's drug crisis — 16 lakh opioid users, the highest per-capita in India — represents a 30-year governance failure that the AAP government has not reversed in 3 years, despite the De-addiction campaign; (2) stubble burning governance failure — Punjab burns 15-20 million tonnes of paddy stubble annually (October-November), making it the primary cause of Delhi's worst winter AQI spikes, despite judicial orders, satellite monitoring and ₹1,200 crore in ex-situ management subsidies; (3) groundwater depletion at 0.82 m/year — Punjab is consuming its most critical agricultural resource at an unsustainable rate that no state government has reversed since the Green Revolution.`,
       },
     ],
@@ -9404,7 +9392,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 54,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹8 lakh crore; per-capita ~₹2.0 lakh; once India's granary but agriculture stagnating; high state debt`,
         stats: [
         {
@@ -9437,7 +9425,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 62,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 76.7%; AAP's Schools of Eminence; but 24% teacher vacancy and mass foreign emigration depleting educated workforce`,
         stats: [
         {
@@ -9470,7 +9458,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 44,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Rural unemployment high; 90% of new farm entrants have no land; drug crisis reduces labour productivity; 5.5 lakh emigrate per year`,
         stats: [
         {
@@ -9503,7 +9491,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 68,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 24 — below national avg; 828 Aam Aadmi Clinics; but drug crisis and cancer belt demand chronic care infrastructure`,
         stats: [
         {
@@ -9536,7 +9524,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 36,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Drug crisis: 16 lakh opioid users; gangster violence rising; stubble burning kills 40,000+ per year via Delhi air quality`,
         stats: [
         {
@@ -9569,7 +9557,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 32,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Groundwater table -0.82m/year — fastest depletion in India; uranium contamination; Punjab river network effectively dead`,
         stats: [
         {
@@ -10095,21 +10083,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 40,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 2 critical (BOCW ₹3,840 Cr fund with 71% unspent and ₹680 Cr state-department cess not deposited; NHM/SRB crisis with Nuh health service disruption) and 2 major (JJM saline water quality; MGNREGS 64-day delays). Haryana's governance model is heavily influenced by its dominant Jat agrarian political economy and the Delhi-NCR contractor nexus — both of which create structural transparency deficits. The BJP government's 10-year tenure (2014-2024) and Nayab Saini's continuation post-October 2024 reflects political stability but also entrenched patronage networks. Haryana's RTI compliance is rated below average by CIC.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 100,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). CM Nayab Singh Saini: 0 → 100; Speaker Harvinder Kalyan: 0 → 100; Anil Vij: 0 → 100; Shyam Singh Rana: 0 → 100; Krishanlal Panwar: 0 → 100; Vipul Goel: 0 → 100; Mahipal Dhanda: 0 → 100; Rao Narbir Singh: 0 → 100; Shruti Choudhry: 0 → 100; Ranbir Gangwa: 0 → 100. Average: (100×10) ÷ 10 = 100. Haryana's BJP 2024 cabinet has a clean ECI affidavit profile. The previous Khattar-JJP government (2019-24) also had relatively few declared cases; the Saini cabinet maintains this record. The absence of declared cases does not reflect the historically documented corruption in Haryana's administrative apparatus — BOCW and other CAG findings indicate corruption via institutional mechanisms rather than individual criminal records.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 58,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (56/100) × 50% + Transparency (40/100) × 25% + Integrity (100/100) × 25% = 28 + 10 + 25 = 63; adjusted down to 58 to reflect: (1) Haryana's SRB of 910 — India's lowest — is an ongoing human rights crisis directly attributable to governance failure in implementing the PCPNDT Act despite 3 decades of existence; (2) the SYL canal unresolved dispute (4 decades, 1981 MOU, Supreme Court orders) — Haryana has been unable to secure water access it is legally entitled to, and this directly affects 1.8 lakh habitations' water supply; (3) Nuh district's persistent multi-dimensional poverty (lowest on HDI in Haryana) without meaningful district-specific intervention.`,
       },
     ],
@@ -10119,7 +10107,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 68,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹12 lakh crore; India's auto capital (Gurgaon-Manesar); per-capita ₹2.8 lakh — above national avg`,
         stats: [
         {
@@ -10152,7 +10140,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 62,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 76.6%; NIT Kurukshetra, MDU; Mewat (Nuh) female literacy 42%; ASER rural outcomes moderate`,
         stats: [
         {
@@ -10185,7 +10173,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 58,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `NCR drives formal employment; landless Dalit agricultural labour dependent on MGNREGS; 12.4% MGNREGS demand utilisation`,
         stats: [
         {
@@ -10218,7 +10206,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 62,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 30 — above national avg; SRB 910 — India's lowest (female foeticide); Nuh district a persistent health crisis`,
         stats: [
         {
@@ -10251,7 +10239,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 42,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `High crimes against women; Nuh communal riots July 2023; Jat agitation 2016 Rohtak violence; SRB 910 implies systematic female infanticide`,
         stats: [
         {
@@ -10284,7 +10272,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 46,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Aravallis encroachment; Yamuna pollution from NCR industries; 3.4% forest cover — near India's lowest; stubble burning`,
         stats: [
         {
@@ -10869,21 +10857,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 34,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 2 critical (NHM — IMR 40 with 52% PHC vacancy and sickle cell at 28% screening; PMAYG — 3.8 lakh tribal beneficiaries in FRA deadlock and ₹1,840 Cr displaced from completed sites) and 2 major (MGNREGS ₹620 Cr eMuster fraud; JJM 44% non-functional connections). Jharkhand's governance is persistently weakened by the JMM-BJP-Congress political cycle (8 government changes in 23 years) which prevents institutional continuity, and by the CM's ED arrest (2024) which overshadowed the government's first year. The eMuster manipulation finding is the most direct corruption indicator in any MGNREGS audit this year.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 95,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). CM Hemant Soren: 1 case/1 serious → 82; Speaker Rabindra Nath Mahato: 0 → 100; Sudhir Mahto: 0 → 100; Banna Gupta: 0 → 100; Radhakrishna Kishore: 0 → 100; Deepak Birua: 0 → 100; Hafizul Hassan: 0 → 100; Irfan Ansari: 2 cases/1 serious → 72; Dipika Pandey Singh: 0 → 100; Basant Soren: 0 → 100. Average: (82+100+100+100+100+100+100+72+100+100) ÷ 10 = 954 ÷ 10 = 95.4, rounded to 95.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 49,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (45/100) × 50% + Transparency (34/100) × 25% + Integrity (95/100) × 25% = 22.5 + 8.5 + 23.75 = 54.75; adjusted down to 49 to reflect: (1) Jharkhand has experienced 8 government changes in 23 years — the highest political instability of any large Indian state — which prevents institutional development, causes mid-term cancellation of welfare programmes, and rewards patronage over policy; (2) CM Hemant Soren's ED arrest and trial (PMLA land scam) — even with bail — represents a significant institutional credibility gap for the state's head of government; (3) MGNREGS eMuster fraud (₹620 Cr) is among the most serious misuse of Central funds documented in a CAG audit this cycle.`,
       },
     ],
@@ -10893,7 +10881,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 44,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹6.5 lakh crore; coal + steel capital; resource curse: mineral wealth but low per-capita`,
         headlineHi: `GSDP ~₹6.5 लाख करोड़; कोयला + इस्पात की राजधानी; संसाधन अभिशाप: खनिज संपदा लेकिन कम प्रति व्यक्ति आय`,
         stats: [
@@ -10931,7 +10919,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 46,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 67.6% — below national avg; tribal education disrupted by Naxal activity and migration; ASER rural outcomes low`,
         headlineHi: `साक्षरता 67.6% — राष्ट्रीय औसत से कम; नक्सल गतिविधि और प्रवास से आदिवासी शिक्षा बाधित; ASER ग्रामीण परिणाम कम`,
         stats: [
@@ -10969,7 +10957,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 42,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Mining capital-intensive; 80% tribal workers in forest/agriculture; distress migration to brick kilns; MGNREGS 19.8%`,
         headlineHi: `खनन पूँजी-प्रधान; 80% आदिवासी श्रमिक वन/कृषि में; ईंट भट्टों तक संकट-प्रवास; MGNREGS 19.8%`,
         stats: [
@@ -11007,7 +10995,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 46,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 40 — among India's highest; malaria, sickle cell, JE in tribal belt; 52% PHC vacancy in tribal districts`,
         headlineHi: `IMR 40 — भारत में सबसे अधिक में से; आदिवासी पट्टी में मलेरिया, सिकल सेल, JE; आदिवासी जिलों में 52% PHC रिक्तता`,
         stats: [
@@ -11045,7 +11033,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 42,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `LWE 2nd highest in India after Chhattisgarh; mining-induced tribal displacement; Dhanbad coal mafia; PMLA CM arrest`,
         headlineHi: `भारत में Chhattisgarh के बाद दूसरी सबसे अधिक LWE गतिविधि; खनन-प्रेरित आदिवासी विस्थापन; Dhanbad कोयला माफिया; PMLA CM गिरफ्तारी`,
         stats: [
@@ -11083,7 +11071,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 52,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `33.5% forest cover; Saranda and Betla; but coal mining destroying forests at 30 sq km/year; Damodar Valley pollution`,
         headlineHi: `33.5% वन आवरण; Saranda और Betla; लेकिन कोयला खनन 30 वर्ग किमी/वर्ष वन नष्ट कर रहा है; Damodar Valley प्रदूषण`,
         stats: [
@@ -11621,21 +11609,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 38,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 2 critical (NHM — IMR 41 and 58-62% PHC/ANM vacancy — the worst health infrastructure gap in any large state; MGNREGS — Maoist veto on worksites and ₹380 Cr wages paid for inaccessible/non-existent work) and 2 major (PMAYG — ₹920 Cr to non-constructing Bastar beneficiaries; Samagra Shiksha — 52 schools used as police camps). The incoming BJP government (December 2023) commissioned these audits primarily against the Congress 2018-23 tenure. The Naxal governance failure permeates every finding — making CG's challenges partially a security/sovereignty constraint rather than purely a government performance failure. Nonetheless, ₹380 Cr MGNREGS fraud in inaccessible areas indicates administrative corruption alongside the security constraint.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 98,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). CM Vishnu Deo Sai: 0 → 100; Speaker Raman Singh: 0 → 100; O.P. Choudhary: 0 → 100; Ram Vichar Netam: 0 → 100; Kedar Kashyap: 0 → 100; Arun Sao: 0 → 100; Vijay Sharma: 0 → 100; Brijmohan Agarwal: 1 case → 75; Shyam Bihari Jaiswal: 0 → 100; (10th) Rajesh Munat (PWD): 0 → 100. Average: (100+100+100+100+100+100+100+75+100+100) ÷ 10 = 975 ÷ 10 = 97.5, rounded to 98. The BJP cabinet — formed December 2023 after 5 years of Congress — brings ex-IAS Finance Minister O.P. Choudhary (IIT+IAS background) and tribal CM Vishnu Deo Sai (India's first ST CM of CG). The one pending case is minor.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 52,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (46/100) × 50% + Transparency (38/100) × 25% + Integrity (98/100) × 25% = 23 + 9.5 + 24.5 = 57; adjusted down to 52 to reflect: (1) Chhattisgarh has India's most severe Naxal governance gap — 7 entire districts where elected government effectively does not reach the population; health, education, housing and MGNREGS services are all critically impaired in the Bastar division; (2) IMR of 41 — India's highest for large states — is a 25-year governance failure that reflects neither party's success in delivering basic health infrastructure to the tribal belt; (3) India's highest tribal sickle cell burden with only 24% newborn screening.`,
       },
     ],
@@ -11645,7 +11633,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 46,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹6 lakh crore; coal + steel (Bhilai SAIL); per-capita low; tribal forest economy critical for 44% of population`,
         headlineHi: `GSDP ~₹6 लाख करोड़; कोयला + इस्पात (Bhilai SAIL); प्रति व्यक्ति आय कम; 44% जनसंख्या के लिए आदिवासी वन अर्थव्यवस्था महत्वपूर्ण`,
         stats: [
@@ -11683,7 +11671,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 46,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 71.0%; Bastar ASER 32% Grade 5 reading — India's worst; 52 schools used as police camps; Ashram Vidyalaya system`,
         headlineHi: `साक्षरता 71.0%; Bastar ASER 32% कक्षा 5 पठन — भारत में सबसे खराब; 52 स्कूल पुलिस कैंप के रूप में उपयोग; Ashram Vidyalaya प्रणाली`,
         stats: [
@@ -11721,7 +11709,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 42,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Coal + steel create formal jobs in north; Bastar tribal belt without formal employment; MGNREGS 22.4%; Naxal veto blocks work in 7 districts`,
         headlineHi: `उत्तर में कोयला + इस्पात औपचारिक नौकरियाँ बनाते हैं; Bastar आदिवासी पट्टी बिना औपचारिक रोजगार के; MGNREGS 22.4%; नक्सल वीटो 7 जिलों में काम रोकता है`,
         stats: [
@@ -11759,7 +11747,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 44,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 41 — India's highest; malaria 4.2 lakh cases — 30% of India; sickle cell 24% screening; Bastar CHCs cannot perform surgery`,
         headlineHi: `IMR 41 — भारत में सर्वाधिक; मलेरिया 4.2 लाख मामले — भारत का 30%; सिकल सेल 24% जाँच; Bastar CHC शल्य चिकित्सा नहीं कर सकते`,
         stats: [
@@ -11797,7 +11785,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 36,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `India's highest LWE activity; 40+ CRPF/police casualties 2023; Bastar tribal displacement from anti-Naxal operations; Hasdeo protests`,
         headlineHi: `भारत में सर्वाधिक LWE गतिविधि; 40+ CRPF/पुलिस हताहत 2023; Bastar से नक्सल-विरोधी अभियानों में आदिवासी विस्थापन; Hasdeo विरोध`,
         stats: [
@@ -11835,7 +11823,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 62,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `41.2% forest cover — India's highest; but coal mines threatening Hasdeo Arand; Mahanadi and Sheonath rivers under industrial stress`,
         headlineHi: `41.2% वन आवरण — भारत में सर्वाधिक; लेकिन कोयला खदानें Hasdeo Arand को खतरे में डाल रही हैं; Mahanadi और Sheonath नदियाँ औद्योगिक दबाव में`,
         stats: [
@@ -12340,21 +12328,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 38,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 1 critical (NHM — annual flood disruption to health, JE deaths and tea garden health crisis) and 3 major (MGNREGS char delivery failure and ₹720 Cr annual asset destruction; JJM arsenic contamination for 14 lakh users; POSHAN 52% tea garden stunting). Himanta Biswa Sarma's BJP government (2021-present) is among northeast India's more proactive administrations — his media visibility and "tough decisions" image (microfinance debt relief, eviction drives on encroached forest land) create above-average accountability visibility. However, the CAG audits reveal that the structural governance failures — flood fragility, char exclusion, tea garden labour deprivation — are 75-year governance deficits that predate his government.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 100,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). CM Himanta Biswa Sarma: 0 → 100; Speaker Biswajit Daimary: 0 → 100; Ajanta Neog: 0 → 100; Atul Bora: 0 → 100; Chandra Mohan Patowary: 0 → 100; Keshab Mahanta: 0 → 100; Ranoj Pegu: 0 → 100; Jogen Mohan: 0 → 100; Bimal Borah: 0 → 100; (10th) Ashok Singhal: 0 → 100. Average: (100×10) ÷ 10 = 100. Assam's BJP-AGP-UPPL coalition cabinet (formed May 2021) entered office after Tarun Gogoi's Congress era (2001-2016) and Sarbananda Sonowal's BJP tenure. All 10 officials declare 0 criminal cases. Himanta's own case history is clean by ECI affidavit — he left Congress in 2015 under acrimonious circumstances but without criminal charges being filed.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 54,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (49/100) × 50% + Transparency (38/100) × 25% + Integrity (100/100) × 25% = 24.5 + 9.5 + 25 = 59; adjusted down to 54 to reflect: (1) Assam's annual flood crisis — displacing 4-5 million people for 3-4 months every year — is a systemic governance failure that no state government has solved in 75 years; the Brahmaputra embankment system (maintained by the State Water Resources Department) is perennially breached, causing the same damage cycle repeatedly without structural prevention investment; (2) tea garden workers' human development crisis — tea plantation workers in permanent employment have stunting and malnutrition rates comparable to India's poorest tribal communities, an indictment of both the Plantation Labour Act enforcement and the private plantation owner accountability; (3) char community exclusion — 20-25 lakh residents on Brahmaputra river islands lack permanent infrastructure of any kind.`,
       },
     ],
@@ -12364,7 +12352,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 48,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹7 lakh crore; oil + tea; per-capita below national avg; Brahmaputra floods: ₹3,000-5,000 Cr annual damage`,
         stats: [
         {
@@ -12397,7 +12385,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 54,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 73.2%; IIT Guwahati; char and tea garden schools severely under-resourced; CAA protests disrupted 2019-21`,
         stats: [
         {
@@ -12430,7 +12418,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 46,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Tea: 7.5 lakh workers at ₹232/day (below min wage); char communities dependent on casual labour; youth unemployment high`,
         stats: [
         {
@@ -12463,7 +12451,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 46,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 36 — above national avg; tea garden stunting 52%; Japanese Encephalitis; annual floods break health delivery for 4 months`,
         stats: [
         {
@@ -12496,7 +12484,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 48,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Annual Brahmaputra floods; NRC/CAA citizenship crisis for char communities; ethnic conflicts mostly resolved; rhino poaching`,
         stats: [
         {
@@ -12529,7 +12517,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 50,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `35.3% forest cover; Kaziranga — world's rhino capital; Brahmaputra erosion; Baghjan oil spill legacy; tea monoculture`,
         stats: [
         {
@@ -13064,21 +13052,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 50,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 1 critical (KIIFB — ₹42,000 Cr off-balance-sheet debt bypassing FRBM with 38% incomplete projects) and 3 major (NHM NCD mismatch; MGNREGS tribal exclusion; JJM endosulfan zone). Kerala's civil society is India's most active — high RTI utilisation, active press, and vigilant judiciary create accountability mechanisms unavailable in most states. However, the KIIFB and Kerala's recurrent gold smuggling/corruption cases (Life Mission housing scheme corruption; the SNC-Lavalin case against CM Vijayan, later dropped) represent significant governance opacity. Kerala's FRBM compliance is among south India's weaker performers.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 100,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). All 10 — CM Pinarayi Vijayan, Speaker A.N. Shamseer, K.N. Balagopal, Veena George, V.N. Vasavan, P. Prasad, R. Bindu, K. Krishnankutty, Antony Raju, and (10th) P.A. Mohammed Riyas (Local Self Government) — declared 0 criminal cases in 2021 ECI affidavits. Average: (100×10) ÷ 10 = 100. The LDF cabinet's clean affidavit record reflects the CPI(M)'s organisational discipline in selecting candidates; Kerala's strong civil society creates greater scrutiny of criminal records than in most states.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 68,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (70/100) × 50% + Transparency (50/100) × 25% + Integrity (100/100) × 25% = 35 + 12.5 + 25 = 72.5; adjusted down to 68 to reflect: (1) KIIFB off-balance-sheet debt of ₹42,000 crore is the most significant fiscal governance risk in south India — bypassing FRBM limits in the same manner as Kaleswaram in Telangana, risking Kerala's medium-term fiscal space for social expenditure; (2) Kerala's 35-year "Gulf dependency" demographic trap — 20 lakh Keralites in the Gulf, whose return in large numbers (as during COVID-19) would stress the state's employment infrastructure immediately; (3) Wayanad Adivasi exclusion from MGNREGS despite being Kerala's most food-insecure community.`,
       },
     ],
@@ -13088,7 +13076,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 68,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹12 lakh crore; Gulf remittances ₹1.25 lakh crore/year; IMR 6 — world-class; but slow GSDP growth, KIIFB fiscal risk`,
         stats: [
         {
@@ -13121,7 +13109,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 84,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 94% — India's highest; strong public school network; but brain drain and private engineering college over-supply`,
         stats: [
         {
@@ -13154,7 +13142,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 56,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Unemployment paradox: high education, 14% youth unemployment; Gulf dependency; fishing + coir + cashew informal economy`,
         stats: [
         {
@@ -13187,7 +13175,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 84,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 6 — India's lowest; MMR 19 — India's best; NCD crisis emerging; universal health insurance; Kasaragod endosulfan legacy`,
         stats: [
         {
@@ -13220,7 +13208,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 66,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Low crime relative to India; but rising drug trafficking via sea; Wayanad landslide 233 deaths; KCSP workplace safety`,
         stats: [
         {
@@ -13253,7 +13241,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 62,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Western Ghats biodiversity; Wayanad ESZ failure; Periyar and Vembanad at risk; river sand mining crisis`,
         stats: [
         {
@@ -13777,21 +13765,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 44,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 1 critical (State Finances — salary+pension at 90% of own revenue, OPS restoration adding ₹10,000 Cr liability; India's most acute hill-state fiscal crisis) and 3 major (NHM mountain specialist vacancy; JJM spring drying; MGNREGS mountain delivery gaps). HP's biennial government change pattern (BJP wins, then Congress wins, then BJP) creates a reliable accountability cycle where each incoming government commissions audits against its predecessor. Transparency score is moderate — HP's civil society and mountain media are reasonably active, but the state's small legislative assembly (68 seats) limits opposition scrutiny capacity.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 100,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). All 10 — CM Sukhu, Speaker Pathania, Deputy CM Agnihotri, Chandra Kumar, Jagat Singh Negi, Dhani Ram Shandil, Rohit Thakur, Harshvardhan Chauhan, Vikramaditya Singh, and (10th) Anirudh Singh (Home) — declared 0 criminal cases in 2022 ECI affidavits. Average: (100×10) ÷ 10 = 100. HP's Congress cabinet brings a mix of experienced (Jagat Singh Negi — 7-term legislator) and newer MLAs; the clean affidavit profile is consistent with HP's mountain political culture where candidate selection is closely scrutinised.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 62,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (60/100) × 50% + Transparency (44/100) × 25% + Integrity (100/100) × 25% = 30 + 11 + 25 = 66; adjusted down to 62 to reflect: (1) HP's fiscal crisis — salary+pension consuming 75% of revenue expenditure and OPS restoration adding ₹10,000 Cr annual liability — this will progressively crowd out capital expenditure for roads, health, schools, and the Himachal infrastructure that mountain communities depend on; (2) the Congress government's June 2023 "political crisis" where 6 Congress MLAs cross-voted in the Rajya Sabha election, causing a Constitutional floor-crossing episode that required Supreme Court intervention — HP's governance stability is fragile.`,
       },
     ],
@@ -13801,7 +13789,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 56,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹3.5 lakh crore; per-capita above national avg; apple + tourism + hydro; fiscal crisis limits investment`,
         stats: [
         {
@@ -13834,7 +13822,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 68,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 82.8% — above national avg; IIT Mandi, AIIMS Bilaspur; mountain school access in 180 snow-cut habitations`,
         stats: [
         {
@@ -13861,7 +13849,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 48,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Government jobs dominant; seasonal apple/tourism employment; mountain out-migration high; MGNREGS 32.4%`,
         stats: [
         {
@@ -13888,7 +13876,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 68,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 22 — below national avg; AIIMS Bilaspur operational; but mountain medical access crisis in snow-cut habitations`,
         stats: [
         {
@@ -13915,7 +13903,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 66,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Very low crime rate; disaster-safety risk (cloudbursts, glacial lake outburst floods); Lahaul-Spiti avalanche mortality`,
         stats: [
         {
@@ -13942,7 +13930,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 56,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Great Himalayan NP (UNESCO); forest 27.7%; glacier retreat 8%/decade; apple orchards expanding into forests; hydropower river fragmentation`,
         stats: [
         {
@@ -14442,21 +14430,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 42,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 2 critical (JJM — 44% non-functional in hill districts, Char Dham blasting destroyed springs; Char Dham highway 850+ landslides and Joshimath EC violation) and 2 major (NHM mountain vacancy; MGNREGS reverse-migrant support gap). The Char Dham environmental audit — finding 68% of widened sections violated the Supreme Court's own order — is a significant rule-of-law accountability failure. UK's BJP government since 2022 is broadly responsive to ecological concerns (Chief Minister Dhami acted quickly on Joshimath) but institutional processes for environmental clearance are weak.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 100,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). All 10 — CM Dhami, Speaker Khanduri Bhushan, Prem Chand Aggarwal, Ganesh Joshi, Subodh Uniyal, Dhan Singh Rawat, Rekha Arya, Satpal Maharaj, Brij Bhooshan Gairola, and (10th) Arvind Pandey (Irrigation) — declared 0 criminal cases in 2022 ECI affidavits. Average: (100×10) ÷ 10 = 100.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 58,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (57/100) × 50% + Transparency (42/100) × 25% + Integrity (100/100) × 25% = 28.5 + 10.5 + 25 = 64; adjusted down to 58 to reflect: (1) Char Dham highway violations of Supreme Court's environmental conditions — inducing 850+ landslides and the Joshimath land subsidence crisis — are direct governance failures where project implementing agencies violated their own court orders; (2) UK's ghost village crisis — 1,792 completely abandoned villages (Census 2011 ghost villages, likely doubled by 2024) — represents a 25-year governance failure to retain mountain populations through livelihoods; (3) UK has had 12 CMs in 22 years (2000-2022) — the political instability reflects the dominant-caste Brahmin-Kshatriya factional politics of the BJP's Garhwal-Kumaon divide.`,
       },
     ],
@@ -14466,7 +14454,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 52,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹3.7 lakh crore; Char Dham tourism ₹12,000 Cr; per-capita near national avg; ghost-village agriculture collapse`,
         stats: [
         {
@@ -14499,7 +14487,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 64,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 79.6%; IIT Roorkee (oldest IIT 1847); but mountain school teacher vacancy drives out-migration`,
         stats: [
         {
@@ -14532,7 +14520,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 44,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Army dominant employer (India's highest per-capita enrolment); tourism seasonal; ghost villages = agricultural employment collapse`,
         stats: [
         {
@@ -14565,7 +14553,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 66,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 28 — above national avg; Kedarnath-rebuilt healthcare lacking disaster protocol; AIIMS Rishikesh operational`,
         stats: [
         {
@@ -14598,7 +14586,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 62,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Low crime; Char Dham pilgrimage stampede risk; Joshimath land subsidence ongoing; GLOF threat growing`,
         stats: [
         {
@@ -14631,7 +14619,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 52,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `45.4% forest cover; Jim Corbett + Valley of Flowers; but Char Dham highway inducing 850+ landslides; glacier retreat accelerating`,
         stats: [
         {
@@ -15137,21 +15125,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 44,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 2 critical (Iron Ore Mining — ₹3,400 Cr unpaid royalties and zero new mines by 2024; CRZ violations — 842 illegal structures, 224 TCP amendments as regulatory capture) and 2 major (NHM NCD gaps and migrant exclusion; JJM coastal salinity). Goa's governance transparency is constrained by: the small legislative assembly (40 seats) limiting opposition scrutiny; the TCP amendment culture (systematically using government procedures to waive rules for specific properties); and the iron ore mining saga — a 12-year-long legal and governance failure where the state has been unable to restore lawful mining revenue of ₹2,800 crore/year.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 98,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). CM Pramod Sawant: 0 → 100; Speaker Ramesh Tawadkar: 0 → 100; Mauvin Godinho: 0 → 100; Vishwajit Rane: 0 → 100; Nilesh Cabral: 0 → 100; Govind Gaude: 0 → 100; Rohan Khaunte: 0 → 100; Subhash Phal Dessai: 0 → 100; Atanasio Monserratte: 1 case/1 serious (IPC 376 — rape charge) → 82; and (10th) Ravi Naik (Health, additional portfolio): 0 → 100. Average: (100×9 + 82) ÷ 10 = 982 ÷ 10 = 98.2, rounded to 98.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 62,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (64/100) × 50% + Transparency (44/100) × 25% + Integrity (98/100) × 25% = 32 + 11 + 24.5 = 67.5; adjusted down to 62 to reflect: (1) Goa's iron ore mining governance failure — 12 years after the SC ban, zero new mines are operational despite a fresh auction process; ₹2,800 crore of annual economic activity is suspended while legal disputes continue — a governance failure of the highest order for Goa's mining-dependent communities (Sattari, Bicholim, Quepem); (2) systematic CRZ violation enables — 224 TCP amendments relaxing CRZ restrictions through a formal-yet-captured regulatory process; (3) Goa's casino economy (5 offshore floating casinos on Mandovi) operates under a regulatory framework that has no parallel in Indian law and creates significant money-laundering risk.`,
       },
     ],
@@ -15161,7 +15149,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 64,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹1.1 lakh crore; highest per-capita in India ₹6+ lakh; tourism + mining; casino economy on Mandovi`,
         stats: [
         {
@@ -15194,7 +15182,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 70,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 88.7% — above national avg; strong Catholic mission school legacy; BITS Pilani Goa Campus; NIT Goa`,
         stats: [
         {
@@ -15227,7 +15215,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 60,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Lowest unemployment in India (3.5%); tourism employs 30%; mining suspension displaced 1.5 lakh; 5 lakh migrant construction workers`,
         stats: [
         {
@@ -15260,7 +15248,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 72,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 8 — 2nd lowest after Kerala; Goa Medical College; but migrant worker healthcare exclusion; NCD rise`,
         stats: [
         {
@@ -15293,7 +15281,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 62,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Low violent crime; but drug trafficking growing; CRZ violations normalised; beach tourism crime rising`,
         stats: [
         {
@@ -15326,7 +15314,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 54,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Mollem/Western Ghats; 33.96% forest; CRZ violations; iron ore slurry legacy; Mandovi pollution`,
         stats: [
         {
@@ -15844,21 +15832,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 38,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 2 critical (JJM — Gujjar-Bakarwal exclusion, border village delays, Dal Lake E. coli; Dal Lake 40% shrinkage, ₹1,642 Cr wasted conservation) and 2 major (NHM 44% specialist vacancy and conflict mental health gap; MGNREGS border district Section 144 suppression). J&K's transparency is severely constrained by the unique LG-elected government dual power structure — the LG retains control of Police, IAS and other powers beyond the Council of Ministers' jurisdiction; elected government decisions can be overruled; this creates accountability without commensurate authority for the Omar Abdullah government. 10+ years of internet shutdowns (2019-2023) have suppressed civil society's ability to monitor governance. The lack of elected local bodies for most of 2019-2024 further reduced accountability mechanisms.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 98,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Lieutenant Governor excluded). CM Omar Abdullah: 0 → 100; Speaker Abdul Rahim Rather: 0 → 100; Deputy CM Surinder Kumar Choudhary: 0 → 100; Sakina Itoo: 0 → 100; Javid Dar: 0 → 100; Javed Ahmad Rana: 1 case → 75; Satish Sharma: 0 → 100; Ghulam Ahmad Mir: 0 → 100; Raees Ahmad Dar: 0 → 100; and (10th) Javed Ahmed (Power) → 0 → 100. Average: (9×100 + 75) ÷ 10 = 975 ÷ 10 = 97.5, rounded to 98.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 46,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (49/100) × 50% + Transparency (38/100) × 25% + Integrity (98/100) × 25% = 24.5 + 9.5 + 24.5 = 58.5; adjusted down to 46 to reflect: (1) J&K's fundamental governance abnormality — the LG-elected government dual power structure means the Chief Minister cannot govern the police, IAS postings, or prosecution of corruption, creating accountability without authority and the highest structural governance deficit in India's states/UTs; (2) 35 years of conflict have created a governance vacuum where normal administrative processes — gram sabha meetings, MGNREGS work planning, public health outreach — routinely fail in security-sensitive areas; (3) Dal Lake's 40% shrinkage despite ₹1,642 crore spent is India's clearest example of governance failure to protect an iconic national natural asset.`,
       },
     ],
@@ -15868,7 +15856,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 54,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹2.4 lakh crore; tourism ₹15,000 Cr; apple + saffron horticulture; high Central transfer dependence`,
         stats: [
         {
@@ -15901,7 +15889,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 62,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 68.7% — below national avg; IIT Jammu, NIT Srinagar, SKIMS; conflict disrupted schooling 2010-2020`,
         stats: [
         {
@@ -15934,7 +15922,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 46,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Highest youth unemployment in India 18.2%; security force economy; tourism seasonal; MGNREGS 28.4%`,
         stats: [
         {
@@ -15967,7 +15955,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 58,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 17 — below national avg; SKIMS as north India referral; conflict PTSD crisis; high drug addiction`,
         stats: [
         {
@@ -16000,7 +15988,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 34,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Ongoing militancy; Pahalgam terror attack 2025 (26 tourists killed); AFSPA; internet shutdowns; 35 years of conflict`,
         stats: [
         {
@@ -16033,7 +16021,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 58,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Dal Lake 40% shrinkage; Wular Lake pollution; Himalayan glaciers retreating; forest 45%; conflict deforestation`,
         stats: [
         {
@@ -16542,21 +16530,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 26,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 3 critical (NHM collapse in conflict districts — 56% CHCs non-operational, 8,400 HIV patients without ART; MGNREGS collapse — 78% work creation fall in hill districts; Ethnic Conflict Audit — 4,800 FIRs, 180 charge-sheets, 427-day internet shutdown) and 1 major (JJM valley-hills gap). Manipur's transparency score is among India's lowest — the 427-day internet shutdown makes civil society monitoring, journalism, and accountability oversight impossible in the affected areas; the investigation of ethnic violence shows selective accountability; and the dual governance failure (state government captured by one ethnic community's political interests) undermines institutional neutrality.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 95,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). CM N. Biren Singh: 0 → 100; Speaker Thokchom Satyabrata Singh: 0 → 100; Deputy CM Y. Khemchand Singh: 0 → 100; Thongam Biswajit Singh (Health): 0 → 100; Seram Kashiam Singh (Education): 1 case → 75; Awangbow Newmei (Tribal): 0 → 100; Nemcha Kipgen (Commerce): 0 → 100; Sapam Ranjan Singh (Irrigation): 1 case → 75; Yumnam Khembhoi Singh (PWD): 0 → 100; and (10th) L. Dikho Singh (Forest): 0 → 100. Average: (8×100 + 2×75) ÷ 10 = 950 ÷ 10 = 95.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 32,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (38/100) × 50% + Transparency (26/100) × 25% + Integrity (95/100) × 25% = 19 + 6.5 + 23.75 = 49.25; adjusted down to 32 to reflect the severity of Manipur's governance failure: (1) 230+ deaths and 60,000+ displaced from ethnic conflict represent India's worst active internal displacement crisis; (2) the state government's failure to investigate Meitei-community perpetrators represents a fundamental breakdown of rule of law — the state is perceived as a party to the conflict rather than a neutral administrator; (3) 427-day internet shutdown is the longest ongoing democratic-state internet blackout in the world; (4) 56% of hill district health centres are non-functional — a humanitarian crisis within an Indian state's borders; (5) the BJP Central government's intervention (Union Home Minister Amit Shah's multiple visits) has not resolved the conflict.`,
       },
     ],
@@ -16566,7 +16554,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 36,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹40,000 Cr; 90%+ Central transfers; ethnic conflict cost ₹6,000+ Cr; Golden Triangle drug transit economy`,
         stats: [
         {
@@ -16599,7 +16587,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 54,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 79.8%; IIT Manipur, NIT Manipur, Central University; conflict school closures in hill districts`,
         stats: [
         {
@@ -16632,7 +16620,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 32,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `High unemployment; ethnic conflict destroyed hill district livelihoods; 60,000+ displaced with no income; drug economy`,
         stats: [
         {
@@ -16665,7 +16653,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 46,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 32; 56% hill CHCs non-operational from conflict; HIV 1.15% (2nd highest India); 8,400 patients lost ART`,
         stats: [
         {
@@ -16698,7 +16686,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 22,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Ethnic conflict: 230+ deaths; 60,000+ displaced; 5,000+ homes burned; 427-day internet shutdown; AFSPA areas`,
         stats: [
         {
@@ -16731,7 +16719,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 52,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Forest 77.7% (India's 2nd highest); Loktak Lake Ramsar crisis; conflict deforestation in hill areas`,
         stats: [
         {
@@ -17226,21 +17214,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 44,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 1 critical (Coal Mining — 1,240 illegal rat-hole mines post-NGT ban; Ksan tragedy; ₹3,500 Cr lost without alternative livelihoods) and 3 major (NHM TBA delivery; MGNREGS dorbar shnong capture; JJM Garo Hills gap and AMD contamination). Meghalaya's transparency is moderated by Conrad Sangma's relatively reform-oriented government (NPP — a nationally aligned but locally grounded party). The coal mining legacy represents Meghalaya's deepest governance failure: every political party has historically been funded by coal operators. Sixth Schedule autonomy reduces Central oversight, which is both empowering for tribal self-governance and a shield against accountability.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 100,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). All 10 — CM Conrad Sangma, Speaker Thomas Sangma, Deputy CM Prestone Tynsong, Hamletson Dohling, Sniawbhalang Dhar, Ampareen Lyngdoh, Rakkam Sangma, Mayralborn Syiem, Marcuise Marak, and (10th) Kyrmen Shylla (Social Welfare) — declared 0 criminal cases in 2023 ECI affidavits. Average: (100×10) ÷ 10 = 100. Meghalaya's NPP-led coalition has a clean affidavit profile; Conrad Sangma's own candidacy record is zero declared cases.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 52,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (54/100) × 50% + Transparency (44/100) × 25% + Integrity (100/100) × 25% = 27 + 11 + 25 = 63; adjusted down to 52 to reflect: (1) the rat-hole coal mining legacy — 1,240 illegal mines operating despite NGT ban, financed by political operators across all parties — represents a captured state where law enforcement is selectively applied for political reasons; (2) dorbar shnong capture of MGNREGS — a traditional governance institution being misused for elite capture — shows that Sixth Schedule autonomy, while important for tribal sovereignty, can enable local elite accountability gaps; (3) Meghalaya's fiscal position depends heavily on Central transfers with weak own revenue — limiting the government's ability to self-fund development.`,
       },
     ],
@@ -17250,7 +17238,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 52,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹50,000 Cr; coal ban disrupted ₹3,500 Cr economy; limestone + tourism; high Central dependence`,
         stats: [
         {
@@ -17283,7 +17271,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 64,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 74.4% — at national avg; Presbyterian + Catholic mission schools; NEHU; IIT Guwahati (nearby); NIT Meghalaya`,
         stats: [
         {
@@ -17316,7 +17304,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 46,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `High educated unemployment; coal ban displaced 1.5 lakh mining families; tourism growth insufficient offset`,
         stats: [
         {
@@ -17349,7 +17337,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 56,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 30 — above national avg; 22% TBA-assisted delivery; Garo Hills maternal health crisis; AMD contamination health risk`,
         stats: [
         {
@@ -17382,7 +17370,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 56,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Relatively peaceful; some insurgency in Garo Hills (GNLA); Ksan mine tragedy; inter-state boundary disputes`,
         stats: [
         {
@@ -17415,7 +17403,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 56,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Forest 76.33%; acid mine drainage from 2,000+ abandoned coal mines; Balpakram NP (Garo); Dawki river`,
         stats: [
         {
@@ -17979,21 +17967,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 50,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 1 critical (Myanmar Refugee Crisis — ₹280 Cr unaudited spending outside MHA framework; federal-state sovereignty tension) and 3 major (NHM HIV gap — only 8,400 of 20,000+ patients on ART; MGNREGS 16.8% delivery and 52-day wage delay; JJM 76.4% coverage, lowest in NE). Mizoram's transparency score is moderated by the ZPM government's stated reform commitment and the Church's strong civil society accountability culture. The Presbyterian Church of Mizoram (PCM) functions as an informal governance watchdog — Mizoram is the most church-governed state in India, with the PCM's influence on social norms (alcohol prohibition since 1996), education, and healthcare creating a civil accountability mechanism absent in most Indian states.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 100,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). All 10 — CM Lalduhoma, Speaker Lalrinliana Sailo, Deputy CM Vanlalhlana, F. Rohluna, K. Sapdanga, Dr. Lalrinsanga, Lalchhandama Ralte, C. Lalsawivunga, K. Pongte, and (10th) Lalthansanga (Commerce) — declared 0 criminal cases in 2023 ECI affidavits. Average: (100×10) ÷ 10 = 100. ZPM's 2023 victory on a clean-governance platform (against MNF's alleged corruption under Zoramthanga) created a cabinet with the strongest anti-corruption mandate in recent Mizoram history. CM Lalduhoma's IPS background (former bodyguard to Rajiv Gandhi) creates institutional credibility on integrity.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 56,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (57/100) × 50% + Transparency (50/100) × 25% + Integrity (100/100) × 25% = 28.5 + 12.5 + 25 = 66; adjusted down to 56 to reflect: (1) MGNREGS delivery failure (16.8% — India's lowest; 52-day wage delay — India's highest) reveals fundamental administrative capacity gaps in programme delivery — the ZPM government is new and has not yet resolved the structural delivery bottlenecks; (2) JJM 76.4% (NE India's lowest) and the Myanmar refugee camp's zero water provision shows humanitarian programme gaps; (3) Mizoram's fiscal position — 86% Central-transfer dependent, with ₹280 Cr in unreimbursed refugee expenditure — limits the government's autonomous governance capacity; (4) the HIV crisis (India's highest prevalence at 2.03%) with only 42% ART coverage represents a serious public health governance failure.`,
       },
     ],
@@ -18003,7 +17991,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 48,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹30,000 Cr; per-capita ₹1.7 lakh; 86% Central transfers; bamboo + horticulture; Myanmar trade disrupted`,
         stats: [
         {
@@ -18036,7 +18024,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 72,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 91.6% — India's 2nd highest after Kerala; Presbyterian mission schools; Mizoram University; strong female literacy`,
         stats: [
         {
@@ -18069,7 +18057,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 44,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `High educated unemployment; limited formal economy; MGNREGS 16.8% delivery — India's lowest; government jobs dominant`,
         stats: [
         {
@@ -18102,7 +18090,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 64,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 9 — India's 3rd lowest; church-run healthcare network; HIV 2.03% (India's highest); 8,400 of 20,000+ on ART`,
         stats: [
         {
@@ -18135,7 +18123,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 62,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Largely peaceful since MPC 1986; Myanmar refugee strain; drug corridor; Bru-Reang resettlement completed`,
         stats: [
         {
@@ -18168,7 +18156,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 62,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Forest 85.41% — India's highest; Phawngpui NP (Blue Mountain); jhum cultivation; bamboo ecology; Myanmar deforestation spillover`,
         stats: [
         {
@@ -18662,21 +18650,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 38,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 1 critical (NSCN peace process — ₹400-600 Cr parallel taxation, Oting impunity, 67-year AFSPA) and 3 major (NHM frontier vacancy, HIV ART gap; MGNREGS village council capacity failure; JJM customary land disputes). Nagaland's accountability is severely constrained by: the NSCN-IM parallel state (which effectively governs alongside the elected government in many areas); tribal customary governance structures that create accountability to clan/tribe rather than citizens-at-large; and the AFSPA security environment that suppresses civil society expression. Neiphiu Rio's NDPP-BJP government has a reasonable reform record on paper (organic mission, hornbill festival promotion) but has not challenged NSCN-IM's parallel economy.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 98,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). CM Neiphiu Rio: 0 → 100; Speaker Sharingain Longkumer: 0 → 100; Deputy CM T.R. Zeliang: 0 → 100; P. Paiwang Konyak: 0 → 100; Temjen Imna Along: 0 → 100; Jacob Zhimomi: 0 → 100; Mmhonlumo Kikon: 1 case → 75; Tokheho Yepthomi: 0 → 100; Pangnyu Phom: 0 → 100; and (10th) Noke Wangnao (Social Welfare): 0 → 100. Average: (9×100 + 75) ÷ 10 = 975 ÷ 10 = 97.5, rounded to 98.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 42,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (48/100) × 50% + Transparency (38/100) × 25% + Integrity (98/100) × 25% = 24 + 9.5 + 24.5 = 58; adjusted down to 42 to reflect: (1) the NSCN-IM parallel state is India's most enduring governance anomaly — a state where an armed group collects ₹400-600 crore annually in "taxes" with effective state acquiescence creates fundamental questions about what the elected government actually governs; (2) the Oting massacre impunity (December 2021) — 13 civilians killed, zero prosecutions 3+ years later — reflects the AFSPA governance environment where military operations in Nagaland operate outside civilian judicial accountability; (3) 28 years of peace talks without resolution have created a "frozen conflict" economy that perpetuates underdevelopment.`,
       },
     ],
@@ -18686,7 +18674,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 44,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹43,000 Cr; 90%+ Central transfers; NSCN parallel taxation ₹400-600 Cr; hornbill festival tourism; jhum farming`,
         stats: [
         {
@@ -18719,7 +18707,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 62,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 79.6%; strong Christian mission school legacy; Nagaland University; NIT Nagaland; but youth out-migration`,
         stats: [
         {
@@ -18752,7 +18740,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 36,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Very high educated unemployment; government jobs dominant; NSCN parallel economy employs thousands; youth out-migration`,
         stats: [
         {
@@ -18785,7 +18773,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 54,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 18 — below national avg; HIV 0.88% (3rd India); drug addiction crisis; church-run healthcare strong`,
         stats: [
         {
@@ -18818,7 +18806,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 32,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `NSCN factions' active parallel state; Oting massacre 2021 (13 civilians killed, zero prosecutions); AFSPA 67 years; tribal customary violence`,
         stats: [
         {
@@ -18851,7 +18839,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 60,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Forest 75.31%; Amur Falcon conservation model; Doyang reservoir; Intanki NP; jhum forest loss`,
         stats: [
         {
@@ -19364,21 +19352,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 44,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 1 critical (Teesta GLOF — pre-identified danger lake with no warning system; 1,200 MW hydro destroyed; ₹8,000 Cr uninsured) and 3 major (NHM post-GLOF disruption; Organic Mission market linkage failure; MGNREGS post-GLOF duplication). Sikkim's transparency is moderate — the small state (6.5 lakh population) enables better governance visibility than larger states; Gangtok's civil society is active and the Sikkim High Court has a good record of PIL responses. The GLOF early warning failure represents the most significant governance accountability issue — a pre-identified risk with no action taken.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 100,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). CM Prem Singh Tamang's 2024 election affidavit declared 0 pending cases (his 2017 conviction under PC Act for MPLADS fund misappropriation was a concluded case — sentence served; the conviction itself is reflected in the affidavit as a conviction, not pending case. Under the GovLens criminal-case scale, "pending cases" as declared in ECI affidavits are counted; the concluded conviction is noted in the biography). All other 9 officials — Speaker Mingma Norbu Sherpa, Deputy CM Sonam Lama, Lok Nath Sharma, Rinzing Dorjee Bhutia, Sanjit Kharel, Raju Basnet, Bhim Hang Subba, Arun Kumar Upreti, and (10th) Suresh Acharya (PWD) — declared 0 pending cases. Average: (10×100) ÷ 10 = 100.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 58,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (65/100) × 50% + Transparency (44/100) × 25% + Integrity (100/100) × 25% = 32.5 + 11 + 25 = 68.5; adjusted down to 58 to reflect: (1) the Teesta GLOF is a governance failure of a specific type — India's 7th highest-risk glacial lake (identified by ISRO 2021) with no early warning system, no drawdown sluice, no moraine fortification; 78 people died from a pre-identified, quantified, geo-tagged risk that neither NDMA, the state government, nor NHPC acted on; (2) CM Prem Singh Tamang's 2017 conviction under the Prevention of Corruption Act — though a concluded sentence — represents the only serving Indian Chief Minister with a corruption conviction in their record; (3) the hydropower sector's ₹8,000 crore uninsured investment loss represents a significant fiscal governance failure.`,
       },
     ],
@@ -19388,7 +19376,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 64,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹35,000 Cr; per-capita ₹4.5 lakh — India's 2nd after Goa; organic agriculture; hydro; tourism; GLOF cost ₹10,000+ Cr`,
         stats: [
         {
@@ -19421,7 +19409,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 68,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 81.4% — above national avg; Sikkim University, SMIMS, NIT Sikkim; Sikkim Manipal University`,
         stats: [
         {
@@ -19454,7 +19442,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 54,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Low unemployment (3.8%); hydropower employment disrupted by GLOF; tourism; cardamom; MGNREGS best in NE`,
         stats: [
         {
@@ -19487,7 +19475,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 72,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 8 — India's 4th lowest; SMIMS tertiary care; post-GLOF North Sikkim healthcare disrupted`,
         stats: [
         {
@@ -19520,7 +19508,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 66,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Very low crime; LAC Doklam/Nathu La tension; GLOF disaster risk; Teesta bridge-collapse landslide risk`,
         stats: [
         {
@@ -19553,7 +19541,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 64,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Forest 82.31%; Kanchenjunga NP UNESCO; 80 glacial lakes; 100% organic state; GLOF risk from 7 danger lakes`,
         stats: [
         {
@@ -20032,21 +20020,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 44,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: all major (NHM TTAADC tribal healthcare gap; MGNREGS political violence disruption; JJM Gomati water quality; Bangladesh connectivity delays). Tripura's governance has significantly changed from the 25-year CPI(M) dominant-party system (1993-2018) under Manik Sarkar to the BJP's governance since 2018. The transition has been marked by political violence (attacks on CPI(M) workers, media and activists — documented by Editors Guild and NHRC) that limits civil society accountability. CM Manik Saha (a dentist-turned-BJP president) is perceived as a moderate reformer constrained by RSS/BJP central control.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 98,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Governor excluded). CM Manik Saha: 0 → 100; Speaker Biswabandhu Sen: 0 → 100; Deputy CM Jishnu Dev Varma: 0 → 100; Sushanta Chowdhury: 0 → 100; Pranajit Singha Roy: 0 → 100; Ratan Lal Nath: 0 → 100; Bikash Debbarma: 0 → 100; Tinku Roy: 1 case → 75; Sudarshan Barman: 0 → 100; and (10th) Santana Chakraborty (Social Welfare): 0 → 100. Average: (9×100 + 75) ÷ 10 = 975 ÷ 10 = 97.5, rounded to 98.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 54,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (57/100) × 50% + Transparency (44/100) × 25% + Integrity (98/100) × 25% = 28.5 + 11 + 24.5 = 64; adjusted down to 54 to reflect: (1) post-election political violence (2018 and 2023) — documented attacks on CPI(M) workers, Left Front offices and journalists — represents a governance failure to protect political pluralism; (2) TTAADC tribal healthcare gap (52% specialist vacancy) in a state that has an autonomous tribal council with constitutional status — the tribal areas' persistent development gap despite Central Special Area funding is a governance failure by both state and TTAADC councils; (3) Bangladesh connectivity projects at 20-50% utilisation from bilateral dependence reflect Tripura's vulnerability as a "landlocked by Bangladesh" geography.`,
       },
     ],
@@ -20056,7 +20044,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 52,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹70,000 Cr; natural gas + rubber + pineapple; Bangladesh gateway potential; Agartala-Akhaura rail link`,
         stats: [
         {
@@ -20089,7 +20077,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 66,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 87.2% — India's 3rd highest; IIT Agartala, NIT Agartala; AGMC; 25 years of CPI(M) education investment`,
         stats: [
         {
@@ -20122,7 +20110,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 48,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `6.4% unemployment; rubber tappers 60,000+ families; Bangladesh trade potential; MGNREGS 34.8% delivery`,
         stats: [
         {
@@ -20155,7 +20143,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 62,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 20 — below national avg; AIIMS Agartala (2015); TTAADC tribal areas IMR 35-40; AGMC tertiary care`,
         stats: [
         {
@@ -20188,7 +20176,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 58,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Insurgency largely ended; NLFT/ATTF remnants; post-2023-election BJP-CPI(M) political violence; low crime`,
         stats: [
         {
@@ -20221,7 +20209,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 56,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Forest 74.18%; Trishna WLS; rubber monoculture replacing forest; Gomati-Howrah flooding; Dumbur reservoir`,
         stats: [
         {
@@ -20746,21 +20734,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 44,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `4 CAG findings: 1 critical (LG-Council dual power — ₹420 Cr welfare blocked without reason; shadow advisory council; 4 government changes in 10 years) and 3 major (NHM JIPMER-NHM mismatch; JJM Karaikal salinisation and French-era pipe loss; MGNREGS best-in-UT). Puducherry's transparency is constrained by the same structural LG-Council accountability paradox as J&K — the elected government cannot fully account for decisions it did not control. Puducherry's civil society (French-educated legal community, Auroville's international community, JIPMER's academic community) is exceptionally active and vocal — an asset for accountability not available in most Indian states.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 98,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials counted (Lieutenant Governor excluded). CM N. Rangasamy: 0 → 100; Speaker R. Selvam: 0 → 100; Deputy CM K. Lakshminarayanan: 0 → 100; Malladi Krishna Rao: 0 → 100; A. Namassivayam: 1 case → 75; C. Djeacoumar: 0 → 100; P. Thiagarajan: 0 → 100; K.C. Palanisamy: 0 → 100; R.K.R. Anbalagan: 0 → 100; and (10th) S. Duraisamy (Food & Civil Supplies): 0 → 100. Average: (9×100 + 75) ÷ 10 = 975 ÷ 10 = 97.5, rounded to 98.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 60,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (67/100) × 50% + Transparency (44/100) × 25% + Integrity (98/100) × 25% = 33.5 + 11 + 24.5 = 69; adjusted down to 60 to reflect: (1) the LG-Council dual power structure creates the same accountability-without-authority paradox as J&K — ₹420 crore in welfare spending blocked without recorded reason is the clearest evidence; (2) Puducherry's enclave fragmentation (4 non-contiguous territories across 3 Indian states) is the most complex administrative geography in India's UT system — every infrastructure project, scheme convergence and inter-agency coordination multiplies in complexity; (3) the 4 government changes in 10 years reflect political instability that disrupts long-term governance planning despite Puducherry having better-than-average institutional capacity.`,
       },
     ],
@@ -20770,7 +20758,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 68,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ~₹1.2 lakh Cr; per-capita ₹3.5 lakh — India's 3rd highest; pharma + textile + tourism; French heritage economy`,
         stats: [
         {
@@ -20803,7 +20791,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 74,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 86.6% — well above national avg; JIPMER (#2 India); Pondicherry University; French lycée schools; NIFT Puducherry`,
         stats: [
         {
@@ -20836,7 +20824,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 62,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Low unemployment 4.2%; pharma + textile + tourism employs 30% formal workforce; French-speaking service economy`,
         stats: [
         {
@@ -20869,7 +20857,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 76,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 11 — India's 5th lowest; JIPMER; MMR 36; NCD burden growing; coastal fishing community health`,
         stats: [
         {
@@ -20902,7 +20890,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 66,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Low crime; no major insurgency; drug trafficking via sea; political tension from LG-Council conflict; enclave-border incidents`,
         stats: [
         {
@@ -20935,7 +20923,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 56,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Coastal biodiversity; Bahour lake mangroves; French-era Botanical Garden; Auroville reforestation; sea level rise risk`,
         stats: [
         {
@@ -21480,21 +21468,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 48,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `Based on 4 CAG findings reviewed for 2025: 2 critical and 2 major. Critical findings cover the CMCHIS health insurance ghost-surgery fraud (₹820 Cr; India's largest state health insurance scheme) and TANGEDCO's ₹8,420 Cr in uncompetitive PPAs. Major findings on MGNREGS and PMAY Urban are serious but reflect implementation shortfalls rather than systematic fraud. Higher score than KA (25) and MH (38) reflects fewer findings and a historically more functional administrative system, but lower than Tamil Nadu's development status would warrant.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 91,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials with ECI affidavit data counted once each. CM Stalin: 1 case/1 serious → 82; V. Senthil Balaji: 4 cases/4 serious → 28 (arrested by ED in June 2023, returned to cabinet on SC bail); all remaining 8 officials (Appavu, Thennarasu, KKSSR Ramachandran, TRB Rajaa, Udhayanidhi Stalin, PK Sekar Babu, Ma. Subramanian, Anbil Mahesh Poyyamozhi): 0 cases → 100. Average: (82+28+100×8) ÷ 10 = 910 ÷ 10 = 91, rounded to 91. Governor Arlekar excluded (appointed position; no ECI affidavit).`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 68,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (67/100) × 50% + Transparency (48/100) × 25% + Integrity (91/100) × 25% = 33.5 + 12 + 22.75 = 68.25; rounded to 68. No critical-severity downward adjustment applied (only 2 of 4 findings are critical; threshold is 7+ of 8 findings). Tamil Nadu's score reflects its historically strong public health and education infrastructure relative to most Indian states, partially offset by the CMCHIS fraud and TANGEDCO procurement failures.`,
       },
     ],
@@ -21504,7 +21492,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 70,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ₹27 lakh crore — India's 3rd largest; Chennai is the "Detroit of South Asia" but state debt is a growing fiscal stress`,
         stats: [
           {
@@ -21549,7 +21537,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 75,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 80.09%; ASER learning outcomes 2nd best among large states; noon meal scheme a 60-year public health success`,
         stats: [
           {
@@ -21594,7 +21582,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 68,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Unemployment 4.2% (PLFS 2023-24) — moderate; auto-IT formal sector strong but MGNREGS only 24 days/year delivered`,
         stats: [
           {
@@ -21633,7 +21621,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 78,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 14 — 4th lowest nationally; stunting 23.3% — well below India avg; CMCHIS covers 1.7 crore families (world's largest state health insurance)`,
         stats: [
           {
@@ -21678,7 +21666,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 58,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `~230 IPC crimes per lakh (NCRB 2022) — above national avg; high crimes against women; drug trafficking via Palk Strait a growing threat`,
         stats: [
           {
@@ -21717,7 +21705,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 50,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Western Ghats biodiversity hotspot vs 40.9% of coastline eroding; Palar & Cauvery rivers severely polluted by leather tanneries and agriculture`,
         stats: [
           {
@@ -22266,21 +22254,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 42,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `Based on 4 CAG findings reviewed for 2024: 2 critical and 2 major. The JJM finding is particularly significant — Gujarat claimed 100% FHTC coverage ahead of schedule but 68% of connections were non-functional, representing India's most documented case of large-scale JJM data inflation. PMAYG quality failures in tribal districts are severe (42%). Lower score despite fewer absolute findings than KA/MH because the JJM and PMAYG findings involve systematic misreporting of achievement data rather than mere implementation gaps.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 98,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials with ECI affidavit data counted once each. Raghavji Patel: 1 case → 75; all remaining 9 officials (CM Bhupendra Patel, Shankar Chaudhary, Kanubhai Desai, Rajendra Trivedi, Harsh Sanghavi, Balvantsinh Rajput, Kuber Dindor, Purnesh Modi, Rushikesh Patel): 0 cases → 100. Average: (75 + 100×9) ÷ 10 = 975 ÷ 10 = 97.5, rounded to 98. Governor Acharya Devvrat excluded (appointed position; no ECI affidavit). Gujarat's BJP cabinet has consistently maintained one of the cleanest criminal-record profiles among large Indian states.`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 65,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (63/100) × 50% + Transparency (42/100) × 25% + Integrity (98/100) × 25% = 31.5 + 10.5 + 24.5 = 66.5; adjusted down to 65 to reflect the JJM data-integrity failure (claiming 100% FHTC coverage while 68% of connections were non-functional — a governance credibility issue beyond mere implementation) and the paradox of Gujarat's child stunting at 39.7% being above the national average despite India's highest-profile "model state" status.`,
       },
     ],
@@ -22290,7 +22278,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 78,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ₹22 lakh crore — 4th largest; manufacturing 46% of GSDP; Surat processes 90% of world's rough diamonds; Jamnagar hosts the world's largest oil refinery`,
         stats: [
           {
@@ -22335,7 +22323,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 62,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 78.03% — below TN, MH and national expectations for India's wealthiest manufacturing state; tribal-belt education gap severe`,
         stats: [
           {
@@ -22374,7 +22362,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 70,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Unemployment 2.8% — among India's lowest; 40 lakh GIDC workers; diamond sector volatile (65,000 job losses in 2023 dip)`,
         stats: [
           {
@@ -22413,7 +22401,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 65,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 24 — near national avg; stunting 39.7% above national avg; women's anaemia 62.6% — among India's highest for a prosperous state`,
         stats: [
           {
@@ -22452,7 +22440,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 60,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `~157 crimes per lakh (NCRB 2022) — below national avg; but communal violence legacy, Dalit atrocities and industrial accident risk are persistent concerns`,
         stats: [
           {
@@ -22491,7 +22479,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 45,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Forest cover only 7.5% — lowest among major states; Vapi cited as one of world's 10 most polluted cities; groundwater saline ingress threatens Saurashtra`,
         stats: [
           {
@@ -23124,21 +23112,21 @@ export const STATE_FACTS: StateFact[] = [
         key: 'transparency',
         label: `Transparency`,
         score: 32,
-        icon: Eye,
+        icon: 'Eye',
         methodology: `Based on 4 CAG findings reviewed for 2025: 2 critical and 2 major. Critical findings cover the WBSSC teacher recruitment fraud (India's largest educational recruitment scam — 25,785 fraudulent appointments, ₹1,820 Cr salary paid to ineligibles, 6-year concealment from CAG) and PMAYG selection fraud (22% verified "completed" houses non-existent). Score is lower than TN (48) and GJ (42) because the WBSSC finding involves active concealment from the Accountant General for 6 years — a direct transparency failure — not merely implementation shortfall.`,
       },
       {
         key: 'officialsIntegrity',
         label: `Officials' Legal Integrity`,
         score: 86,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         methodology: `10 unique officials with ECI affidavit data counted once each. CM Mamata Banerjee: 0 cases → 100; Firhad Hakim: 4 cases/4 serious (Narada sting — Prevention of Corruption Act) → 28; Madan Mitra: 4 cases/4 serious (Saradha scam + Narada sting — IPC 420/406, PC Act) → 28; remaining 7 officials (Biman Banerjee, Chandrima Bhattacharya, Shashi Panja, Aroop Biswas, Partha Bhowmick, Becharam Manna, Babul Supriyo): 0 cases → 100 each. Average: (100+28+28+100×7) ÷ 10 = 856 ÷ 10 = 85.6, rounded to 86. Governor C.V. Ananda Bose excluded (appointed position; no ECI affidavit).`,
       },
       {
         key: 'governance',
         label: `Governance`,
         score: 53,
-        icon: Scale,
+        icon: 'Scale',
         methodology: `Composite: indicators avg (58/100) × 50% + Transparency (32/100) × 25% + Integrity (86/100) × 25% = 29 + 8 + 21.5 = 58.5; adjusted down to 53 to reflect: (1) the WBSSC scam's scale — India's largest documented educational recruitment fraud, affecting 10 crore students for 6 years with active concealment; (2) the systematic political violence documented post-2021 elections; (3) West Bengal being India's #1 source state for human trafficking (NHRC data); and (4) the Sandeshkhali (2024) sexual violence allegations against ruling party local leaders.`,
       },
     ],
@@ -23148,7 +23136,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'economy',
         label: `Economy`,
         score: 58,
-        icon: TrendingUp,
+        icon: 'TrendingUp',
         headline: `GSDP ₹16 lakh crore — 6th in India; strong jute, tea, rice agriculture; IT growing in Kolkata but industrial deindustrialisation since 1990s unresolved`,
         headlineHi: `GSDP ₹16 लाख करोड़ — भारत में 6वाँ; मजबूत जूट, चाय, चावल कृषि; Kolkata में IT बढ़ रहा है, लेकिन 1990 के दशक से औद्योगिक विनाशीकरण अनसुलझा`,
         stats: [
@@ -23193,7 +23181,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'education',
         label: `Education`,
         score: 70,
-        icon: GraduationCap,
+        icon: 'GraduationCap',
         headline: `Literacy 77.08% — above national avg; historic university excellence (Presidency, Jadavpur, IIT KGP); WBSSC scam put 25,785 unqualified teachers in classrooms for 6 years`,
         headlineHi: `साक्षरता 77.08% — राष्ट्रीय औसत से ऊपर; ऐतिहासिक विश्वविद्यालय उत्कृष्टता (Presidency, Jadavpur, IIT KGP); WBSSC घोटाले ने 6 वर्षों तक 25,785 अयोग्य शिक्षक कक्षाओं में रखे`,
         stats: [
@@ -23238,7 +23226,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'employment',
         label: `Employment`,
         score: 55,
-        icon: Briefcase,
+        icon: 'Briefcase',
         headline: `Unemployment 7.9% (PLFS 2023-24) — among India's highest; large-scale youth outmigration; jute mill deindustrialisation structural`,
         headlineHi: `बेरोजगारी 7.9% (PLFS 2023-24) — भारत में सबसे अधिक में से; बड़े पैमाने पर युवा बाहर प्रवास; जूट मिल विनाशीकरण संरचनात्मक`,
         stats: [
@@ -23283,7 +23271,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'health',
         label: `Health`,
         score: 62,
-        icon: HeartPulse,
+        icon: 'HeartPulse',
         headline: `IMR 22 — below national avg; but arsenic contamination in 8 districts affects 48 lakh people; anaemia 64% — among India's highest`,
         headlineHi: `IMR 22 — राष्ट्रीय औसत से नीचे; लेकिन 8 जिलों में arsenic संदूषण 48 लाख लोगों को प्रभावित करता है; एनीमिया 64% — भारत में सबसे अधिक में से`,
         stats: [
@@ -23328,7 +23316,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'safety',
         label: `Safety`,
         score: 45,
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         headline: `Crimes against women ~60 per lakh (NCRB 2022) — near national high; WB is India's #1 trafficking source state; post-election political violence documented`,
         headlineHi: `महिलाओं के विरुद्ध अपराध ~60 प्रति लाख (NCRB 2022) — राष्ट्रीय उच्च के निकट; WB भारत का #1 तस्करी स्रोत राज्य; चुनाव के बाद राजनीतिक हिंसा दस्तावेज़ीकृत`,
         stats: [
@@ -23373,7 +23361,7 @@ export const STATE_FACTS: StateFact[] = [
         key: 'environment',
         label: `Environment`,
         score: 55,
-        icon: Leaf,
+        icon: 'Leaf',
         headline: `Sundarbans UNESCO mangrove delta — world's largest; Ganga severely polluted at Kolkata; Raniganj coal fires burning for 100+ years`,
         headlineHi: `Sundarbans UNESCO mangrove डेल्टा — दुनिया का सबसे बड़ा; Kolkata पर Ganga गंभीर रूप से प्रदूषित; Raniganj कोयला आग 100+ वर्षों से जल रही`,
         stats: [

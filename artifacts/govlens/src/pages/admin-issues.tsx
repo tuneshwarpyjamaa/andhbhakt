@@ -2,13 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { NativeSelect } from '@/components/native-select';
 import { AlertCircle, Lock, RefreshCw, Filter } from 'lucide-react';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -220,17 +214,12 @@ export default function AdminIssues() {
           {/* Type filter */}
           <div className="ml-auto flex items-center gap-2">
             <Filter className="w-3.5 h-3.5 text-muted-foreground" />
-            <Select value={filterType} onValueChange={setFilterType}>
-              <SelectTrigger className="h-8 text-xs w-40">
-                <SelectValue placeholder="All types" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All types</SelectItem>
-                {ISSUE_TYPES.map(t => (
-                  <SelectItem key={t} value={t}>{ISSUE_TYPE_LABELS[t]}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <NativeSelect value={filterType} onValueChange={setFilterType} className="h-8 text-xs w-40">
+              <option value="all">All types</option>
+              {ISSUE_TYPES.map(t => (
+                <option key={t} value={t}>{ISSUE_TYPE_LABELS[t]}</option>
+              ))}
+            </NativeSelect>
           </div>
         </div>
 
@@ -331,21 +320,17 @@ export default function AdminIssues() {
 
                       {/* Status selector */}
                       <td className="px-4 py-3 align-top">
-                        <Select
+                        <NativeSelect
                           value={r.status}
-                          onValueChange={val => updateStatus(r.id, val)}
+                          onValueChange={(val) => updateStatus(r.id, val)}
+                          className={`h-7 text-xs border font-medium ${STATUS_COLORS[r.status] ?? ''}`}
                         >
-                          <SelectTrigger className={`h-7 text-xs border font-medium ${STATUS_COLORS[r.status] ?? ''}`}>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {STATUSES.map(s => (
-                              <SelectItem key={s} value={s} className="text-xs">
-                                {s.charAt(0).toUpperCase() + s.slice(1)}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                          {STATUSES.map(s => (
+                            <option key={s} value={s}>
+                              {s.charAt(0).toUpperCase() + s.slice(1)}
+                            </option>
+                          ))}
+                        </NativeSelect>
                       </td>
                     </tr>
                   );

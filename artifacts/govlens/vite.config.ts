@@ -2,6 +2,7 @@ import path from 'path';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
+import { prepareStaticData } from './scripts/prepare-static-data.mjs';
 
 const rawPort = process.env.PORT;
 const port = rawPort ? Number(rawPort) : 3000;
@@ -9,7 +10,16 @@ const basePath = process.env.BASE_PATH ?? '/';
 
 export default defineConfig({
   base: basePath,
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    {
+      name: 'prepare-static-data',
+      async buildStart() {
+        await prepareStaticData();
+      },
+    },
+    react(),
+    tailwindcss(),
+  ],
   resolve: {
     alias: {
       '@': path.resolve(import.meta.dirname, 'src'),
@@ -31,12 +41,11 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id: string) {
-          if (id.includes('cag-reports-hi.json')) return 'data-cag-hi';
           if (id.includes('state-facts-hi')) return 'data-sf-hi';
-          if (id.includes('cag-reports-data.json') || id.includes('cag-reports.ts'))
-            return 'data-cag';
-          if (id.includes('state-facts-data')) return 'data-state-facts';
           if (id.includes('state-facts-scores')) return 'data-state-scores';
+          if (id.includes('scheme-detail-hi')) return 'data-scheme-hi';
+          if (id.includes('national-indicators-data')) return 'data-national-indicators';
+          if (id.includes('manifesto-data')) return 'data-manifesto';
           // Vendor splitting — ALL React-dependent packages must be co-located
           // with react-dom/scheduler to guarantee initialisation order.
           // Separate chunks cause "Cannot set properties of undefined" crashes.

@@ -1,5 +1,5 @@
-// Types and small constants only — the 1,808-report data array lives in
-// cag-reports-data.json and is lazy-loaded by reports.tsx at runtime.
+// Types and small filter constants only. Full reports live in
+// cag-reports-data.json (source) and are served from /data/cag-reports/.
 
 export type ReportCategory =
   | 'State Finances'
