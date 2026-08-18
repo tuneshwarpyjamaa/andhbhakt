@@ -1,7 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Toaster } from '@/components/ui/toaster';
-import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 import { Footer } from '@/components/footer';
@@ -25,8 +23,9 @@ const AdminIssues      = lazy(() => import('@/pages/admin-issues'));
 const queryClient = new QueryClient();
 
 const PageLoader = () => (
-  <div className="min-h-screen bg-background flex items-center justify-center">
+  <div className="min-h-[50vh] bg-background flex items-center justify-center" role="status" aria-live="polite">
     <div className="w-6 h-6 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+    <span className="sr-only">Loading</span>
   </div>
 );
 
@@ -66,14 +65,11 @@ function HtmlLangSync() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-          <HtmlLangSync />
-          <Router />
-          <Footer />
-        </WouterRouter>
-        <Toaster />
-      </TooltipProvider>
+      <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+        <HtmlLangSync />
+        <Router />
+        <Footer />
+      </WouterRouter>
     </QueryClientProvider>
   );
 }

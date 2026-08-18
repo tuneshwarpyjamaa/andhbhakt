@@ -18,7 +18,8 @@ import ministriesHiRaw from '@/data/ministries-hi.json';
 const ministriesHi = ministriesHiRaw as Record<string, string>;
 import sdHiRaw from '@/data/scheme-detail-hi.json';
 const cagAuditHi = (sdHiRaw as { cagMap?: Record<string, { findingHi?: string; claimedHi?: string; actualHi?: string }> }).cagMap ?? {};
-import { Navbar } from '@/components/navbar';
+import { PageShell } from '@/components/page-shell';
+import { CtaLink } from '@/components/cta-link';
 
 // ── Month-name translator for Hindi date strings (e.g. "May 2014" → "मई 2014") ──
 const MONTHS_HI: Record<string, string> = {
@@ -55,6 +56,8 @@ import {
   computeIntegrityScore,
 } from '@/lib/scoring';
 import { SchemeCard } from '@/components/scheme-card';
+import { catalogOrLive, STATIC_SCHEMES, STATIC_CATEGORIES, STATIC_CAG_2025 } from '@/lib/static-catalog';
+import { PaginationBar, usePagination } from '@/components/pagination-bar';
 import { Input } from '@/components/ui/input';
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
@@ -1193,6 +1196,8 @@ function MemberAvatar({ name, wikiTitle, size = 'md' }: { name: string; wikiTitl
         src={photoUrl}
         alt={name}
         className={`${dim} rounded-full flex-shrink-0 object-cover object-top border-2 border-border bg-muted`}
+        loading={size === 'lg' ? 'eager' : 'lazy'}
+        decoding="async"
         onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
       />
     );
@@ -1264,7 +1269,7 @@ function AccountabilitySection() {
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const active = ACCOUNTABILITY.find(r => r.key === activeKey) ?? null;
   return (
-    <div className="px-6 py-5 border-b border-border">
+    <div className="px-4 py-4 border-b border-border">
       <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">
         {t('accountabilityRatings')}
       </p>
@@ -1498,7 +1503,7 @@ function PMCabinetSection() {
   const mos = CABINET.filter(m => m.title === 'Minister of State');
 
   return (
-    <div className="px-6 py-5 border-b border-border">
+    <div className="px-4 py-4 border-b border-border">
       <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">
         {t('primeMinister')}
       </p>
@@ -1764,7 +1769,7 @@ function IndicatorsSection() {
   const active = NATIONAL_INDICATORS.find(i => i.key === activeKey) ?? null;
 
   return (
-    <div className="px-6 py-5 border-b border-border">
+    <div className="px-4 py-4 border-b border-border">
       <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">
         {t('nationalIndicators')}
       </p>
@@ -1852,8 +1857,10 @@ function SchemesSection() {
   const [catFilter, setCatFilter] = useState<string>('all');
   const [sevFilter, setSevFilter] = useState<string>('all');
 
-  const { data: schemes = [], isLoading } = useListSchemes({});
-  const { data: categories = [] }         = useListCategories();
+  const { data: schemesData, isLoading } = useListSchemes({});
+  const { data: categoriesData }         = useListCategories();
+  const schemes = catalogOrLive(schemesData, STATIC_SCHEMES);
+  const categories = catalogOrLive(categoriesData, STATIC_CATEGORIES);
 
   const filtered = useMemo(() => {
     return schemes.filter(s => {
@@ -1870,13 +1877,14 @@ function SchemesSection() {
       return true;
     });
   }, [schemes, search, catFilter, sevFilter]);
+  const schemePager = usePagination(filtered, 6, `${search}|${catFilter}|${sevFilter}`);
 
   const critCount = schemes.filter(s => s.worstSeverity === 'critical').length;
   const majCount  = schemes.filter(s => s.worstSeverity === 'major').length;
   const unaudited = schemes.filter(s => !s.worstSeverity).length;
 
   return (
-    <div className="px-6 py-5 border-b border-border">
+    <div className="px-4 py-4 border-b border-border">
       <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">
         {t('centralSchemes')}
       </p>
@@ -1946,22 +1954,25 @@ function SchemesSection() {
             </Select>
           </div>
 
-          {/* Results count */}
-          {(search || catFilter !== 'all' || sevFilter !== 'all') && (
-            <p className="text-[11px] text-muted-foreground mb-3">
-              {filtered.length} of {schemes.length} {t('schemesCount')}
-            </p>
-          )}
-
-          {/* Grid */}
-          {isLoading ? (
+          {isLoading && filtered.length === 0 ? (
             <p className="text-xs text-muted-foreground text-center py-6">{t('loading')}</p>
           ) : filtered.length === 0 ? (
             <p className="text-xs text-muted-foreground text-center py-6">{t('noSchemesMatch')}</p>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {filtered.map(s => <SchemeCard key={s.slug} scheme={s} />)}
-            </div>
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {schemePager.slice.map(s => <SchemeCard key={s.slug} scheme={s} />)}
+              </div>
+              <PaginationBar
+                compact
+                page={schemePager.page}
+                totalPages={schemePager.totalPages}
+                total={schemePager.total}
+                from={schemePager.from}
+                to={schemePager.to}
+                onPageChange={schemePager.setPage}
+              />
+            </>
           )}
         </div>
       )}
@@ -1977,22 +1988,23 @@ function CagSection() {
   const [severityFilter, setSeverityFilter]   = useState<string>('all');
   const [schemeFilter, setSchemeFilter]       = useState('');
 
-  const { data: rawAudits = [], isLoading: loading } = useQuery<LiveCagAudit[]>({
+  const { data: rawAuditsData, isLoading: loading } = useQuery<LiveCagAudit[]>({
     queryKey: ['cag-audits-recent'],
     queryFn: () => fetch('/api/cag-audits?yearFrom=2025').then(r => {
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       return r.json();
     }),
     staleTime: 5 * 60 * 1000,
-    retry: 3,
+    retry: 1,
   });
+  const rawAudits = catalogOrLive<LiveCagAudit>(rawAuditsData, STATIC_CAG_2025 as LiveCagAudit[]);
 
   const audits = useMemo(() => {
     const sevOrder: Record<string, number> = { critical: 0, major: 1, minor: 2 };
-    return [...rawAudits].sort((a, b) =>
-      b.reportYear - a.reportYear ||
-      (sevOrder[a.severity] ?? 3) - (sevOrder[b.severity] ?? 3)
-    );
+    return [...rawAudits].sort((a, b) => {
+      return b.reportYear - a.reportYear ||
+        (sevOrder[a.severity] ?? 3) - (sevOrder[b.severity] ?? 3);
+    });
   }, [rawAudits]);
 
   const filtered = useMemo(() => audits.filter(a => {
@@ -2003,6 +2015,7 @@ function CagSection() {
     }
     return true;
   }), [audits, severityFilter, schemeFilter]);
+  const cagPager = usePagination(filtered, 8, `${severityFilter}|${schemeFilter}`);
 
   const years   = [...new Set(audits.map(a => a.reportYear))].sort((a, b) => b - a);
   const critCount = audits.filter(a => a.severity === 'critical').length;
@@ -2010,7 +2023,7 @@ function CagSection() {
   const minCount  = audits.filter(a => a.severity === 'minor').length;
 
   return (
-    <div className="px-6 py-5">
+    <div className="px-4 py-4">
       <div className="flex items-start justify-between gap-3 mb-4">
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
           {t('cagAuditFindings')}
@@ -2025,7 +2038,7 @@ function CagSection() {
 
       {/* Summary chips */}
       <div className="flex gap-2 flex-wrap mb-4">
-        {loading ? (
+        {loading && audits.length === 0 ? (
           <span className="text-xs text-muted-foreground">{t('loading')}</span>
         ) : (
           <>
@@ -2084,27 +2097,14 @@ function CagSection() {
             </Select>
           </div>
 
-          {(schemeFilter || severityFilter !== 'all') && (
-            <p className="text-[11px] text-muted-foreground mb-3">
-              {filtered.length} of {audits.length} {t('findings')}
-            </p>
-          )}
-
-          {/* Grouped by year */}
-          {loading ? (
+          {loading && audits.length === 0 ? (
             <p className="text-xs text-muted-foreground text-center py-6">{t('loading')}</p>
+          ) : filtered.length === 0 ? (
+            <p className="text-xs text-muted-foreground text-center py-6">{t('noReportsMatch')}</p>
           ) : (
-            <div className="flex flex-col gap-6">
-              {years.map(yr => {
-                const group = filtered.filter(a => a.reportYear === yr);
-                if (group.length === 0) return null;
-                return (
-                  <div key={yr}>
-                    <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">
-                      {yr}
-                    </p>
-                    <div className="flex flex-col gap-2">
-                      {group.map(a => {
+            <>
+            <div className="flex flex-col gap-2">
+                      {cagPager.slice.map(a => {
                         const sev = SEVERITY_META[a.severity];
                         return (
                           <div key={a.id} className={`rounded-lg border px-4 py-3 flex flex-col gap-1.5 ${sev.bg} ${sev.border}`}>
@@ -2114,6 +2114,7 @@ function CagSection() {
                                   <span className={`w-1.5 h-1.5 rounded-full ${sev.dot} flex-shrink-0`} />
                                   {sev.label}
                                 </span>
+                                <span className="text-[10px] text-muted-foreground font-mono tabular-nums">{a.reportYear}</span>
                                 {a.reportNumber && (
                                   <span className="text-[10px] text-muted-foreground font-mono">{t('reportNo')} {a.reportNumber}</span>
                                 )}
@@ -2164,11 +2165,17 @@ function CagSection() {
                           </div>
                         );
                       })}
-                    </div>
-                  </div>
-                );
-              })}
             </div>
+            <PaginationBar
+              compact
+              page={cagPager.page}
+              totalPages={cagPager.totalPages}
+              total={cagPager.total}
+              from={cagPager.from}
+              to={cagPager.to}
+              onPageChange={cagPager.setPage}
+            />
+            </>
           )}
 
           {/* Footer */}
@@ -3909,7 +3916,7 @@ function ManifestoSection() {
   ] as { status: PromiseStatus; count: number }[]).filter(c => c.count > 0);
 
   return (
-    <div className="px-6 py-5 border-t border-border">
+    <div className="px-4 py-4 border-t-0">
       {/* Section header */}
       <div className="flex items-start justify-between gap-3 mb-2">
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
@@ -4241,7 +4248,7 @@ function ManifestoSection() {
 export default function CentralData() {
   const { t } = useTranslation();
   return (
-    <div className="min-h-screen bg-background">
+    <PageShell>
       <SEO
         title="India's Cabinet Accountability Scorecard"
         description="Track India's 72 Union Cabinet ministers — integrity scores, criminal records, asset growth, and CAG audit findings. PIB vs CAG for every major BJP-era scheme."
@@ -4249,47 +4256,60 @@ export default function CentralData() {
         ogImage="/og/default.jpg"
         jsonLd={websiteJsonLd}
       />
-      <Navbar />
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="page-wrap">
 
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-foreground">{t('centralData')}</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            {t('centralDataDescription')}
+        <header className="mb-8 max-w-3xl">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground mb-2">
+            {t('navSubtitle')}
           </p>
-          <p className="text-[11px] text-muted-foreground/60 font-mono mt-1">
+          <h1 className="font-semibold tracking-tight text-foreground">
+            {t('heroTitle')}
+          </h1>
+          <p className="measure mt-3 text-muted-foreground">
+            {t('heroLede')}
+          </p>
+          <div className="mt-5">
+            <CtaLink href="/schemes">{t('heroCta')}</CtaLink>
+          </div>
+          <p className="mt-4 text-xs text-muted-foreground font-mono">
             {t('dataSources')}: ECI affidavits · ADR/myneta.info · NFHS-5 · NCRB · MOSPI · CAG published reports · ASER 2023
           </p>
-        </div>
+        </header>
 
-        {/* Card — same structure as StateFactCard */}
-        <div className="rounded-xl border border-border bg-card overflow-hidden">
-
-          {/* Card header */}
-          <div className="px-6 pt-6 pb-4 border-b border-border flex items-start justify-between gap-4">
-            <div>
-              <h2 className="text-xl font-bold text-foreground">{t('governmentOfIndia')}</h2>
-              <p className="text-sm text-muted-foreground mt-0.5">
-                {t('alliance')}
-              </p>
+        <div className="grid gap-6 xl:grid-cols-12">
+          <div className="panel xl:col-span-7">
+            <div className="px-4 pt-4 pb-3 border-b border-border flex items-start justify-between gap-4">
+              <div>
+                <h2 className="text-lg font-semibold text-foreground">{t('governmentOfIndia')}</h2>
+                <p className="text-xs text-muted-foreground mt-0.5">{t('alliance')}</p>
+              </div>
+              <span className="text-xs font-mono bg-muted text-muted-foreground px-2 py-1 rounded flex-shrink-0">{t('indiaCode')}</span>
             </div>
-            <span className="text-xs font-mono bg-muted text-muted-foreground px-2 py-1 rounded flex-shrink-0">{t('indiaCode')}</span>
+            <PMCabinetSection />
+            <AccountabilitySection />
           </div>
 
-          <PMCabinetSection />
-          <AccountabilitySection />
-          <IndicatorsSection />
-          <SchemesSection />
-          <CagSection />
-          <ManifestoSection />
+          <div className="panel xl:col-span-5">
+            <IndicatorsSection />
+          </div>
 
+          <div className="panel xl:col-span-7">
+            <SchemesSection />
+          </div>
+
+          <div className="panel xl:col-span-5">
+            <CagSection />
+          </div>
+
+          <div className="panel xl:col-span-12">
+            <ManifestoSection />
+          </div>
         </div>
 
-        <p className="text-[10px] text-muted-foreground/40 text-center font-mono mt-4">
+        <p className="text-xs text-muted-foreground font-mono mt-6">
           {t('lastUpdated')}
         </p>
       </div>
-    </div>
+    </PageShell>
   );
 }

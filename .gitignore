@@ -54,17 +54,9 @@ Thumbs.db
 # Runtime / download artefacts
 wget-log
 
-# Uploaded / generated assets (workspace-specific)
-attached_assets/
-
-# Agent memory (Replit-internal, not useful to forks)
-.agents/
-
-# Replit platform
+# Cache
 .cache/
 .local/
-.cursor/rules/nx-rules.mdc
-.github/instructions/nx.instructions.md
 
 # Python
 __pycache__/

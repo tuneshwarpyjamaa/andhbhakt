@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'wouter';
 import { useTranslation } from 'react-i18next';
 import { SEO, ministerJsonLd } from '@/components/seo';
-import { Navbar } from '@/components/navbar';
+import { PageShell } from '@/components/page-shell';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import {
   ArrowLeft, ExternalLink, AlertTriangle, GraduationCap,
   ShieldCheck, ShieldAlert, Calendar, Building2, Users,
@@ -140,8 +141,7 @@ function Section({ title, icon: Icon, children, className = '' }: {
 function NotFound() {
   const { t } = useTranslation();
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <PageShell>
       <div className="max-w-2xl mx-auto px-4 py-20 text-center">
         <Users className="w-12 h-12 mx-auto mb-4 text-muted-foreground/30" />
         <h1 className="text-xl font-semibold text-foreground mb-2">{t('notFoundHeading')}</h1>
@@ -150,7 +150,7 @@ function NotFound() {
           <ArrowLeft className="w-4 h-4" /> {t('backToCentralData')}
         </Link>
       </div>
-    </div>
+    </PageShell>
   );
 }
 
@@ -206,7 +206,7 @@ export default function MinisterProfilePage() {
   const initials = minister.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageShell>
       <SEO
         title={isHi
           ? `${namesHi[minister.name] ?? minister.name} — कैबिनेट मंत्री प्रोफ़ाइल`
@@ -218,16 +218,20 @@ export default function MinisterProfilePage() {
         ogImage="/og/ministers.jpg"
         type="article"
         jsonLd={ministerJsonLd(minister.name, minister.title, params.slug ?? '')}
+        crumbs={[
+          { href: '/', label: t('crumbHome') },
+          { label: isHi ? (namesHi[minister.name] ?? minister.name) : minister.name },
+        ]}
       />
-      <Navbar />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6">
+      <div className="page-wrap max-w-[960px]">
 
-        {/* Back */}
-        <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
-          <ArrowLeft className="w-4 h-4" />
-          {t('navCentralData')}
-        </Link>
+        <Breadcrumbs
+          items={[
+            { href: '/', label: t('crumbHome') },
+            { label: isHi ? (namesHi[minister.name] ?? minister.name) : minister.name },
+          ]}
+        />
 
         {/* ── Hero ── */}
         <div className="rounded-xl border border-border bg-card overflow-hidden mb-5">
@@ -655,6 +659,6 @@ export default function MinisterProfilePage() {
           </Section>
         </div>
       </div>
-    </div>
+    </PageShell>
   );
 }

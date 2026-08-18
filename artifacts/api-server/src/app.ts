@@ -16,7 +16,6 @@ import { verifySessionMiddleware } from "./middlewares/verify-session";
 
 const app: Express = express();
 
-// Trust Replit's reverse-proxy so req.ip and x-forwarded-for are correct
 app.set("trust proxy", 1);
 
 app.use(

@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @plugin "@tailwindcss/typography";
@@ -47,6 +45,14 @@
   --color-chart-4: hsl(var(--chart-4));
   --color-chart-5: hsl(var(--chart-5));
 
+  --color-brand: hsl(var(--brand));
+  --color-brand-foreground: hsl(var(--brand-foreground));
+  --color-meta: hsl(var(--meta-foreground));
+  --color-severity-critical: hsl(var(--severity-critical));
+  --color-severity-major: hsl(var(--severity-major));
+  --color-severity-minor: hsl(var(--severity-minor));
+  --color-status-ok: hsl(var(--status-ok));
+
   --color-sidebar: hsl(var(--sidebar));
   --color-sidebar-foreground: hsl(var(--sidebar-foreground));
   --color-sidebar-border: hsl(var(--sidebar-border));
@@ -75,12 +81,9 @@
 
   --opaque-button-border-intensity: -8;
 
-  --elevate-1: rgba(0, 0, 0, 0.03);
-  --elevate-2: rgba(0, 0, 0, 0.08);
-
-  /* Deep navy base — institutional authority */
-  --background: 210 20% 98%;
-  --foreground: 215 25% 12%;
+  /* Paper + ink — readable civic document */
+  --background: 40 20% 98%;
+  --foreground: 215 28% 10%;
 
   --border: 215 15% 88%;
 
@@ -101,36 +104,53 @@
   --popover-foreground: 215 25% 12%;
   --popover-border: 215 12% 88%;
 
-  /* Saffron accent — civic energy */
-  --primary: 25 95% 53%;
+  /* Brand/structure: ink navy. Saffron is reserved for links/CTAs only. */
+  --brand: 215 35% 16%;
+  --brand-foreground: 0 0% 100%;
+
+  /* Saffron, darkened to ≥4.5:1 on paper — structure accent, not severity */
+  --primary: 24 88% 36%;
   --primary-foreground: 0 0% 100%;
 
   --secondary: 215 20% 92%;
   --secondary-foreground: 215 25% 16%;
 
-  --muted: 215 15% 94%;
-  --muted-foreground: 215 12% 45%;
+  --muted: 40 12% 94%;
+  /* ≥7:1 on paper for metadata / timestamps (WCAG AA at 12px) */
+  --muted-foreground: 215 20% 24%;
+  --meta-foreground: 215 22% 20%;
 
-  --accent: 215 85% 60%;
+  --accent: 215 72% 36%;
   --accent-foreground: 0 0% 100%;
 
-  --destructive: 0 84% 60%;
+  --destructive: 0 72% 38%;
   --destructive-foreground: 0 0% 100%;
 
   --input: 215 15% 85%;
-  --ring: 25 95% 53%;
+  --ring: 215 35% 28%;
 
-  /* Severity colors */
-  --chart-1: 0 84% 60%; /* critical - red */
-  --chart-2: 38 92% 50%; /* major - amber */
-  --chart-3: 48 96% 53%; /* minor - yellow */
-  --chart-4: 142 71% 45%; /* on track - green */
-  --chart-5: 215 15% 70%; /* unaudited - gray */
+  /* Severity palette — red / orange / yellow only. Do not reuse for brand. */
+  --severity-critical: 0 72% 38%;
+  --severity-major: 28 86% 36%;
+  --severity-minor: 42 78% 30%;
+  --status-ok: 152 55% 26%;
 
-  --app-font-sans: 'Space Grotesk', system-ui, sans-serif;
+  --chart-1: 0 72% 38%;
+  --chart-2: 28 86% 36%;
+  --chart-3: 42 78% 30%;
+  --chart-4: 152 55% 26%;
+  --chart-5: 215 12% 38%;
+
+  --type-title: clamp(1.75rem, 1.3rem + 1.5vw, 2.25rem);
+  --type-section: clamp(1.2rem, 1.08rem + 0.5vw, 1.5rem);
+  --type-subhead: 1.0625rem;
+  --type-body: 1rem;
+  --type-meta: 0.8125rem;
+
+  --app-font-sans: 'Inter', system-ui, sans-serif;
   --app-font-serif: Georgia, serif;
-  --app-font-mono: 'IBM Plex Mono', 'Courier New', monospace;
-  --radius: 0.375rem;
+  --app-font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --radius: 0.25rem;
 
   --shadow-2xs: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
   --shadow-xs: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
@@ -203,9 +223,6 @@
 
   --opaque-button-border-intensity: 9;
 
-  --elevate-1: rgba(255, 255, 255, 0.04);
-  --elevate-2: rgba(255, 255, 255, 0.09);
-
   --background: 215 25% 8%;
   --foreground: 210 15% 95%;
 
@@ -228,29 +245,39 @@
   --popover-foreground: 210 15% 95%;
   --popover-border: 215 20% 18%;
 
-  --primary: 25 95% 53%;
-  --primary-foreground: 0 0% 100%;
+  --brand: 210 20% 92%;
+  --brand-foreground: 215 30% 8%;
+
+  --primary: 25 90% 58%;
+  --primary-foreground: 215 30% 8%;
 
   --secondary: 215 20% 18%;
   --secondary-foreground: 210 15% 95%;
 
   --muted: 215 20% 16%;
-  --muted-foreground: 215 12% 60%;
+  /* ≥7:1 on #0f1419 card for 12px meta text */
+  --muted-foreground: 210 14% 78%;
+  --meta-foreground: 210 16% 84%;
 
-  --accent: 215 85% 65%;
+  --accent: 215 80% 72%;
   --accent-foreground: 215 25% 10%;
 
-  --destructive: 0 84% 60%;
+  --destructive: 0 78% 62%;
   --destructive-foreground: 0 0% 100%;
 
   --input: 215 20% 22%;
-  --ring: 25 95% 53%;
+  --ring: 210 20% 80%;
 
-  --chart-1: 0 84% 60%;
-  --chart-2: 38 92% 50%;
-  --chart-3: 48 96% 53%;
-  --chart-4: 142 71% 45%;
-  --chart-5: 215 15% 40%;
+  --severity-critical: 0 78% 62%;
+  --severity-major: 28 90% 58%;
+  --severity-minor: 44 86% 56%;
+  --status-ok: 152 50% 52%;
+
+  --chart-1: 0 78% 62%;
+  --chart-2: 28 90% 58%;
+  --chart-3: 44 86% 56%;
+  --chart-4: 152 50% 52%;
+  --chart-5: 215 12% 62%;
 
   --shadow-2xs: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
   --shadow-xs: 0px 1px 3px 0px rgba(0, 0, 0, 0.4);
@@ -277,12 +304,193 @@
     @apply border-border;
   }
 
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    text-rendering: optimizeLegibility;
+    font-size: var(--type-body);
+    line-height: 1.65;
+  }
+
+  h1 {
+    font-size: var(--type-title);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    color: hsl(var(--foreground));
+  }
+
+  h2 {
+    font-size: var(--type-section);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+    color: hsl(var(--foreground));
+  }
+
+  h3 {
+    font-size: var(--type-subhead);
+    font-weight: 600;
+    line-height: 1.35;
+    color: hsl(var(--foreground));
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
   }
 }
 
 @layer utilities {
+  .page-wrap {
+    width: 100%;
+    max-width: 100rem;
+    margin-inline: auto;
+    padding: 1.25rem 0.85rem 2.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .page-wrap {
+      padding: 1.5rem 1.25rem 3rem;
+    }
+  }
+
+  .page-wrap-prose {
+    width: 100%;
+    max-width: 42rem;
+    margin-inline: auto;
+    padding: 1.75rem 1.25rem 3rem;
+  }
+
+  .measure {
+    max-width: 65ch;
+  }
+
+  .type-title {
+    font-size: var(--type-title);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  .type-section {
+    font-size: var(--type-section);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+
+  .type-subhead {
+    font-size: var(--type-subhead);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .type-body {
+    font-size: var(--type-body);
+    font-weight: 400;
+    line-height: 1.65;
+  }
+
+  .type-meta {
+    font-size: var(--type-meta);
+    font-weight: 500;
+    line-height: 1.45;
+    color: hsl(var(--meta-foreground));
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.35rem;
+    min-height: 2.75rem;
+    padding: 0.35rem 0.5rem;
+    margin-right: -0.35rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: hsl(var(--primary));
+    text-decoration: none;
+  }
+
+  .source-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @keyframes target-flash {
+    from {
+      background-color: hsl(var(--accent) / 0.14);
+    }
+    to {
+      background-color: transparent;
+    }
+  }
+
+  .is-target,
+  article:target {
+    animation: target-flash 1.4s ease;
+  }
+
+  .panel {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    overflow: hidden;
+  }
+
+  .panel > :last-child {
+    border-bottom: 0;
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.6rem 1.15rem;
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    font-weight: 600;
+    font-size: 0.95rem;
+    line-height: 1.2;
+    border: 1px solid hsl(var(--primary-border));
+    text-decoration: none;
+  }
+
+  .cta:hover {
+    filter: brightness(1.06);
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 100;
+    border-radius: 0.375rem;
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
+    padding: 0.5rem 0.875rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .skip-link:focus {
+    top: 0.75rem;
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
   input[type='search']::-webkit-search-cancel-button {
     @apply hidden;
   }
@@ -291,67 +499,5 @@
     content: attr(data-placeholder);
     color: hsl(var(--muted-foreground));
     pointer-events: none;
-  }
-
-  .no-default-hover-elevate {
-  }
-
-  .no-default-active-elevate {
-  }
-
-  .toggle-elevate::before,
-  .toggle-elevate-2::before {
-    content: '';
-    pointer-events: none;
-    position: absolute;
-    inset: 0px;
-    border-radius: inherit;
-    z-index: -1;
-  }
-
-  .toggle-elevate.toggle-elevated::before {
-    background-color: var(--elevate-2);
-  }
-
-  .border.toggle-elevate::before {
-    inset: -1px;
-  }
-
-  .hover-elevate:not(.no-default-hover-elevate),
-  .active-elevate:not(.no-default-active-elevate),
-  .hover-elevate-2:not(.no-default-hover-elevate),
-  .active-elevate-2:not(.no-default-active-elevate) {
-    position: relative;
-    z-index: 0;
-  }
-
-  .hover-elevate:not(.no-default-hover-elevate)::after,
-  .active-elevate:not(.no-default-active-elevate)::after,
-  .hover-elevate-2:not(.no-default-hover-elevate)::after,
-  .active-elevate-2:not(.no-default-active-elevate)::after {
-    content: '';
-    pointer-events: none;
-    position: absolute;
-    inset: 0px;
-    border-radius: inherit;
-    z-index: 999;
-  }
-
-  .hover-elevate:hover:not(.no-default-hover-elevate)::after,
-  .active-elevate:active:not(.no-default-active-elevate)::after {
-    background-color: var(--elevate-1);
-  }
-
-  .hover-elevate-2:hover:not(.no-default-hover-elevate)::after,
-  .active-elevate-2:active:not(.no-default-active-elevate)::after {
-    background-color: var(--elevate-2);
-  }
-
-  .border.hover-elevate:not(.no-hover-interaction-elevate)::after,
-  .border.active-elevate:not(.no-active-interaction-elevate)::after,
-  .border.hover-elevate-2:not(.no-hover-interaction-elevate)::after,
-  .border.active-elevate-2:not(.no-active-interaction-elevate)::after,
-  .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
-    inset: -1px;
   }
 }

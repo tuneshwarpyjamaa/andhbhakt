@@ -56,7 +56,7 @@ See [`.env.example`](.env.example) for the full list. Minimum required:
 | Variable | When | Description |
 |---|---|---|
 | `DATABASE_URL` | Always | PostgreSQL connection string |
-| `PORT` | Always | API server port (Replit sets this automatically) |
+| `PORT` | Always | API server port |
 | `SESSION_SECRET` | Production | 64-char hex — signs session cookies. Generate: `openssl rand -hex 32` |
 | `ADMIN_TOKEN` | Production | Token for `/api/admin/*` routes (`X-Admin-Token` header) |
 | `TURNSTILE_SECRET_KEY` | Production | Cloudflare Turnstile bot-check secret |

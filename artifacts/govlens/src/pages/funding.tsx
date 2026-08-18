@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navbar } from '@/components/navbar';
+import { PageShell, PageHeader } from '@/components/page-shell';
 import { SEO } from '@/components/seo';
 import {
   BONDS_META, PARTY_FUNDING, TOP_DONORS, PARTY_COLOR, PARTY_INCOME_HISTORY,
@@ -245,30 +245,22 @@ export default function Funding() {
   const bjpShare = Math.round((5594 / totalPartyBonds) * 100);
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageShell>
       <SEO
         title="Electoral Bond Funding — Who Funds Which Political Party"
         description="Follow the money in Indian politics — electoral bond data showing which companies funded BJP, Congress, and other parties. Sourced from SBI and Election Commission disclosures."
         path="/funding"
         ogImage="/og/default.jpg"
       />
-      <Navbar />
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="page-wrap space-y-6">
 
-        {/* ── hero header ── */}
         <div>
-          <div className="flex items-start gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center flex-shrink-0">
-              <IndianRupee className="w-5 h-5 text-amber-500" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">{t('pageTitle')}</h1>
-              <p className="text-sm text-muted-foreground mt-0.5">
-                {t('pageSubtitle')}
-              </p>
-            </div>
-          </div>
+          <PageHeader
+            title={t('pageTitle')}
+            description={t('pageSubtitle')}
+            crumbs={[{ href: '/', label: t('crumbHome') }, { label: t('pageTitle') }]}
+          />
 
           {/* SC struck-down banner */}
           <div className="flex gap-3 items-start bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 mt-4">
@@ -786,7 +778,7 @@ export default function Funding() {
           </p>
         </div>
 
-      </main>
-    </div>
+      </div>
+    </PageShell>
   );
 }

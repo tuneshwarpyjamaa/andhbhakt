@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
-import { Navbar } from '@/components/navbar';
+import { PageShell } from '@/components/page-shell';
 import { SEO } from '@/components/seo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -109,15 +109,14 @@ export default function ReportIssue() {
   const descLen = form.watch('description')?.length ?? 0;
 
   return (
-    <div className="min-h-[100dvh] bg-background">
+    <PageShell>
       <SEO
         title={t('reportIssueSeoTitle')}
         description={t('reportIssueSeoDesc')}
         path="/report-issue"
       />
-      <Navbar />
 
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="page-wrap-prose">
 
         {/* Header */}
         <div className="flex items-center gap-3 mb-8">
@@ -299,6 +298,6 @@ export default function ReportIssue() {
           </div>
         )}
       </div>
-    </div>
+    </PageShell>
   );
 }

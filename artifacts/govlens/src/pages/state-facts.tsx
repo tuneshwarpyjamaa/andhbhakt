@@ -127,7 +127,8 @@ const sfHiGroups: Record<string, string> = {
 const hiOr = (isHi: boolean, hi: string | undefined | null, en: string): string =>
   isHi ? (hi || sfHiHeadlines[en] || en) : en;
 import { Link } from 'wouter';
-import { Navbar } from '@/components/navbar';
+import { PageShell, PageHeader } from '@/components/page-shell';
+import { CtaLink } from '@/components/cta-link';
 import {
   BookOpen,
   ChevronDown,
@@ -255,6 +256,8 @@ function Avatar({
         alt={name}
         onError={() => setFailed(true)}
         className={`${dim} rounded-full object-cover object-top flex-shrink-0 border-2 border-border bg-muted`}
+        loading="lazy"
+        decoding="async"
       />
     );
   }
@@ -1148,7 +1151,7 @@ function StateFactCard({ fact }: { fact: StateFact }) {
           onClose={() => setNewGovtOpen(false)}
         />
       )}
-      <div className="rounded-xl border border-border bg-card overflow-hidden">
+      <div className="panel">
 
       {/* ── New Government banner ── */}
       {fact.newGovtYear && (
@@ -1321,7 +1324,7 @@ export default function StateFacts() {
   const selectedFact = STATE_FACTS.find((f) => f.stateCode === selectedCode) ?? STATE_FACTS[0];
 
   return (
-    <div className="min-h-[100dvh] bg-background">
+    <PageShell>
       {isHi && !hiReady && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
           <div className="flex flex-col items-center gap-3">
@@ -1335,51 +1338,63 @@ export default function StateFacts() {
         description={isHi ? "सभी 28 राज्यों और प्रमुख केंद्र शासित प्रदेशों के लिए राज्यवार शासन स्कोर — ईमानदारी, आर्थिक विकास, सामाजिक संकेतक और CAG लेखापरीक्षा निष्कर्ष।" : "State-by-state governance scores for all 28 states and major UTs — integrity, economic growth, social indicators, and CAG audit findings. Data-driven accountability."}
         path="/state-facts"
         ogImage="/og/state-facts.jpg"
+        crumbs={[{ href: '/', label: t('crumbHome') }, { label: t('stateData') }]}
       />
-      <Navbar />
-      <div className="max-w-2xl mx-auto px-4 py-10">
+      <div className="page-wrap">
 
-        {/* Header */}
-        <div className="mb-6 flex items-start justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">{t('stateData')}</h1>
-            <p className="text-sm text-muted-foreground mt-0.5">
-              {t('stateDataSubtitle')}
-            </p>
-          </div>
-          <a
-            href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/rankings`}
-            className="flex-shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-border bg-background text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors mt-0.5"
-          >
-            {t('viewRankings')}
-          </a>
+        <PageHeader
+          title={t('stateData')}
+          description={t('stateDataSubtitle')}
+          crumbs={[{ href: '/', label: t('crumbHome') }, { label: t('stateData') }]}
+          actions={<CtaLink href="/rankings">{t('viewRankings')}</CtaLink>}
+        />
+
+        <div className="grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
+          <aside className="panel lg:sticky lg:top-14 lg:self-start max-h-[calc(100dvh-4.5rem)] overflow-y-auto">
+            <label className="block px-3 pt-3 pb-2 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+              {t('selectState')}
+            </label>
+            <div className="lg:hidden px-3 pb-3">
+              <div className="relative">
+                <select
+                  value={selectedCode}
+                  onChange={(e) => setSelectedCode(e.target.value)}
+                  className="appearance-none w-full pl-3 pr-9 py-2 border border-border bg-background text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer"
+                >
+                  {STATE_FACTS.map((fact) => (
+                    <option key={fact.stateCode} value={fact.stateCode}>
+                      {fact.stateCode} — {isHi ? (stateNamesHi[fact.name] ?? fact.name) : fact.name}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              </div>
+            </div>
+            <nav className="hidden lg:flex flex-col pb-2">
+              {STATE_FACTS.map((fact) => {
+                const active = fact.stateCode === selectedCode;
+                return (
+                  <button
+                    key={fact.stateCode}
+                    type="button"
+                    onClick={() => setSelectedCode(fact.stateCode)}
+                    className={`flex items-center justify-between gap-2 px-3 py-1.5 text-left text-sm transition-colors ${
+                      active
+                        ? 'bg-muted text-foreground font-medium'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                    }`}
+                  >
+                    <span className="truncate">{isHi ? (stateNamesHi[fact.name] ?? fact.name) : fact.name}</span>
+                    <span className="font-mono text-[10px] opacity-60">{fact.stateCode}</span>
+                  </button>
+                );
+              })}
+            </nav>
+          </aside>
+          <StateFactCard key={selectedFact.stateCode} fact={selectedFact} />
         </div>
-
-        {/* State selector */}
-        <div className="mb-6">
-          <label className="block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">
-            {t('selectState')}
-          </label>
-          <div className="relative inline-flex items-center w-full sm:w-72">
-            <select
-              value={selectedCode}
-              onChange={(e) => setSelectedCode(e.target.value)}
-              className="appearance-none w-full pl-4 pr-10 py-2.5 rounded-xl border border-border bg-background text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer transition-colors"
-            >
-              {STATE_FACTS.map((fact) => (
-                <option key={fact.stateCode} value={fact.stateCode}>
-                  {fact.stateCode} — {isHi ? (stateNamesHi[fact.name] ?? fact.name) : fact.name}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="pointer-events-none absolute right-3 w-4 h-4 text-muted-foreground" />
-          </div>
-        </div>
-
-        {/* Selected state card */}
-        <StateFactCard key={selectedFact.stateCode} fact={selectedFact} />
 
       </div>
-    </div>
+    </PageShell>
   );
 }

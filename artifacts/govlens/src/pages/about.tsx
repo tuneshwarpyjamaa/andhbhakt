@@ -1,22 +1,27 @@
-import { Navbar } from '@/components/navbar';
-import { FileText, AlertTriangle, Scale, Target } from 'lucide-react';
+import { PageShell } from '@/components/page-shell';
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import { CtaLink } from '@/components/cta-link';
+import { FileText, AlertTriangle, Scale } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { SEO } from '@/components/seo';
 
 export default function About() {
   const { t } = useTranslation();
   return (
-    <div className="min-h-[100dvh] bg-background">
+    <PageShell>
       <SEO
         title="About AndhBhakt.org — India's Government Accountability Tracker"
         description="AndhBhakt.org tracks what the Indian government claims vs what CAG audits actually find. Independent, data-driven journalism on minister integrity and scheme performance."
         path="/about"
         ogImage="/og/default.jpg"
       />
-      <Navbar />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-4xl font-bold text-foreground mb-6">{t('aboutTitle')}</h1>
+      <div className="page-wrap-prose">
+        <Breadcrumbs items={[{ href: '/', label: t('crumbHome') }, { label: t('aboutTitle') }]} />
+        <h1 className="font-semibold tracking-tight text-foreground mb-3">{t('aboutTitle')}</h1>
+        <div className="mb-8">
+          <CtaLink href="/schemes">{t('heroCta')}</CtaLink>
+        </div>
 
         <div className="prose prose-sm max-w-none space-y-8">
           <section className="bg-card border border-card-border rounded-lg p-6">
@@ -41,8 +46,8 @@ export default function About() {
 
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-                    <AlertTriangle className="w-5 h-5 text-red-600" />
+                  <div className="w-10 h-10 bg-red-100 dark:bg-red-950/40 rounded-lg flex items-center justify-center">
+                    <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
                   </div>
                   <h3 className="text-lg font-semibold text-foreground">{t('aboutCagTitle')}</h3>
                 </div>
@@ -153,6 +158,6 @@ export default function About() {
           </section>
         </div>
       </div>
-    </div>
+    </PageShell>
   );
 }

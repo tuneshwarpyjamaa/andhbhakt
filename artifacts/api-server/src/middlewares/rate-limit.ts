@@ -5,7 +5,6 @@
  *  - Global  : 200 req / 1 min per IP  (all /api routes, including GETs)
  *  - Write   : 30  req / 1 min per IP  (POST / PATCH / PUT / DELETE only)
  *  - Session : 10  req / 1 min per IP  (POST /api/session/verify — Turnstile)
- *  - Refresh : 10  req / 1 hr  per IP  (AI-powered /refresh endpoint)
  *
  * Blocked IPs receive 403 immediately and are never forwarded.
  */
@@ -29,7 +28,7 @@ const BLOCKED_IPS = new Set<string>([
 /**
  * Extract the real client IP.
  * Priority: CF-Connecting-IP (set by Cloudflare, cannot be spoofed)
- *           → X-Forwarded-For first hop (Replit proxy)
+ *           → X-Forwarded-For first hop
  *           → socket remote address
  */
 function clientIp(req: Request): string {
@@ -52,7 +51,7 @@ function clientIp(req: Request): string {
 //
 // Two-layer check in production:
 //  1. X-CF-Origin-Secret — a random token set ONLY by a Cloudflare Transform
-//     Rule. Attackers hitting Replit directly won't know this value.
+//     Rule. Attackers hitting the origin directly won't know this value.
 //  2. CF-Connecting-IP  — fallback: Cloudflare always injects this; direct
 //     hits typically won't have it (belt-and-suspenders).
 //
@@ -67,13 +66,9 @@ export function cloudflareOnlyMiddleware(
 ): void {
   if (process.env.NODE_ENV !== "production") { next(); return; }
 
-  // Health checks come from Replit's infra without CF headers — allow them
   if (req.path === "/api/healthz") { next(); return; }
 
-  // Replit's deployment proxy forwards external traffic to us on localhost:8080.
-  // It strips custom X- headers, so requests that entered via Cloudflare arrive
-  // here from 127.0.0.1 with no origin-secret header. Port 8080 is not
-  // externally reachable, so localhost is always Replit's own proxy — safe.
+  // Reverse-proxy / health checks on loopback skip the Cloudflare header check.
   const remoteAddr = req.socket?.remoteAddress ?? "";
   if (remoteAddr === "127.0.0.1" || remoteAddr === "::ffff:127.0.0.1" || remoteAddr === "::1") {
     next(); return;
@@ -163,15 +158,6 @@ export const writeLimiter = rateLimit({
 export const sessionLimiter = rateLimit({
   ...sharedOptions,
   windowMs: 60_000,
-  limit: 10,
-});
-
-// ---------------------------------------------------------------------------
-// Refresh limiter — AI-powered endpoint is expensive; cap hard
-// ---------------------------------------------------------------------------
-export const refreshLimiter = rateLimit({
-  ...sharedOptions,
-  windowMs: 60 * 60_000,   // 1 hour
   limit: 10,
 });
 

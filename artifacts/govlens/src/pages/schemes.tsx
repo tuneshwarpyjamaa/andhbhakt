@@ -1,15 +1,18 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SEO } from '@/components/seo';
 import { useListSchemes, useListCategories, useListMinistries, getListSchemesQueryKey } from '@workspace/api-client-react';
-import { Navbar } from '@/components/navbar';
+import { PageShell, PageHeader } from '@/components/page-shell';
 import { SchemeCard } from '@/components/scheme-card';
+import { PaginationBar, usePagination } from '@/components/pagination-bar';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Filter } from 'lucide-react';
+import { catalogOrLive, STATIC_SCHEMES, STATIC_CATEGORIES, STATIC_MINISTRIES } from '@/lib/static-catalog';
 import namesHiRaw from '@/data/ministries-hi.json';
 
 const namesHi = namesHiRaw as Record<string, string>;
+const PAGE_SIZE = 12;
 
 export default function Schemes() {
   const { t, i18n } = useTranslation();
@@ -19,30 +22,51 @@ export default function Schemes() {
   const [ministry, setMinistry] = useState<string | undefined>();
   const [severity, setSeverity] = useState<string | undefined>();
 
-  const { data: schemes, isLoading } = useListSchemes(
+  const { data: schemesData, isLoading } = useListSchemes(
     { search, categoryId, ministry, severity },
     { query: { queryKey: getListSchemesQueryKey({ search, categoryId, ministry, severity }) } }
   );
-  const { data: categories } = useListCategories();
-  const { data: ministries } = useListMinistries();
+  const { data: categoriesData } = useListCategories();
+  const { data: ministriesData } = useListMinistries();
+  const schemes = catalogOrLive(schemesData, STATIC_SCHEMES);
+  const categories = catalogOrLive(categoriesData, STATIC_CATEGORIES);
+  const ministries = catalogOrLive(ministriesData, STATIC_MINISTRIES);
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return schemes.filter((s) => {
+      if (categoryId !== undefined && s.categoryId !== categoryId) return false;
+      if (ministry && s.ministry !== ministry) return false;
+      if (severity && s.worstSeverity !== severity) return false;
+      if (!q) return true;
+      return (
+        s.name.toLowerCase().includes(q) ||
+        s.ministry.toLowerCase().includes(q) ||
+        (s.description ?? '').toLowerCase().includes(q) ||
+        (s.renamedFrom ?? '').toLowerCase().includes(q)
+      );
+    });
+  }, [schemes, search, categoryId, ministry, severity]);
+
+  const resetKey = `${search}|${categoryId ?? ''}|${ministry ?? ''}|${severity ?? ''}`;
+  const pager = usePagination(filtered, PAGE_SIZE, resetKey);
 
   return (
-    <div className="min-h-[100dvh] bg-background">
+    <PageShell>
       <SEO
         title="Government Scheme Reality Check — PIB Claims vs CAG Findings"
         description="Compare Indian government press releases against Comptroller and Auditor General audit findings for 55+ BJP-era Union schemes. Evidence-based accountability."
         path="/schemes"
         ogImage="/og/schemes.jpg"
+        crumbs={[{ href: '/', label: t('crumbHome') }, { label: t('pageHeading') }]}
       />
-      <Navbar />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">{t('pageHeading')}</h1>
-          <p className="text-muted-foreground">
-            {t('pageDescription')}
-          </p>
-        </div>
+      <div className="page-wrap">
+        <PageHeader
+          title={t('pageHeading')}
+          description={t('pageDescription')}
+          crumbs={[{ href: '/', label: t('crumbHome') }, { label: t('pageHeading') }]}
+        />
 
         {/* Filters */}
         <div className="bg-card border border-card-border rounded-lg p-4 mb-6">
@@ -101,8 +125,8 @@ export default function Schemes() {
         </div>
 
         {/* Results */}
-        {isLoading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {isLoading && schemes.length === 0 ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
             {[...Array(9)].map((_, i) => (
               <div key={i} className="bg-card border border-card-border rounded-lg p-4 animate-pulse">
                 <div className="h-4 bg-muted rounded w-3/4 mb-3"></div>
@@ -111,16 +135,24 @@ export default function Schemes() {
               </div>
             ))}
           </div>
-        ) : schemes && schemes.length > 0 ? (
+        ) : filtered.length > 0 ? (
           <>
-            <div className="mb-4 text-sm text-muted-foreground">
-              {t('foundCountPrefix')} {schemes.length} {t('schemeSingular')}{schemes.length !== 1 ? t('schemePluralSuffix') : ''}
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {schemes.map((scheme) => (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+              {pager.slice.map((scheme) => (
                 <SchemeCard key={scheme.id} scheme={scheme} />
               ))}
             </div>
+            <PaginationBar
+              page={pager.page}
+              totalPages={pager.totalPages}
+              total={pager.total}
+              from={pager.from}
+              to={pager.to}
+              onPageChange={(p) => {
+                pager.setPage(p);
+                document.getElementById('main-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+            />
           </>
         ) : (
           <div className="text-center py-16">
@@ -132,6 +164,6 @@ export default function Schemes() {
           </div>
         )}
       </div>
-    </div>
+    </PageShell>
   );
 }

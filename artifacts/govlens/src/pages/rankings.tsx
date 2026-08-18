@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Navbar } from '@/components/navbar';
+import { PageShell, PageHeader } from '@/components/page-shell';
 import { SEO } from '@/components/seo';
 import { STATE_FACTS } from '@/data/state-facts-data';
 import { Link } from 'wouter';
-import { ArrowLeft, TrendingUp, GraduationCap, Briefcase, HeartPulse, ShieldCheck, Leaf, Eye, Scale, Users, ChevronUp, ChevronDown as ChevronDownIcon } from 'lucide-react';
+import { TrendingUp, GraduationCap, Briefcase, HeartPulse, ShieldCheck, Leaf, Eye, Scale, Users, ChevronUp, ChevronDown as ChevronDownIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import stateNamesHiRaw from '@/data/state-names-hi.json';
 const stateNamesHi = stateNamesHiRaw as Record<string, string>;
@@ -84,27 +84,24 @@ export default function Rankings() {
   const indicatorKeys: CategoryKey[] = ['economy', 'education', 'employment', 'health', 'safety', 'environment'];
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageShell>
       <SEO
         title={isHi ? "भारत राज्य रैंकिंग — शासन, अर्थव्यवस्था और सामाजिक स्कोर" : "India State Rankings — Governance, Economy & Social Scores"}
         description={isHi ? "सभी भारतीय राज्यों की शासन, पारदर्शिता, अर्थव्यवस्था, शिक्षा, स्वास्थ्य, रोजगार और पर्यावरण स्कोर के आधार पर रैंकिंग।" : "Ranked list of all Indian states by governance, transparency, economy, education, health, employment, and environment scores. State-by-state accountability data."}
         path="/rankings"
         ogImage="/og/state-facts.jpg"
       />
-      <Navbar />
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="page-wrap">
 
-        {/* Header */}
-        <div className="mb-6">
-          <Link href="/state-facts" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors mb-3">
-            <ArrowLeft className="w-3.5 h-3.5" />
-            {t('rankingsBack')}
-          </Link>
-          <h1 className="text-2xl font-bold text-foreground">{t('rankingsTitle')}</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            {t('rankingsDesc', { count: rows.length })}
-          </p>
-        </div>
+        <PageHeader
+          title={t('rankingsTitle')}
+          description={t('rankingsDesc', { count: rows.length })}
+          crumbs={[
+            { href: '/', label: t('crumbHome') },
+            { href: '/state-facts', label: t('stateData') },
+            { label: t('rankingsTitle') },
+          ]}
+        />
 
         {/* Category tabs */}
         <div className="mb-5 space-y-2">
@@ -241,6 +238,6 @@ export default function Rankings() {
         </div>
 
       </div>
-    </div>
+    </PageShell>
   );
 }

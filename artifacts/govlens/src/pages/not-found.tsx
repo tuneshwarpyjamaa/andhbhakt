@@ -1,27 +1,58 @@
-import { Navbar } from '@/components/navbar';
+import { PageShell } from '@/components/page-shell';
+import { CtaLink } from '@/components/cta-link';
+import { SEO } from '@/components/seo';
 import { Link } from 'wouter';
-import { AlertCircle, ArrowLeft } from 'lucide-react';
+import { FileSearch, BookOpen, FileText } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function NotFound() {
   const { t } = useTranslation();
   return (
-    <div className="min-h-[100dvh] bg-background">
-      <Navbar />
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-24 text-center">
-        <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-6" />
-        <h1 className="text-4xl font-bold text-foreground mb-3">{t('notFoundTitle')}</h1>
-        <p className="text-muted-foreground mb-8">
+    <PageShell>
+      <SEO
+        title={t('notFoundTitle')}
+        description={t('notFoundDesc')}
+        path="/404"
+        noindex
+      />
+      <div className="page-wrap-prose py-16 sm:py-24">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground mb-3">
+          404
+        </p>
+        <h1 className="font-semibold tracking-tight text-foreground">{t('notFoundTitle')}</h1>
+        <p className="measure mt-3 text-muted-foreground">
           {t('notFoundDesc')}
         </p>
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-md font-semibold hover:opacity-90 transition-opacity"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          {t('notFoundBack')}
-        </Link>
+        <p className="measure mt-2 text-muted-foreground">
+          {t('notFoundHelp')}
+        </p>
+        <div className="mt-6">
+          <CtaLink href="/">{t('notFoundBack')}</CtaLink>
+        </div>
+        <ul className="mt-10 grid gap-3 sm:grid-cols-3">
+          <li>
+            <Link href="/schemes" className="flex flex-col gap-1 panel p-4 h-full hover:bg-muted/40 transition-colors">
+              <FileSearch className="w-4 h-4 text-primary" />
+              <span className="font-medium text-sm text-foreground">{t('navCentralSchemes')}</span>
+              <span className="text-xs text-muted-foreground">{t('notFoundSchemes')}</span>
+            </Link>
+          </li>
+          <li>
+            <Link href="/reports" className="flex flex-col gap-1 panel p-4 h-full hover:bg-muted/40 transition-colors">
+              <FileText className="w-4 h-4 text-primary" />
+              <span className="font-medium text-sm text-foreground">{t('navCagReports')}</span>
+              <span className="text-xs text-muted-foreground">{t('notFoundReports')}</span>
+            </Link>
+          </li>
+          <li>
+            <Link href="/state-facts" className="flex flex-col gap-1 panel p-4 h-full hover:bg-muted/40 transition-colors">
+              <BookOpen className="w-4 h-4 text-primary" />
+              <span className="font-medium text-sm text-foreground">{t('navStateData')}</span>
+              <span className="text-xs text-muted-foreground">{t('notFoundStates')}</span>
+            </Link>
+          </li>
+        </ul>
       </div>
-    </div>
+    </PageShell>
   );
 }

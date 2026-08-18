@@ -1,24 +1,23 @@
-import { Navbar } from '@/components/navbar';
+import { PageShell } from '@/components/page-shell';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { SEO } from '@/components/seo';
 import { Link } from 'wouter';
-import { ArrowLeft, Scale } from 'lucide-react';
+import { Scale } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function TermsOfUse() {
   const { t } = useTranslation();
   return (
-    <div className="min-h-screen bg-background">
-      <SEO title={t('termsSeoTitle')} description={t('termsSeoDesc')} path="/terms" />
-      <Navbar />
+    <PageShell>
+      <SEO
+        title={t('termsSeoTitle')}
+        description={t('termsSeoDesc')}
+        path="/terms"
+        crumbs={[{ href: '/', label: t('crumbHome') }, { label: t('termsTitle') }]}
+      />
 
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-8 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          {t('termsBack')}
-        </Link>
+      <div className="page-wrap-prose">
+        <Breadcrumbs items={[{ href: '/', label: t('crumbHome') }, { label: t('termsTitle') }]} />
 
         <div className="flex items-center gap-3 mb-8">
           <Scale className="w-6 h-6 text-primary flex-shrink-0" />
@@ -115,6 +114,6 @@ export default function TermsOfUse() {
           </Link>
         </div>
       </div>
-    </div>
+    </PageShell>
   );
 }

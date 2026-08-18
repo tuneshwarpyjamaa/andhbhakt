@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Navbar } from '@/components/navbar';
+import { PageShell } from '@/components/page-shell';
 import { useState } from 'react';
 import { SEO } from '@/components/seo';
 import { TrendingUp, TrendingDown, Minus, ExternalLink, AlertCircle } from 'lucide-react';
@@ -739,34 +739,32 @@ export default function DevelopmentIndex() {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-background">
+    <PageShell>
       <SEO
         title="India's Global Development Rankings 2025"
         description="India's standing across 30 international indices — Human Development, Press Freedom, Hunger, Corruption, Climate, and more. Ranked with sources and trend data."
         path="/development-index"
         ogImage="/og/development-index.jpg"
       />
-      <Navbar />
 
       {/* Header */}
       <div className="border-b border-border bg-card/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <h1 className="text-3xl font-bold text-foreground mb-3">{t('navDevelopmentIndex')}</h1>
-          <p className="text-muted-foreground max-w-2xl leading-relaxed">
+        <div className="page-wrap !pb-6">
+          <h1 className="text-2xl font-semibold text-foreground mb-1">{t('navDevelopmentIndex')}</h1>
+          <p className="text-sm text-muted-foreground leading-snug">
             {t('intro')}
           </p>
 
-          {/* Summary pills */}
-          <div className="flex flex-wrap gap-4 mt-8">
-            <div className="bg-red-500/10 border border-red-500/20 rounded-lg px-5 py-3">
+          <div className="flex flex-wrap gap-2 mt-4">
+            <div className="bg-red-500/10 border border-red-500/20 px-4 py-2">
               <div className="text-2xl font-bold text-red-500">{bottomQuartile}</div>
               <div className="text-xs text-muted-foreground mt-0.5">{t('bottomQuartileLabel')}</div>
             </div>
-            <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg px-5 py-3">
+            <div className="bg-yellow-500/10 border border-yellow-500/20 px-4 py-2">
               <div className="text-2xl font-bold text-yellow-500">{topHalf}</div>
               <div className="text-xs text-muted-foreground mt-0.5">{t('topHalfLabel')}</div>
             </div>
-            <div className="bg-muted border border-border rounded-lg px-5 py-3">
+            <div className="bg-muted border border-border px-4 py-2">
               <div className="text-2xl font-bold text-foreground">30</div>
               <div className="text-xs text-muted-foreground mt-0.5">{t('trackedLabel')}</div>
             </div>
@@ -774,9 +772,9 @@ export default function DevelopmentIndex() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="page-wrap !pt-4">
         {/* Category filter */}
-        <div className="flex flex-wrap gap-2 mb-8">
+        <div className="flex flex-wrap gap-2 mb-4">
           {CATEGORIES.map(cat => (
             <button
               key={cat}
@@ -793,7 +791,7 @@ export default function DevelopmentIndex() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
           {filtered.map(entry => {
             const TrendIcon = entry.trend === 'up' ? TrendingUp : entry.trend === 'down' ? TrendingDown : Minus;
             const trendColor = entry.trend === 'up' ? 'text-emerald-500' : entry.trend === 'down' ? 'text-red-400' : 'text-muted-foreground';
@@ -898,6 +896,6 @@ export default function DevelopmentIndex() {
           {t('methodology')}
         </p>
       </div>
-    </div>
+    </PageShell>
   );
 }

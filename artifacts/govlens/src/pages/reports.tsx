@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Navbar } from '@/components/navbar';
+import { PageShell, PageHeader } from '@/components/page-shell';
 import { useState, useMemo, useEffect } from 'react';
 import { SEO } from '@/components/seo';
 import {
@@ -10,6 +10,7 @@ import {
 // Total report count — hardcoded so the header shows immediately before data loads
 const TOTAL_REPORTS = 1808;
 import { Search, ExternalLink, Download, Filter, X, ChevronDown, ChevronUp, FileText } from 'lucide-react';
+import { PaginationBar } from '@/components/pagination-bar';
 import stateNamesHiRaw from '@/data/state-names-hi.json';
 const stateNamesHi = stateNamesHiRaw as Record<string, string>;
 import ministryNamesHiRaw from '@/data/ministry-names-hi.json';
@@ -474,24 +475,26 @@ export default function Reports() {
   const clearAll = () => { setLevel(''); setState(''); setCategory(''); setYear(''); setSeverity(''); setSearch(''); setPage(1); };
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageShell>
       <SEO
         title={isHi ? "CAG लेखापरीक्षा रिपोर्ट डेटाबेस — 1,800+ रिपोर्टें" : "CAG Audit Reports Database — 1,800+ Reports"}
         description={isHi ? "केंद्र सरकार की योजनाओं और मंत्रालयों पर 1,800+ CAG लेखापरीक्षा रिपोर्टें। राज्य, वर्ष, श्रेणी और गंभीरता के अनुसार फ़िल्टर करें।" : "1,800+ CAG audit reports on Union Government schemes and ministries. Filter by state, year, category, and severity."}
         path="/reports"
         ogImage="/og/reports.jpg"
+        crumbs={[{ href: '/', label: t('crumbHome') }, { label: t('cagPageTitle') }]}
       />
-      <Navbar />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Page header */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-foreground mb-1">{t('cagPageTitle')}</h1>
-          <p className="text-muted-foreground max-w-2xl">
-            {t('descriptionIntro')}
-            {' '}<span className="font-medium text-foreground">{TOTAL_REPORTS.toLocaleString()}</span>{' '}{t('descriptionOutro')}
-          </p>
-        </div>
+      <div className="page-wrap">
+        <PageHeader
+          title={t('cagPageTitle')}
+          description={
+            <>
+              {t('descriptionIntro')}
+              {' '}<span className="font-medium text-foreground">{TOTAL_REPORTS.toLocaleString()}</span>{' '}{t('descriptionOutro')}
+            </>
+          }
+          crumbs={[{ href: '/', label: t('crumbHome') }, { label: t('cagPageTitle') }]}
+        />
 
         {/* Search + filter toggle */}
         <div className="flex gap-3 mb-4">
@@ -583,7 +586,6 @@ export default function Reports() {
         <div className="flex items-center justify-between mb-5">
           <p className="text-sm text-muted-foreground">
             {t('showing')} <span className="font-semibold text-foreground">{filtered.length}</span>{filtered.length < TOTAL_REPORTS ? <> {t('of')} {TOTAL_REPORTS}</> : ''} {t('reports')}
-            {totalPages > 1 && <span className="ml-2 text-muted-foreground/60">· {t('page')} {page}/{totalPages}</span>}
           </p>
           {/* Summary stats */}
           <div className="hidden sm:flex items-center gap-4 text-xs text-muted-foreground">
@@ -621,50 +623,20 @@ export default function Reports() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {paginated.map(r => <ReportCard key={r.id} report={r} cagHiMap={cagHiMap} />)}
             </div>
-
-            {/* Pagination controls */}
-            {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-3 mt-8">
-                <button
-                  onClick={() => { setPage(p => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                  disabled={page === 1}
-                  className="px-4 py-2 rounded-lg border border-border bg-background text-sm font-medium text-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                >
-                  ← {t('previous') ?? 'Previous'}
-                </button>
-                <div className="flex items-center gap-1.5">
-                  {Array.from({ length: Math.min(7, totalPages) }, (_, i) => {
-                    let p: number;
-                    if (totalPages <= 7) { p = i + 1; }
-                    else if (page <= 4) { p = i + 1; if (i === 6) p = totalPages; }
-                    else if (page >= totalPages - 3) { p = totalPages - 6 + i; if (i === 0) p = 1; }
-                    else { p = [1, page - 2, page - 1, page, page + 1, page + 2, totalPages][i]; }
-                    const isEllipsis = (i === 1 && p !== 2) || (i === 5 && p !== totalPages - 1);
-                    return isEllipsis ? (
-                      <span key={i} className="w-8 text-center text-muted-foreground text-sm">…</span>
-                    ) : (
-                      <button
-                        key={i}
-                        onClick={() => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                        className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${p === page ? 'bg-primary text-primary-foreground' : 'border border-border bg-background text-foreground hover:bg-muted'}`}
-                      >
-                        {p}
-                      </button>
-                    );
-                  })}
-                </div>
-                <button
-                  onClick={() => { setPage(p => Math.min(totalPages, p + 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                  disabled={page === totalPages}
-                  className="px-4 py-2 rounded-lg border border-border bg-background text-sm font-medium text-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                >
-                  {t('next') ?? 'Next'} →
-                </button>
-              </div>
-            )}
+            <PaginationBar
+              page={page}
+              totalPages={totalPages}
+              total={filtered.length}
+              from={filtered.length === 0 ? 0 : (page - 1) * PAGE_SIZE + 1}
+              to={Math.min(page * PAGE_SIZE, filtered.length)}
+              onPageChange={(p) => {
+                setPage(p);
+                document.getElementById('main-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+            />
           </>
         )}
       </div>
-    </div>
+    </PageShell>
   );
 }
