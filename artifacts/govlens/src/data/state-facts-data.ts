@@ -146,10 +146,8 @@ export interface StateFact {
   manifestos?: StateManifesto[];
 }
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
-
-
-// ─── Data ─────────────────────────────────────────────────────────────────────
+// Slim ranking scores live in state-facts-scores.json (regenerate with
+// `node scripts/extract-state-fact-scores.mjs` after score edits).
 
 export const STATE_FACTS: StateFact[] = [
   {

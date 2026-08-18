@@ -20,26 +20,32 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, 'dist/public'),
     emptyOutDir: true,
-    chunkSizeWarningLimit: 1000,
+    target: 'es2022',
+    minify: 'esbuild',
+    cssMinify: true,
+    sourcemap: false,
+    reportCompressedSize: true,
+    assetsInlineLimit: 4096,
+    chunkSizeWarningLimit: 600,
+    modulePreload: { polyfill: false },
     rollupOptions: {
       output: {
         manualChunks(id: string) {
-          // Each huge data file gets its own async chunk
-          if (id.includes('cag-reports-hi.json'))  return 'data-cag-hi';
-          if (id.includes('state-facts-hi'))        return 'data-sf-hi';
-          if (id.includes('cag-catalogue.json'))    return 'data-cag-catalogue';
-          if (id.includes('cag-reports.ts') || id.includes('cag-reports/'))
-                                                    return 'data-cag';
+          if (id.includes('cag-reports-hi.json')) return 'data-cag-hi';
+          if (id.includes('state-facts-hi')) return 'data-sf-hi';
+          if (id.includes('cag-reports-data.json') || id.includes('cag-reports.ts'))
+            return 'data-cag';
+          if (id.includes('state-facts-data')) return 'data-state-facts';
+          if (id.includes('state-facts-scores')) return 'data-state-scores';
           // Vendor splitting — ALL React-dependent packages must be co-located
           // with react-dom/scheduler to guarantee initialisation order.
           // Separate chunks cause "Cannot set properties of undefined" crashes.
           if (id.includes('node_modules')) {
             if (id.includes('recharts') || id.includes('d3-') || id.includes('victory'))
-                                                    return 'vendor-charts';
-            if (id.includes('i18next'))             return 'vendor-i18n';
-            if (id.includes('@tanstack'))           return 'vendor-query';
-            // Everything else in node_modules goes into vendor-react to ensure
-            // React initialises before any library that depends on it
+              return 'vendor-charts';
+            if (id.includes('i18next')) return 'vendor-i18n';
+            if (id.includes('@tanstack')) return 'vendor-query';
+            if (id.includes('lucide-react')) return 'vendor-icons';
             return 'vendor-react';
           }
         },

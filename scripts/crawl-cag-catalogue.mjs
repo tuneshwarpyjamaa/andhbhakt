@@ -2,7 +2,7 @@
 /**
  * CAG Report Catalogue Crawler
  * Scrapes all ~1,376 reports from cag.gov.in/en/audit-report (pages 0-275)
- * Output: artifacts/govlens/src/data/cag-catalogue.json
+ * Output: scripts/data/cag-catalogue.json
  *
  * Usage:
  *   node scripts/crawl-cag-catalogue.mjs           # listing pages only (~3 min)
@@ -14,7 +14,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
-const OUT = join(__dir, '../artifacts/govlens/src/data/cag-catalogue.json');
+const OUT = join(__dir, 'data/cag-catalogue.json');
 const EXISTING_DATA = join(__dir, '../artifacts/govlens/src/data/cag-reports.ts');
 
 const BASE = 'https://cag.gov.in';

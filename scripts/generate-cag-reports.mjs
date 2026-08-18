@@ -33,7 +33,7 @@ import OpenAI from 'openai';
 const __dir   = dirname(fileURLToPath(import.meta.url));
 const ROOT    = join(__dir, '..');
 const REPORTS = join(ROOT, 'artifacts/govlens/src/data/cag-reports.ts');
-const CAT     = join(ROOT, 'artifacts/govlens/src/data/cag-catalogue.json');
+const CAT     = join(ROOT, 'scripts/data/cag-catalogue.json');
 const BACKUP  = '/tmp/cag-reports.backup.ts';
 const PROG    = '/tmp/cag-gen-progress.json';
 const PDF_TMP = '/tmp/cag-pdf-current.pdf';

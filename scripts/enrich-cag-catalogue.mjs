@@ -14,7 +14,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
-const CATALOGUE = join(__dir, '../artifacts/govlens/src/data/cag-catalogue.json');
+const CATALOGUE = join(__dir, 'data/cag-catalogue.json');
 const EXISTING  = join(__dir, '../artifacts/govlens/src/data/cag-reports.ts');
 
 const CONCURRENCY = 12;

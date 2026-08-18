@@ -16,7 +16,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
-const CATALOGUE = join(__dir, '../artifacts/govlens/src/data/cag-catalogue.json');
+const CATALOGUE = join(__dir, 'data/cag-catalogue.json');
 
 const args = process.argv.slice(2);
 const getArg = (flag) => { const i = args.indexOf(flag); return i >= 0 ? args[i+1] : null; };

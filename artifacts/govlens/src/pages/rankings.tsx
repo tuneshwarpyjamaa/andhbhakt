@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { PageShell, PageHeader } from '@/components/page-shell';
 import { SEO } from '@/components/seo';
-import { STATE_FACTS } from '@/data/state-facts-data';
+import { STATE_FACT_SCORES, type StateFactScoreRow } from '@/data/state-facts-scores';
 import { Link } from 'wouter';
 import { TrendingUp, GraduationCap, Briefcase, HeartPulse, ShieldCheck, Leaf, Eye, Scale, Users, ChevronUp, ChevronDown as ChevronDownIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -24,16 +24,12 @@ const CATEGORIES = [
 
 type CategoryKey = typeof CATEGORIES[number]['key'];
 
-function getScore(stateCode: string, key: CategoryKey): number | null {
-  const fact = STATE_FACTS.find(f => f.stateCode === stateCode);
-  if (!fact) return null;
-
+function getScore(fact: StateFactScoreRow, key: CategoryKey): number | null {
   const cat = CATEGORIES.find(c => c.key === key)!;
   if (cat.group === 'accountability') {
-    return fact.accountabilityRatings.find(r => r.key === key)?.score ?? null;
-  } else {
-    return fact.indicators.find(i => i.key === key)?.score ?? null;
+    return fact.accountability[key] ?? null;
   }
+  return fact.indicators[key] ?? null;
 }
 
 function scoreColor(score: number) {
@@ -73,8 +69,8 @@ export default function Rankings() {
   const activeCat = CATEGORIES.find(c => c.key === activeKey)!;
   const activeCatLabel = t(activeCat.labelKey);
 
-  const rows = STATE_FACTS
-    .map(fact => ({ fact, score: getScore(fact.stateCode, activeKey) }))
+  const rows = STATE_FACT_SCORES
+    .map(fact => ({ fact, score: getScore(fact, activeKey) }))
     .filter(r => r.score !== null)
     .sort((a, b) => sortAsc ? (a.score! - b.score!) : (b.score! - a.score!))
     .map((r, i) => ({ ...r, rank: i + 1 }));
