@@ -1,16 +1,23 @@
 import { Router, type IRouter } from "express";
 import { db, contentDocumentsTable, contentFilesTable } from "@workspace/db";
 import { eq, like, or } from "drizzle-orm";
+import { getCachedDocument, setCachedDocument } from "../lib/content-cache";
 
 const router: IRouter = Router();
 
 async function sendDocument(res: { status: (n: number) => { json: (v: unknown) => void }; json: (v: unknown) => void }, key: string): Promise<boolean> {
+  const cached = getCachedDocument(key);
+  if (cached !== undefined) {
+    res.json(cached);
+    return true;
+  }
   const [row] = await db
     .select({ payload: contentDocumentsTable.payload })
     .from(contentDocumentsTable)
     .where(eq(contentDocumentsTable.key, key))
     .limit(1);
   if (!row) return false;
+  setCachedDocument(key, row.payload);
   res.json(row.payload);
   return true;
 }

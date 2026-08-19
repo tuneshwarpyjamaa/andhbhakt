@@ -1,6 +1,7 @@
 import type { SchemeSummary } from '@workspace/api-client-react';
 import { loadStateFactIndex } from '@/lib/state-facts-catalog';
-import { fetchStaticJson } from '@/lib/content-api';
+import { fetchContent, fetchStaticJson } from '@/lib/content-api';
+import type { MinisterProfile } from '@/data/ministers';
 
 export type SearchKind = 'scheme' | 'state' | 'minister' | 'page' | 'reports';
 
@@ -47,7 +48,7 @@ function compact(...parts: Array<string | undefined | null>): string {
 
 async function buildIndex(): Promise<SearchRecord[]> {
   const [
-    { ALL_MINISTERS },
+    ALL_MINISTERS,
     states,
     STATIC_SCHEMES,
     schemeHi,
@@ -55,7 +56,7 @@ async function buildIndex(): Promise<SearchRecord[]> {
     stateHi,
     ministryHi,
   ] = await Promise.all([
-    import('@/data/ministers'),
+    fetchContent<MinisterProfile[]>('ministers-index').catch((): MinisterProfile[] => []),
     loadStateFactIndex(),
     fetchStaticJson<SchemeSummary[]>('schemes-static').catch((): SchemeSummary[] => []),
     fetchStaticJson<Record<string, { nameHi?: string; descriptionHi?: string }>>('scheme-translations-hi').catch((): Record<string, { nameHi?: string; descriptionHi?: string }> => ({})),

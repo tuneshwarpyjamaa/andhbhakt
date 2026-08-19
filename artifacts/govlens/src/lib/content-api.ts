@@ -1,13 +1,46 @@
+const contentCache = new Map<string, unknown>();
+const contentInflight = new Map<string, Promise<unknown>>();
+const staticCache = new Map<string, unknown>();
+const staticInflight = new Map<string, Promise<unknown>>();
+
+async function cachedGet<T>(
+  cache: Map<string, unknown>,
+  inflight: Map<string, Promise<unknown>>,
+  key: string,
+  load: () => Promise<T>,
+): Promise<T> {
+  if (cache.has(key)) return cache.get(key) as T;
+  let pending = inflight.get(key) as Promise<T> | undefined;
+  if (!pending) {
+    pending = load()
+      .then((value) => {
+        cache.set(key, value);
+        inflight.delete(key);
+        return value;
+      })
+      .catch((err) => {
+        inflight.delete(key);
+        throw err;
+      });
+    inflight.set(key, pending);
+  }
+  return pending;
+}
+
 export async function fetchContent<T>(key: string): Promise<T> {
-  const res = await fetch(`/api/content/${encodeURIComponent(key)}`);
-  if (!res.ok) throw new Error(`Failed to load content ${key} (${res.status})`);
-  return res.json() as Promise<T>;
+  return cachedGet(contentCache, contentInflight, key, async () => {
+    const res = await fetch(`/api/content/${encodeURIComponent(key)}`);
+    if (!res.ok) throw new Error(`Failed to load content ${key} (${res.status})`);
+    return res.json() as Promise<T>;
+  });
 }
 
 export async function fetchStaticJson<T>(name: string): Promise<T> {
-  const res = await fetch(`/api/static/json/${encodeURIComponent(name)}`);
-  if (!res.ok) throw new Error(`Failed to load json ${name} (${res.status})`);
-  return res.json() as Promise<T>;
+  return cachedGet(staticCache, staticInflight, name, async () => {
+    const res = await fetch(`/api/static/json/${encodeURIComponent(name)}`);
+    if (!res.ok) throw new Error(`Failed to load json ${name} (${res.status})`);
+    return res.json() as Promise<T>;
+  });
 }
 
 export const HI_JSON_KEYS: Record<string, string> = {

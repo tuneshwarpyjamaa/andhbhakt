@@ -1,10 +1,22 @@
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import {
+  TrendingUp, GraduationCap, Briefcase, HeartPulse, ShieldCheck, Leaf,
+} from 'lucide-react';
 import { useHiJson } from '@/lib/use-hi-json';
+import { mergeIndicatorsHi, useCivicDoc, useIndicators, type IndicatorsHi } from '@/lib/civic-catalog';
 import { scoreColor } from './shared';
-import { NATIONAL_INDICATORS } from './national-indicators-data';
 
 const HistoricalChart = lazy(() => import('./historical-chart'));
+
+const INDICATOR_ICONS = {
+  economy: TrendingUp,
+  education: GraduationCap,
+  employment: Briefcase,
+  health: HeartPulse,
+  safety: ShieldCheck,
+  environment: Leaf,
+} as const;
 
 interface NiHiStat { labelHi?: string; noteHi?: string }
 interface NiHi { labels?: Record<string, string>; summaries?: Record<string, string>; stats?: Record<string, NiHiStat[]> }
@@ -13,8 +25,23 @@ export default function IndicatorsSection() {
   const { t, i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
   const niHi = useHiJson<NiHi>('national-indicators-hi', isHi) ?? {};
+  const { data: rawIndicators = [], isLoading } = useIndicators();
+  const { data: indicatorsHi } = useCivicDoc<IndicatorsHi>(isHi ? 'indicators-hi' : null);
+  const NATIONAL_INDICATORS = useMemo(
+    () => mergeIndicatorsHi(rawIndicators, indicatorsHi),
+    [rawIndicators, indicatorsHi],
+  );
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const active = NATIONAL_INDICATORS.find(i => i.key === activeKey) ?? null;
+
+  if (isLoading) {
+    return (
+      <div className="px-4 py-8 flex items-center justify-center" role="status" aria-live="polite">
+        <div className="w-5 h-5 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+        <span className="sr-only">Loading</span>
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 py-4 border-b border-border">
@@ -25,7 +52,7 @@ export default function IndicatorsSection() {
       <div className="grid grid-cols-3 sm:grid-cols-6 gap-1 mb-1">
         {NATIONAL_INDICATORS.map(ind => {
           const { ring, text, bg, label, labelHi } = scoreColor(ind.score);
-          const Icon = ind.icon;
+          const Icon = INDICATOR_ICONS[ind.iconKey as keyof typeof INDICATOR_ICONS] ?? TrendingUp;
           const R = 28; const C = 2 * Math.PI * R; const filled = (ind.score / 100) * C;
           const sel = activeKey === ind.key;
           return (

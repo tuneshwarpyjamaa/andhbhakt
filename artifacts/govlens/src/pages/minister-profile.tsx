@@ -10,8 +10,9 @@ import {
   TrendingUp, FileText, Scale, IndianRupee, Home, Receipt,
   ClipboardList,
 } from 'lucide-react';
-import { findMinisterBySlug, type MinisterProfile } from '@/data/ministers';
 import { computeIntegrityScore, assetGrowthPenalty } from '@/lib/scoring';
+import { useMinister } from '@/lib/civic-catalog';
+import { LoadingState } from '@/components/list-states';
 
 const MONTHS_HI: Record<string, string> = {
   January: 'जनवरी', February: 'फ़रवरी', March: 'मार्च', April: 'अप्रैल',
@@ -154,7 +155,7 @@ export default function MinisterProfilePage() {
   const isHi = i18n.language === 'hi';
 
   const params = useParams<{ slug: string }>();
-  const minister = findMinisterBySlug(params.slug ?? '');
+  const { minister, isLoading } = useMinister(params.slug, isHi);
   const namesHi = useHiJson<Record<string, string>>('person-names-hi', isHi) ?? {};
   const ministryNamesHi = useHiJson<Record<string, string>>('ministry-names-hi', isHi) ?? {};
   const officialTitlesHi = useHiJson<Record<string, string>>('official-titles-hi', isHi) ?? {};
@@ -191,6 +192,15 @@ export default function MinisterProfilePage() {
   }, [isHi, reportIds.join('|')]);
   const { data: wiki, loading: wikiLoading } = useWikiSummary(minister?.wikiTitle, isHi ? 'hi' : 'en');
 
+  if (isLoading) {
+    return (
+      <PageShell>
+        <div className="page-wrap max-w-[960px]">
+          <LoadingState />
+        </div>
+      </PageShell>
+    );
+  }
   if (!minister) return <NotFound />;
 
   const integrityScore = computeIntegrityScore(

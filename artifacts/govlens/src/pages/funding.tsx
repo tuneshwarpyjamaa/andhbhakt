@@ -2,10 +2,9 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PageShell, PageHeader } from '@/components/page-shell';
 import { SEO } from '@/components/seo';
-import {
-  BONDS_META, PARTY_FUNDING, TOP_DONORS, PARTY_COLOR, PARTY_INCOME_HISTORY,
-  PARTY_CLOSING_BALANCE, type Donor,
-} from '@/data/funding-data';
+import { type Donor } from '@/data/funding-data';
+import { useFunding, type FundingPayload } from '@/lib/civic-catalog';
+import { LoadingState } from '@/components/list-states';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
   LineChart, Line, CartesianGrid, ReferenceLine, Legend,
@@ -54,13 +53,11 @@ const IDEOLOGY_HI: Record<string, string> = {
   'Bihar regionalism, Centrist': 'बिहार क्षेत्रवाद, मध्यमार्गी',
 };
 
-const totalPartyBonds = PARTY_FUNDING.reduce((s, p) => s + p.amount, 0);
-
-// Coalition roll-ups
-const COALITION_TOTALS: Record<string, number> = {};
-PARTY_FUNDING.forEach(p => {
-  COALITION_TOTALS[p.coalition] = (COALITION_TOTALS[p.coalition] || 0) + p.amount;
-});
+function coalitionTotals(parties: FundingPayload['parties']): Record<string, number> {
+  const totals: Record<string, number> = {};
+  for (const p of parties) totals[p.coalition] = (totals[p.coalition] || 0) + p.amount;
+  return totals;
+}
 
 // ─── sub-components ─────────────────────────────────────────────────────────
 
@@ -82,13 +79,13 @@ function StatCard({ label, value, sub, icon: Icon, accent }: {
 }
 
 // Horizontal mini-bar for donor→party breakdown
-function DonorPartyBar({ party, shortName, amount, total }: {
-  party: string; shortName: string; amount: number; total: number;
+function DonorPartyBar({ party, shortName, amount, total, partyColor }: {
+  party: string; shortName: string; amount: number; total: number; partyColor: Record<string, string>;
 }) {
   const { i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
   const pct = Math.max((amount / total) * 100, 0.5);
-  const color = PARTY_COLOR[shortName] ?? PARTY_COLOR['Other'];
+  const color = partyColor[shortName] ?? partyColor['Other'];
   return (
     <div className="flex items-center gap-2 py-0.5">
       <span className="w-20 text-xs text-right text-muted-foreground font-mono flex-shrink-0">{fmtFull(amount, isHi)}</span>
@@ -101,7 +98,7 @@ function DonorPartyBar({ party, shortName, amount, total }: {
 }
 
 // Expandable donor card
-function DonorRow({ donor, rank }: { donor: Donor; rank: number }) {
+function DonorRow({ donor, rank, partyColor }: { donor: Donor; rank: number; partyColor: Record<string, string> }) {
   const { t, i18n } = useTranslation();
   const isHiDonor = i18n.language === 'hi';
   const [open, setOpen] = useState(false);
@@ -133,7 +130,7 @@ function DonorRow({ donor, rank }: { donor: Donor; rank: number }) {
         <div className="text-right flex-shrink-0">
           <div className="font-bold text-base text-foreground">{fmt(donor.amount, isHiDonor)}</div>
           <div className="text-xs text-muted-foreground">
-            {t('topLabel')} <span className="font-medium" style={{ color: PARTY_COLOR[topParty.shortName] ?? '#888' }}>
+            {t('topLabel')} <span className="font-medium" style={{ color: partyColor[topParty.shortName] ?? '#888' }}>
               {topParty.shortName}
             </span>
             {' '}({topPct}%)
@@ -199,6 +196,7 @@ function DonorRow({ donor, rank }: { donor: Donor; rank: number }) {
                 shortName={p.shortName}
                 amount={p.amount}
                 total={donor.amount}
+                partyColor={partyColor}
               />
             ))}
           </div>
@@ -210,7 +208,7 @@ function DonorRow({ donor, rank }: { donor: Donor; rank: number }) {
 
 // ─── custom recharts tooltip ─────────────────────────────────────────────────
 
-function PartyTooltip({ active, payload }: any) {
+function PartyTooltip({ active, payload, totalPartyBonds }: any) {
   const { t, i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
   if (!active || !payload?.length) return null;
@@ -237,12 +235,32 @@ export default function Funding() {
   const [tab, setTab] = useState<'parties' | 'donors' | 'history'>('parties');
   const [historyParties, setHistoryParties] = useState<string[]>(['BJP', 'INC', 'TMC', 'BSP', 'SP', 'AAP']);
   const [coalitionFilter, setCoalitionFilter] = useState<string>('All');
+  const { data, isLoading } = useFunding();
+
+  const BONDS_META = data?.meta;
+  const PARTY_FUNDING = data?.parties ?? [];
+  const TOP_DONORS = data?.donors ?? [];
+  const PARTY_INCOME_HISTORY = data?.incomeHistory ?? [];
+  const PARTY_CLOSING_BALANCE = data?.closingBalance ?? [];
+  const PARTY_COLOR = data?.partyColor ?? {};
+  const totalPartyBonds = PARTY_FUNDING.reduce((s, p) => s + p.amount, 0);
+  const COALITION_TOTALS = coalitionTotals(PARTY_FUNDING);
 
   const filteredParties = coalitionFilter === 'All'
     ? PARTY_FUNDING
     : PARTY_FUNDING.filter(p => p.coalition === coalitionFilter);
 
-  const bjpShare = Math.round((5594 / totalPartyBonds) * 100);
+  const bjpShare = totalPartyBonds > 0 ? Math.round((5594 / totalPartyBonds) * 100) : 0;
+
+  if (isLoading || !BONDS_META) {
+    return (
+      <PageShell>
+        <div className="page-wrap">
+          <LoadingState />
+        </div>
+      </PageShell>
+    );
+  }
 
   return (
     <PageShell>
@@ -381,7 +399,7 @@ export default function Funding() {
                     width={55}
                     tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
                   />
-                  <Tooltip content={<PartyTooltip />} cursor={{ fill: 'hsl(var(--muted))', opacity: 0.4 }} />
+                  <Tooltip content={<PartyTooltip totalPartyBonds={totalPartyBonds} />} cursor={{ fill: 'hsl(var(--muted))', opacity: 0.4 }} />
                   <Bar dataKey="amount" radius={[0, 4, 4, 0]} maxBarSize={28}>
                     {filteredParties.map((p) => (
                       <Cell key={p.shortName} fill={p.color} />
@@ -493,7 +511,7 @@ export default function Funding() {
 
             <div className="space-y-2">
               {TOP_DONORS.map(donor => (
-                <DonorRow key={donor.rank} donor={donor} rank={donor.rank} />
+                <DonorRow key={donor.rank} donor={donor} rank={donor.rank} partyColor={PARTY_COLOR} />
               ))}
             </div>
 

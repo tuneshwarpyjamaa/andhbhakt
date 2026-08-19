@@ -72,7 +72,7 @@ artifacts/
     jobs/            Background jobs (news fetcher)
   govlens/src/
     pages/           Frontend page components
-    data/            Static civic data — schemes, state facts, ministers, manifestos, CAG reports
+    data/            Types only — civic payloads load from Postgres
 lib/
   db/                Drizzle schema + migrations
   api-zod/           Auto-generated Zod schemas
@@ -81,7 +81,7 @@ lib/
 
 ## Architecture decisions
 
-**Static data in source files** — scheme details, state facts, minister profiles, manifesto promises, and CAG report narratives live as TypeScript constants in `artifacts/govlens/src/data/`. This makes every data point auditable, diff-able, and contribution-friendly without a CMS. Only dynamic data (live PIB entries, CAG audit records, news) lives in the database.
+**Civic data in Postgres** — ministers, manifesto years, national indicators, funding, CAG reports, and state facts live in `content_documents` (JSONB, keyed by entity). The browser fetches `/api/content/:key`. UI chrome stays in `locales/*.json`. Relational tables (`schemes`, `pib_entries`, `cag_audits`) stay for rows you filter and join.
 
 **Session cookie, not JWT** — The Turnstile gate issues an HMAC-signed cookie. The server refuses to start in production without `SESSION_SECRET`.
 

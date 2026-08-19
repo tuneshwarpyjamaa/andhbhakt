@@ -28,7 +28,7 @@ export interface NationalIndicator {
   key: string;
   label: string;
   score: number;
-  icon: ElementType;
+  iconKey: string;
   summary: string;
   stats: NationalStat[];
   charts?: ChartConfig[];
@@ -61,10 +61,10 @@ export type PromiseStatus = 'implemented' | 'partial' | 'in-progress' | 'not-ful
 
 export interface ManifestoPromise {
   promise: string;
-  promiseHi: string;
+  promiseHi?: string;
   status: PromiseStatus;
   note: string;
-  noteHi: string;
+  noteHi?: string;
   cagVerdict?: string;
   cagVerdictHi?: string;
   cagSource?: string;
@@ -73,16 +73,16 @@ export interface ManifestoPromise {
 
 export interface ManifestoCategory {
   name: string;
-  nameHi: string;
+  nameHi?: string;
   promises: ManifestoPromise[];
 }
 
 export interface ManifestoYear {
   year: number;
   title: string;
-  titleHi: string;
+  titleHi?: string;
   tagline: string;
-  taglineHi: string;
+  taglineHi?: string;
   sourceUrl: string;
   categories: ManifestoCategory[];
 }

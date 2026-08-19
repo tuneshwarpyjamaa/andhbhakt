@@ -41,11 +41,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id: string) {
-          if (id.includes('state-facts-hi')) return 'data-sf-hi';
           if (id.includes('state-facts-scores')) return 'data-state-scores';
-          if (id.includes('scheme-detail-hi')) return 'data-scheme-hi';
-          if (id.includes('national-indicators-data')) return 'data-national-indicators';
-          if (id.includes('manifesto-data')) return 'data-manifesto';
           // Vendor splitting — ALL React-dependent packages must be co-located
           // with react-dom/scheduler to guarantee initialisation order.
           // Separate chunks cause "Cannot set properties of undefined" crashes.

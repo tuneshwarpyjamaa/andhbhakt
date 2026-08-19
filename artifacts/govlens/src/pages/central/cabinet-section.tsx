@@ -2,13 +2,10 @@ import { useState } from 'react';
 import { Link } from 'wouter';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, ChevronUp, Info, X } from 'lucide-react';
-import { PM_PROFILE, CABINET_PROFILES } from '@/data/ministers';
 import { computeIntegrityScore, assetGrowthPenalty } from '@/lib/scoring';
 import { useHiJson } from '@/lib/use-hi-json';
+import { useMinistersIndex } from '@/lib/civic-catalog';
 import { MemberAvatar, ScoreBar, hiDate } from './shared';
-
-const PM = PM_PROFILE;
-const CABINET = CABINET_PROFILES;
 
 const CABINET_SUMMARY = {
   total: 71, withCriminalCases: 28, withSeriousCases: 19,
@@ -219,9 +216,21 @@ export default function PMCabinetSection() {
   const ministerMinistriesHi = useHiJson<Record<string, string>>('minister-ministries-hi', isHi) ?? {};
   const [cabinetOpen, setCabinetOpen] = useState(false);
   const [methodologyOpen, setMethodologyOpen] = useState(false);
+  const { ministers, isLoading } = useMinistersIndex(isHi);
+  const PM = ministers.find(m => m.title === 'Prime Minister');
+  const CABINET = ministers.filter(m => m.title !== 'Prime Minister');
   const cabinetMinisters = CABINET.filter(m => m.title === 'Cabinet Minister');
   const mosIC = CABINET.filter(m => m.title === 'MoS (Independent Charge)');
   const mos = CABINET.filter(m => m.title === 'Minister of State');
+
+  if (isLoading || !PM) {
+    return (
+      <div className="px-4 py-8 flex items-center justify-center" role="status" aria-live="polite">
+        <div className="w-5 h-5 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+        <span className="sr-only">Loading</span>
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 py-4 border-b border-border">

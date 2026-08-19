@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, ExternalLink, TrendingUp, IndianRupee, FileSearch } from 'lucide-react';
-import { ALL_MANIFESTOS } from './manifesto-data';
 import { scoreColor } from './shared';
 import type { PromiseStatus } from './types';
+import { useManifestos } from '@/lib/civic-catalog';
 
 const PROMISE_STATUS_META: Record<PromiseStatus, { label: string; labelHi: string; dot: string; text: string; bg: string; border: string }> = {
   implemented:    { label: 'Implemented',   labelHi: 'लागू',         dot: 'bg-green-500',           text: 'text-green-600 dark:text-green-400',   bg: 'bg-green-50 dark:bg-green-950/40',   border: 'border-green-200 dark:border-green-800'   },
@@ -23,9 +23,10 @@ export default function ManifestoSection() {
   const [statusFilter, setStatusFilter] = useState<PromiseStatus | null>(null);
   const [page, setPage] = useState(0);
   const isHi = i18n.language === 'hi';
+  const { data: ALL_MANIFESTOS = [], isLoading } = useManifestos(isHi);
 
-  const manifesto = ALL_MANIFESTOS.find(m => m.year === activeYear)!;
-  const allPromises = manifesto.categories.flatMap(c =>
+  const manifesto = ALL_MANIFESTOS.find(m => m.year === activeYear);
+  const allPromises = (manifesto?.categories ?? []).flatMap(c =>
     c.promises.map(p => ({ ...p, categoryName: c.name, categoryNameHi: c.nameHi }))
   );
 
@@ -100,6 +101,16 @@ export default function ManifestoSection() {
     { status: 'not-fulfilled' as PromiseStatus, count: allPromises.filter(p => p.status === 'not-fulfilled').length },
     { status: 'pending'       as PromiseStatus, count: allPromises.filter(p => p.status === 'pending').length },
   ] as { status: PromiseStatus; count: number }[]).filter(c => c.count > 0);
+
+  if (isLoading) {
+    return (
+      <div className="px-4 py-8 flex items-center justify-center" role="status" aria-live="polite">
+        <div className="w-5 h-5 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+        <span className="sr-only">Loading</span>
+      </div>
+    );
+  }
+  if (!manifesto) return null;
 
   return (
     <div className="px-4 py-4 border-t-0">
