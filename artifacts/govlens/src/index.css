@@ -147,9 +147,9 @@
   --type-body: 1rem;
   --type-meta: 0.8125rem;
 
-  --app-font-sans: 'Inter', system-ui, sans-serif;
-  --app-font-serif: Georgia, serif;
-  --app-font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --app-font-sans: 'Source Sans 3', 'Noto Sans Devanagari', 'Segoe UI', system-ui, sans-serif;
+  --app-font-serif: 'Source Sans 3', 'Noto Sans Devanagari', 'Segoe UI', system-ui, sans-serif;
+  --app-font-mono: 'Source Sans 3', 'Noto Sans Devanagari', 'Segoe UI', system-ui, sans-serif;
   --radius: 0.25rem;
 
   --shadow-2xs: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
@@ -320,6 +320,10 @@
     text-rendering: optimizeLegibility;
     font-size: var(--type-body);
     line-height: 1.65;
+  }
+
+  .font-mono {
+    font-variant-numeric: tabular-nums;
   }
 
   h1 {
