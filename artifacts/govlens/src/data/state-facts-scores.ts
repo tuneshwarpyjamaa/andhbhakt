@@ -1,4 +1,4 @@
-import scores from './state-facts-scores.json';
+import { fetchStaticJson } from '@/lib/content-api';
 
 export interface StateFactScoreRow {
   stateCode: string;
@@ -8,5 +8,7 @@ export interface StateFactScoreRow {
   indicators: Record<string, number>;
 }
 
-/** Slim ranking rows. Regenerated from state-facts-data.ts via scripts/extract-state-fact-scores.mjs */
-export const STATE_FACT_SCORES = scores as StateFactScoreRow[];
+/** Slim ranking rows — loaded from the database via /api/static/json/state-facts-scores */
+export async function loadStateFactScores(): Promise<StateFactScoreRow[]> {
+  return fetchStaticJson<StateFactScoreRow[]>('state-facts-scores');
+}

@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useLocation, useSearch } from 'wouter';
 import { useTranslation } from 'react-i18next';
 import { computeIntegrityScore } from '@/lib/scoring';
 import { SEO } from '@/components/seo';
 import { loadStateFact, loadStateFactIndex, type StateFactIndexItem } from '@/lib/state-facts-catalog';
+import { fetchStaticJson } from '@/lib/content-api';
 import type {
   Official,
   OfficialGroup,
@@ -46,15 +48,15 @@ function _loadHiMaps() {
   if (_hiLoaded || _hiLoading) return;
   _hiLoading = true;
   Promise.all([
-    import('../data/state-facts-hi.json'),
-    import('../data/state-facts-hi-extra.json'),
-    import('../data/official-titles-hi.json'),
-    import('../data/stat-labels-hi.json'),
-    import('../data/person-names-hi.json'),
-    import('../data/state-names-hi.json'),
+    fetchStaticJson<any>('state-facts-hi'),
+    fetchStaticJson<any>('state-facts-hi-extra'),
+    fetchStaticJson<Record<string, string>>('official-titles-hi'),
+    fetchStaticJson<Record<string, string>>('stat-labels-hi'),
+    fetchStaticJson<Record<string, string>>('person-names-hi'),
+    fetchStaticJson<Record<string, string>>('state-names-hi'),
   ]).then(([rawMod, extraMod, titlesMod, labelsMod, namesMod, statesMod]) => {
-    const r = rawMod.default as any;
-    const x = extraMod.default as any;
+    const r = rawMod as any;
+    const x = extraMod as any;
     Object.assign(sfHiHeadlines,   r.headlineMap    ?? {});
     Object.assign(sfHiValues,      r.valueMap       ?? {});
     Object.assign(sfHiNotes,       r.noteMap        ?? {});
@@ -67,10 +69,10 @@ function _loadHiMaps() {
     Object.assign(sfHiActual,      x.actualMap      ?? {});
     Object.assign(sfHiRef,         x.refMap         ?? {});
     Object.assign(sfHiSchemeName,  x.schemeNameMap  ?? {});
-    Object.assign(officialTitlesHi, titlesMod.default as Record<string, string>);
-    Object.assign(statLabelsHi, labelsMod.default as Record<string, string>);
-    Object.assign(namesHi, namesMod.default as Record<string, string>);
-    Object.assign(stateNamesHi, statesMod.default as Record<string, string>);
+    Object.assign(officialTitlesHi, titlesMod);
+    Object.assign(statLabelsHi, labelsMod);
+    Object.assign(namesHi, namesMod);
+    Object.assign(stateNamesHi, statesMod);
     _hiLoaded  = true;
     _hiLoading = false;
     _hiListeners.forEach(cb => cb());
@@ -1333,11 +1335,20 @@ export default function StateFacts() {
   const isHi = i18n.language === 'hi';
   const hiReady = useHiReady(isHi);
   const [index, setIndex] = useState<StateFactIndexItem[]>([]);
-  const [selectedCode, setSelectedCode] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('state')?.toUpperCase() ?? '';
-  });
+  const searchString = useSearch();
+  const [, navigate] = useLocation();
+  const stateFromUrl = new URLSearchParams(searchString).get('state')?.toUpperCase() ?? '';
+  const [selectedCode, setSelectedCode] = useState(stateFromUrl);
   const [selectedFact, setSelectedFact] = useState<StateFact | null>(null);
+
+  useEffect(() => {
+    if (stateFromUrl) setSelectedCode(stateFromUrl);
+  }, [stateFromUrl]);
+
+  useEffect(() => {
+    if (!selectedCode || selectedCode === stateFromUrl) return;
+    navigate(`/state-facts?state=${selectedCode}`, { replace: true });
+  }, [selectedCode, stateFromUrl, navigate]);
 
   useEffect(() => {
     let cancelled = false;

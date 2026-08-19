@@ -1,20 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { fetchStaticJson, HI_JSON_KEYS } from '@/lib/content-api';
 
 const cache = new Map<string, unknown>();
 const inflight = new Map<string, Promise<unknown>>();
 
 /**
- * Load a Hindi JSON module only when `enabled` is true.
+ * Load a Hindi JSON document only when `enabled` is true.
  * English visitors never download the file.
  */
 export function useHiJson<T>(
   key: string,
-  loader: () => Promise<{ default: T }>,
   enabled: boolean,
 ): T | undefined {
   const [data, setData] = useState<T | undefined>(() => cache.get(key) as T | undefined);
-  const loaderRef = useRef(loader);
-  loaderRef.current = loader;
 
   useEffect(() => {
     if (!enabled) return;
@@ -25,11 +23,12 @@ export function useHiJson<T>(
     let cancelled = false;
     let pending = inflight.get(key);
     if (!pending) {
-      pending = loaderRef.current()
-        .then((m) => {
-          cache.set(key, m.default);
+      const jsonName = HI_JSON_KEYS[key] ?? key;
+      pending = fetchStaticJson<T>(jsonName)
+        .then((value) => {
+          cache.set(key, value);
           inflight.delete(key);
-          return m.default;
+          return value;
         })
         .catch((err) => {
           inflight.delete(key);

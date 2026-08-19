@@ -60,6 +60,10 @@ function writeJson(file, value) {
 
 function prepareCagReports() {
   const sources = [CAG_SRC, CAG_HI_SRC];
+  if (!existsSync(CAG_SRC) || !existsSync(CAG_HI_SRC)) {
+    console.log('cag-reports: source files moved to the database; skip');
+    return;
+  }
   if (isFresh('cag', sources)) {
     console.log('cag-reports: up to date');
     return;
@@ -104,6 +108,10 @@ function prepareCagReports() {
 
 async function prepareStateFacts() {
   const sources = [SF_SRC];
+  if (!existsSync(SF_SRC)) {
+    console.log('state-facts: source file moved to the database; skip');
+    return;
+  }
   if (isFresh('sf', sources)) {
     console.log('state-facts: up to date');
     return;
@@ -111,7 +119,10 @@ async function prepareStateFacts() {
 
   const mod = await import(`${pathToFileURL(SF_SRC).href}?t=${Date.now()}`);
   const facts = mod.STATE_FACTS;
-  if (!Array.isArray(facts)) throw new Error('STATE_FACTS export missing');
+  if (!Array.isArray(facts)) {
+    console.log('state-facts: payloads live in the database; skip');
+    return;
+  }
 
   const sfDir = join(OUT, 'state-facts');
   ensureDir(sfDir);

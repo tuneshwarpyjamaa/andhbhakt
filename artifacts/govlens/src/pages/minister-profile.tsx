@@ -155,10 +155,10 @@ export default function MinisterProfilePage() {
 
   const params = useParams<{ slug: string }>();
   const minister = findMinisterBySlug(params.slug ?? '');
-  const namesHi = useHiJson<Record<string, string>>('person-names-hi', () => import('@/data/person-names-hi.json'), isHi) ?? {};
-  const ministryNamesHi = useHiJson<Record<string, string>>('ministry-names-hi', () => import('@/data/ministry-names-hi.json'), isHi) ?? {};
-  const officialTitlesHi = useHiJson<Record<string, string>>('official-titles-hi', () => import('@/data/official-titles-hi.json'), isHi) ?? {};
-  const ministerBioHi = useHiJson<Record<string, string>>('minister-bio-hi', () => import('@/data/minister-bio-hi.json'), isHi) ?? {};
+  const namesHi = useHiJson<Record<string, string>>('person-names-hi', isHi) ?? {};
+  const ministryNamesHi = useHiJson<Record<string, string>>('ministry-names-hi', isHi) ?? {};
+  const officialTitlesHi = useHiJson<Record<string, string>>('official-titles-hi', isHi) ?? {};
+  const ministerBioHi = useHiJson<Record<string, string>>('minister-bio-hi', isHi) ?? {};
 
   const reportIds = minister?.cagReportIds ?? [];
   const [cagReports, setCagReports] = useState<CagReport[]>([]);

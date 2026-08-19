@@ -9,10 +9,12 @@ import sessionRouter from "./session";
 import reportIssueRouter from "./report_issue";
 import adminIssuesRouter from "./admin_issues";
 import newsRouter from "./news";
+import staticDataRouter from "./static_data";
 
 const router: IRouter = Router();
 
 router.use(healthRouter);
+router.use(staticDataRouter);
 router.use(sessionRouter);
 router.use(categoriesRouter);
 router.use(schemesRouter);

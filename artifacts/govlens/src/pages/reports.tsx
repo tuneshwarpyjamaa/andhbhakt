@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { useSearch } from 'wouter';
 import { PageShell, PageHeader } from '@/components/page-shell';
 import { useState, useMemo, useEffect } from 'react';
 import { SEO } from '@/components/seo';
@@ -219,8 +220,8 @@ function ReportCard({ report, cagHiMap }: { report: CagReportListItem; cagHiMap:
   const sev = SEVERITY_STYLE[report.severity];
   const hi = { ...(cagHiMap[report.id] ?? {}), ...hiDetail };
   const view = full ?? report;
-  const stateNamesHi = useHiJson<Record<string, string>>('state-names-hi', () => import('@/data/state-names-hi.json'), isHi) ?? {};
-  const ministryNamesHi = useHiJson<Record<string, string>>('ministry-names-hi', () => import('@/data/ministry-names-hi.json'), isHi) ?? {};
+  const stateNamesHi = useHiJson<Record<string, string>>('state-names-hi', isHi) ?? {};
+  const ministryNamesHi = useHiJson<Record<string, string>>('ministry-names-hi', isHi) ?? {};
 
   useEffect(() => {
     if (!expanded || full) return;
@@ -433,7 +434,13 @@ const PAGE_SIZE = 24;
 export default function Reports() {
   const { t, i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
-  const [search, setSearch]       = useState('');
+  const searchString = useSearch();
+  const qFromUrl = new URLSearchParams(searchString).get('q') ?? '';
+  const [search, setSearch]       = useState(qFromUrl);
+
+  useEffect(() => {
+    setSearch(qFromUrl);
+  }, [qFromUrl]);
   const [level, setLevel]         = useState<string>('');
   const [state, setState]         = useState<string>('');
   const [category, setCategory]   = useState<string>('');
@@ -452,7 +459,7 @@ export default function Reports() {
     if (!isHi) return;
     loadCagHiIndex().then(setCagHiMap).catch(() => {});
   }, [isHi]);
-  const stateNamesHi = useHiJson<Record<string, string>>('state-names-hi', () => import('@/data/state-names-hi.json'), isHi) ?? {};
+  const stateNamesHi = useHiJson<Record<string, string>>('state-names-hi', isHi) ?? {};
 
   const filtered = useMemo(() => {
     setPage(1);

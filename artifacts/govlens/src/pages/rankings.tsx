@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PageShell, PageHeader } from '@/components/page-shell';
 import { SEO } from '@/components/seo';
-import { STATE_FACT_SCORES, type StateFactScoreRow } from '@/data/state-facts-scores';
+import { loadStateFactScores, type StateFactScoreRow } from '@/data/state-facts-scores';
 import { Link } from 'wouter';
 import { TrendingUp, GraduationCap, Briefcase, HeartPulse, ShieldCheck, Leaf, Eye, Scale, Users, ChevronUp, ChevronDown as ChevronDownIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -61,15 +61,20 @@ const REGION_KEY: Record<string, string> = {
 export default function Rankings() {
   const { t, i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
-  const stateNamesHi = useHiJson<Record<string, string>>('state-names-hi', () => import('@/data/state-names-hi.json'), isHi) ?? {};
+  const stateNamesHi = useHiJson<Record<string, string>>('state-names-hi', isHi) ?? {};
   const [activeKey, setActiveKey] = useState<CategoryKey>('governance');
+  const [scores, setScores] = useState<StateFactScoreRow[]>([]);
+
+  useEffect(() => {
+    loadStateFactScores().then(setScores).catch(() => setScores([]));
+  }, []);
 
   const [sortAsc, setSortAsc] = useState(false);
 
   const activeCat = CATEGORIES.find(c => c.key === activeKey)!;
   const activeCatLabel = t(activeCat.labelKey);
 
-  const rows = STATE_FACT_SCORES
+  const rows = scores
     .map(fact => ({ fact, score: getScore(fact, activeKey) }))
     .filter(r => r.score !== null)
     .sort((a, b) => sortAsc ? (a.score! - b.score!) : (b.score! - a.score!))

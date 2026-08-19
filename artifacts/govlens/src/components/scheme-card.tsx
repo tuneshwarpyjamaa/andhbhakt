@@ -13,8 +13,8 @@ interface SchemeCardProps {
 export function SchemeCard({ scheme }: SchemeCardProps) {
   const { t, i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
-  const schemeHiMap = useHiJson<Record<string, { nameHi?: string; descriptionHi?: string }>>('scheme-hi', () => import('@/data/scheme-translations-hi.json'), isHi) ?? {};
-  const namesHi = useHiJson<Record<string, string>>('ministries-hi', () => import('@/data/ministries-hi.json'), isHi) ?? {};
+  const schemeHiMap = useHiJson<Record<string, { nameHi?: string; descriptionHi?: string }>>('scheme-hi', isHi) ?? {};
+  const namesHi = useHiJson<Record<string, string>>('ministries-hi', isHi) ?? {};
 
   return (
     <Link

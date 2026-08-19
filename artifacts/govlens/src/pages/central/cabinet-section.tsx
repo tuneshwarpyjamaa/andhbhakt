@@ -214,9 +214,9 @@ function ScoringMethodologyModal({ onClose }: { onClose: () => void }) {
 export default function PMCabinetSection() {
   const { t, i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
-  const namesHi = useHiJson<Record<string, string>>('person-names-hi', () => import('@/data/person-names-hi.json'), isHi) ?? {};
-  const officialTitlesHi = useHiJson<Record<string, string>>('official-titles-hi', () => import('@/data/official-titles-hi.json'), isHi) ?? {};
-  const ministerMinistriesHi = useHiJson<Record<string, string>>('minister-ministries-hi', () => import('@/data/minister-ministries-hi.json'), isHi) ?? {};
+  const namesHi = useHiJson<Record<string, string>>('person-names-hi', isHi) ?? {};
+  const officialTitlesHi = useHiJson<Record<string, string>>('official-titles-hi', isHi) ?? {};
+  const ministerMinistriesHi = useHiJson<Record<string, string>>('minister-ministries-hi', isHi) ?? {};
   const [cabinetOpen, setCabinetOpen] = useState(false);
   const [methodologyOpen, setMethodologyOpen] = useState(false);
   const cabinetMinisters = CABINET.filter(m => m.title === 'Cabinet Minister');

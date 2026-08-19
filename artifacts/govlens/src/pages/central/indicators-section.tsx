@@ -12,7 +12,7 @@ interface NiHi { labels?: Record<string, string>; summaries?: Record<string, str
 export default function IndicatorsSection() {
   const { t, i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
-  const niHi = useHiJson<NiHi>('national-indicators-hi', () => import('@/data/national-indicators-hi.json'), isHi) ?? {};
+  const niHi = useHiJson<NiHi>('national-indicators-hi', isHi) ?? {};
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const active = NATIONAL_INDICATORS.find(i => i.key === activeKey) ?? null;
 

@@ -4,6 +4,7 @@ import { Search, BarChart3, Menu, X, FileText, BookOpen, Flag, IndianRupee, Glob
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { setAppLanguage } from '@/i18n';
+import { HeaderSearch } from '@/components/header-search';
 
 function isNavActive(href: string, location: string) {
   if (href === '/') {
@@ -74,7 +75,7 @@ export function Navbar() {
             </div>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-0.5 flex-1 min-w-0 ml-4">
+          <div className="hidden lg:flex items-center gap-0.5 min-w-0 ml-4">
             {links.map((link) => {
               const active = isNavActive(link.href, location);
               return (
@@ -101,7 +102,7 @@ export function Navbar() {
             })}
           </div>
 
-          <div className="flex-1 lg:hidden" />
+          <HeaderSearch />
 
           <a
             href="https://github.com/JCRYDER3/andhbhakt"

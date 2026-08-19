@@ -57,10 +57,10 @@ export default function SchemeDetail() {
   const cagAudits = asArray<CAGAudit>(cagAuditsData).length > 0 ? asArray<CAGAudit>(cagAuditsData) : (staticDetail?.cag ?? []);
 
   const isHi = i18n.language === 'hi';
-  const schemeHi = useHiJson<Record<string, { nameHi?: string; descriptionHi?: string; goalsHi?: string }>>('scheme-hi', () => import('@/data/scheme-translations-hi.json'), isHi) ?? {};
-  const sdHi = useHiJson<SchemeDetailHi>('scheme-detail-hi', () => import('@/data/scheme-detail-hi.json'), isHi);
-  const pibUnitsHi = useHiJson<Record<string, string>>('pib-units-hi', () => import('@/data/pib-units-hi.json'), isHi) ?? {};
-  const ministriesHi = useHiJson<Record<string, string>>('ministries-hi', () => import('@/data/ministries-hi.json'), isHi) ?? {};
+  const schemeHi = useHiJson<Record<string, { nameHi?: string; descriptionHi?: string; goalsHi?: string }>>('scheme-hi', isHi) ?? {};
+  const sdHi = useHiJson<SchemeDetailHi>('scheme-detail-hi', isHi);
+  const pibUnitsHi = useHiJson<Record<string, string>>('pib-units-hi', isHi) ?? {};
+  const ministriesHi = useHiJson<Record<string, string>>('ministries-hi', isHi) ?? {};
   const cagHiMap = sdHi?.cagMap ?? {};
   const verdictHiMap = sdHi?.verdictMap ?? {};
   const pibHiMap = sdHi?.pibMap ?? {};

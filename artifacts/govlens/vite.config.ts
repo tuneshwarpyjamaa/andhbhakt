@@ -74,6 +74,11 @@ export default defineConfig({
         target: process.env.API_ORIGIN ?? 'http://127.0.0.1:8080',
         changeOrigin: true,
       },
+      '/data': {
+        target: process.env.API_ORIGIN ?? 'http://127.0.0.1:8080',
+        changeOrigin: true,
+        rewrite: (path: string) => `/api/static${path.slice('/data'.length)}`,
+      },
     },
     headers: {
       'Cache-Control': 'public, max-age=600',

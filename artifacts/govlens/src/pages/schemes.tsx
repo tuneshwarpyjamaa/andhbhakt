@@ -15,7 +15,7 @@ const PAGE_SIZE = 12;
 export default function Schemes() {
   const { t, i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
-  const namesHi = useHiJson<Record<string, string>>('ministries-hi', () => import('@/data/ministries-hi.json'), isHi) ?? {};
+  const namesHi = useHiJson<Record<string, string>>('ministries-hi', isHi) ?? {};
   const [search, setSearch] = useState('');
   const [categoryId, setCategoryId] = useState<number | undefined>();
   const [ministry, setMinistry] = useState<string | undefined>();

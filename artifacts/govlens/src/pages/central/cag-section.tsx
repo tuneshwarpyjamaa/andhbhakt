@@ -14,10 +14,10 @@ import type { LiveCagAudit } from './types';
 export default function CagSection() {
   const { t, i18n } = useTranslation();
   const isHiLang = i18n.language === 'hi';
-  const schemeDetailHi = useHiJson<{ cagMap?: Record<string, { findingHi?: string; claimedHi?: string; actualHi?: string }> }>('scheme-detail-hi', () => import('@/data/scheme-detail-hi.json'), isHiLang);
+  const schemeDetailHi = useHiJson<{ cagMap?: Record<string, { findingHi?: string; claimedHi?: string; actualHi?: string }> }>('scheme-detail-hi', isHiLang);
   const cagAuditHi = schemeDetailHi?.cagMap ?? {};
-  const schemeHi = useHiJson<Record<string, { nameHi?: string }>>('scheme-hi', () => import('@/data/scheme-translations-hi.json'), isHiLang) ?? {};
-  const ministriesHi = useHiJson<Record<string, string>>('ministries-hi', () => import('@/data/ministries-hi.json'), isHiLang) ?? {};
+  const schemeHi = useHiJson<Record<string, { nameHi?: string }>>('scheme-hi', isHiLang) ?? {};
+  const ministriesHi = useHiJson<Record<string, string>>('ministries-hi', isHiLang) ?? {};
   const [open, setOpen]                       = useState(false);
   const [severityFilter, setSeverityFilter]   = useState<string>('all');
   const [schemeFilter, setSchemeFilter]       = useState('');
